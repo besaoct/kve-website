@@ -6,6 +6,8 @@ import { Menu, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { navigationData } from "@/data/navigation"
+import LogoHorizontal from "./logo/logo-h"
+import Link from "next/link"
 
 export default function Navigation() {
   const [isProductsOpen, setIsProductsOpen] = useState(false)
@@ -26,22 +28,24 @@ export default function Navigation() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-2xl font-serif font-bold text-red-600"
               >
-                KVE
+                <Link href={'/'} className="h-16 flex justify-start items-center m-auto w-fit">
+                  <LogoHorizontal/>
+                </Link>
               </motion.div>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
               {navigationData.mainNav.map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
-                  className={`font-medium transition-colors ${
+                  className={`font-semibold transition-colors ${
                     item.active ? "text-red-600" : "text-neutral-700 hover:text-red-600"
                   }`}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
 
@@ -80,7 +84,7 @@ export default function Navigation() {
                   </div>
 
                   {/* Sub Navigation */}
-                  <div className="flex-1 px-6 py-4">
+                  <div className="flex-1 px-6 py-4"> 
                     <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wide mb-3">Categories</h3>
                     <div className="space-y-1">
                       {navigationData.subNav.map((item) => (
@@ -177,22 +181,22 @@ export default function Navigation() {
 
       <div className="sticky top-0 z-50 bg-neutral-50 border-b border-neutral-200">
         <div className="container mx-auto px-4">
-          <div className="hidden lg:flex items-center justify-center">
+          <div className="hidden lg:flex items-center justify-start">
             <div className="flex items-center space-x-8 py-4">
               {navigationData.subNav.map((item) => (
                 <div key={item.name} className="relative">
                   {item.hasDropdown ? (
                     <button
-                      className="flex items-center space-x-1 text-neutral-700 hover:text-red-600 transition-colors font-medium"
+                      className="flex items-center space-x-1 text-neutral-700 hover:text-red-600 transition-colors font-semibold"
                       onClick={() => setIsProductsOpen(!isProductsOpen)}
                     >
                       <span>{item.name}</span>
                       <ChevronDown className={`h-4 w-4 transition-transform ${isProductsOpen ? "rotate-180" : ""}`} />
                     </button>
                   ) : (
-                    <a href={item.href} className="text-neutral-700 hover:text-red-600 transition-colors font-medium">
+                    <Link href={item.href || '/'} className="text-neutral-700 hover:text-red-600 transition-colors font-semibold">
                       {item.name}
-                    </a>
+                    </Link>
                   )}
                 </div>
               ))}
@@ -291,7 +295,7 @@ export default function Navigation() {
         </AnimatePresence>
       </div>
 
-      {isProductsOpen && <div className="fixed inset-0 z-30 bg-black/20" onClick={() => setIsProductsOpen(false)} />}
+      {isProductsOpen && <div className="fixed inset-0 z-30 bg-neutral-100/30" onClick={() => setIsProductsOpen(false)} />}
     </>
   )
 }

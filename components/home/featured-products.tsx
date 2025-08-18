@@ -13,7 +13,7 @@ const featuredProducts = [
     category: "Filler Metals",
     description:
       "Premium low-hydrogen electrodes for structural steel welding with superior arc stability and weld quality.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/9754818/pexels-photo-9754818.jpeg",
     price: "$89.99",
     originalPrice: "$109.99",
     rating: 4.8,
@@ -28,14 +28,14 @@ const featuredProducts = [
     category: "Welding Equipment",
     description:
       "Advanced MIG welding system with digital controls and superior arc performance for professional applications.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/3158651/pexels-photo-3158651.jpeg",
     price: "$2,499.99",
     originalPrice: null,
     rating: 4.9,
     reviews: 87,
     features: ["Digital Display", "Pulse MIG", "Aluminum Ready"],
     badge: "New",
-    badgeColor: "bg-secondary",
+    badgeColor: "bg-teal-600",
   },
   {
     id: 3,
@@ -43,7 +43,7 @@ const featuredProducts = [
     category: "Filler Metals",
     description:
       "Self-shielded flux-cored wire for outdoor welding applications with excellent penetration and bead appearance.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/9754818/pexels-photo-9754818.jpeg",
     price: "$156.99",
     originalPrice: "$179.99",
     rating: 4.7,
@@ -58,7 +58,7 @@ const featuredProducts = [
     category: "Safety/PPE",
     description:
       "Auto-darkening welding helmet with crystal clear optics and advanced protection for professional welders.",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/3158651/pexels-photo-3158651.jpeg",
     price: "$299.99",
     originalPrice: "$349.99",
     rating: 4.6,
@@ -100,7 +100,7 @@ export default function FeaturedProducts() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 bg-card">
+              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border hover:border-primary/20 py-0 shadow-none bg-muted">
                 <div className="relative overflow-hidden">
                   {/* Product Image */}
                   <div className="relative h-48 bg-gray-100">
@@ -124,7 +124,7 @@ export default function FeaturedProducts() {
                     </div>
 
                     {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
                   </div>
                 </div>
 
@@ -176,7 +176,7 @@ export default function FeaturedProducts() {
                       )}
                     </div>
                     {product.originalPrice && (
-                      <Badge variant="destructive" className="text-xs">
+                      <Badge variant="outline" className="text-xs">
                         Save{" "}
                         {Math.round(
                           ((Number.parseFloat(product.originalPrice.replace(/[$,]/g, "")) -
@@ -212,7 +212,7 @@ export default function FeaturedProducts() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center"
         >
-          <div className="bg-card rounded-2xl p-8 border border-border">
+          <div className="bg-muted rounded-2xl p-8 border border-border">
             <div className="flex items-center justify-center mb-4">
               <Zap className="h-8 w-8 text-secondary mr-3" />
               <h3 className="text-2xl font-heading font-bold text-foreground">Explore Our Complete Catalog</h3>

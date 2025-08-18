@@ -20,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body  className={`${font.className} antialiased`}>
+      <head>
+        <link rel="shortcut icon" href="/images/icons/logo-s.png" type="image/x-icon" />
+      </head>
+      <body  className={`${font.className} antialiased tabular-nums`}  cz-shortcut-listen="true">
         {children}
         </body>
     </html>

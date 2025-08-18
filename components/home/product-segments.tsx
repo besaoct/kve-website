@@ -12,7 +12,7 @@ const productSegments = [
     title: "Welding Equipment",
     description: "Advanced welding machines and systems for precision industrial applications",
     icon: Zap,
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
     features: ["MIG/TIG Systems", "Stick Welders", "Multi-Process Units"],
     color: "from-primary to-primary/80",
   },
@@ -21,7 +21,7 @@ const productSegments = [
     title: "Filler Metals",
     description: "Comprehensive range of electrodes, wires, and rods for superior weld quality",
     icon: Factory,
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
     features: ["Stick Electrodes", "MIG/TIG Wires", "Flux-Cored Wires"],
     color: "from-secondary to-secondary/80",
   },
@@ -30,7 +30,7 @@ const productSegments = [
     title: "Automation Solutions",
     description: "Smart robotic systems and automated welding solutions for enhanced productivity",
     icon: Cog,
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
     features: ["Robotic Welding", "Control Systems", "Integration Services"],
     color: "from-primary to-secondary",
   },
@@ -39,7 +39,7 @@ const productSegments = [
     title: "Safety & PPE",
     description: "Complete personal protective equipment and safety solutions for industrial environments",
     icon: Shield,
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
     features: ["Protective Gear", "Safety Training", "Compliance Solutions"],
     color: "from-gray-600 to-gray-800",
   },
@@ -48,7 +48,7 @@ const productSegments = [
     title: "Cutting Equipment",
     description: "Precision cutting tools and plasma systems for metal fabrication",
     icon: Wrench,
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
     features: ["Plasma Cutters", "Oxy-Fuel Systems", "Cutting Accessories"],
     color: "from-secondary to-primary",
   },
@@ -57,7 +57,7 @@ const productSegments = [
     title: "Accessories & Tools",
     description: "Essential tools, software, and accessories to support your welding operations",
     icon: Truck,
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
     features: ["Welding Tools", "Software Solutions", "Maintenance Kits"],
     color: "from-gray-700 to-primary/80",
   },
@@ -91,16 +91,16 @@ export default function ProductSegments() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20">
+              <Card className="h-full overflow-hidden hover:shadow-sm transition-all duration-300 border hover:border-primary/20 py-0 shadow-none bg-muted">
                 <div className="relative overflow-hidden">
                   {/* Background Image */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-64 overflow-hidden">
                     <img
                       src={segment.image || "/placeholder.svg"}
                       alt={segment.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-br ${segment.color} opacity-80`} />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${segment.color} opacity-30`} />
                   </div>
 
                   {/* Icon */}
@@ -109,7 +109,7 @@ export default function ProductSegments() {
                   </div>
 
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Button
                       variant="secondary"
                       className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
@@ -154,7 +154,7 @@ export default function ProductSegments() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-16"
         >
-          <div className="bg-card rounded-2xl p-8 border border-border">
+          <div className="bg-muted rounded-2xl p-8 border border-border">
             <h3 className="text-2xl font-heading font-bold text-foreground mb-4">
               Need Help Choosing the Right Solution?
             </h3>

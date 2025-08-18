@@ -47,7 +47,7 @@ export default function NewsletterPopup() {
             exit={{ scale: 0.9, opacity: 0 }}
             className="relative max-w-md w-full"
           >
-            <Card className="bg-gradient-to-br from-red-600 to-red-400 text-white">
+            <Card className="bg-gradient-to-br from-red-600 to-red-300 text-white">
               <CardContent className="p-6">
                 <button onClick={handleClose} className="absolute top-4 right-4 text-white hover:text-gray-200">
                   <X className="h-5 w-5" />
@@ -70,7 +70,7 @@ export default function NewsletterPopup() {
                     required
                     className="bg-white text-foreground"
                   />
-                  <Button type="submit" className="w-full bg-white text-primary hover:bg-gray-100">
+                  <Button type="submit" className="w-full bg-red-700 text-white ">
                     Subscribe Now
                   </Button>
                 </form>

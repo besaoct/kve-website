@@ -82,12 +82,6 @@ export default function NewsletterSection() {
 
   return (
     <section className="py-20 bg-gradient-to-br from-primary via-primary to-secondary relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-32 h-32 border border-white rounded-full" />
-        <div className="absolute top-1/3 right-20 w-24 h-24 border border-white rounded-full" />
-        <div className="absolute bottom-20 left-1/4 w-16 h-16 border border-white rounded-full" />
-      </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -156,7 +150,7 @@ export default function NewsletterSection() {
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       required
-                      className="h-12"
+                      className="h-12 border-border"
                     />
                   </div>
 
@@ -168,11 +162,12 @@ export default function NewsletterSection() {
                     <Input
                       id="email"
                       type="email"
+
                       placeholder="Enter your email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="h-12"
+                      className="h-12 border-border"
                     />
                   </div>
 
@@ -185,6 +180,7 @@ export default function NewsletterSection() {
                           <Checkbox
                             id={key}
                             checked={value}
+                            className="border-primary"
                             onCheckedChange={(checked) =>
                               setPreferences((prev) => ({ ...prev, [key]: checked as boolean }))
                             }
@@ -227,28 +223,7 @@ export default function NewsletterSection() {
           </motion.div>
         </div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="text-white">
-              <div className="text-3xl font-heading font-bold mb-2">25,000+</div>
-              <div className="text-white/80">Subscribers</div>
-            </div>
-            <div className="text-white">
-              <div className="text-3xl font-heading font-bold mb-2">98%</div>
-              <div className="text-white/80">Satisfaction Rate</div>
-            </div>
-            <div className="text-white">
-              <div className="text-3xl font-heading font-bold mb-2">Weekly</div>
-              <div className="text-white/80">Updates</div>
-            </div>
-          </div>
-        </motion.div>
+      
       </div>
     </section>
   )
