@@ -28,6 +28,12 @@ Make sure you have Node.js and npm installed on your machine.
     npm run i
     ```
 
+    or
+
+    ```bash
+    npm i
+    ```
+
 ### Running the Development Server
 
 To run the development server, use the following command:
