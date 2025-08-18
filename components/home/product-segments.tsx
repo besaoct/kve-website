@@ -5,6 +5,7 @@ import { ArrowRight, Zap, Shield, Cog, Wrench, Factory, Truck } from "lucide-rea
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
+
 const productSegments = [
   {
     id: 1,
