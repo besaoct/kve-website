@@ -15,7 +15,7 @@ const heroSlides = [
     subtitle: "Powering Your Manufacturing Excellence",
     description:
       "Discover cutting-edge welding equipment, automation systems, and industrial solutions designed for maximum efficiency and reliability.",
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "https://images.pexels.com/photos/7019259/pexels-photo-7019259.jpeg",
     cta: "Explore Products",
     ctaSecondary: "Watch Demo",
     contentPosition: "left", // Content on left side
@@ -26,7 +26,8 @@ const heroSlides = [
     subtitle: "Where Innovation Meets Performance",
     description:
       "From stick electrodes to advanced MIG systems, our comprehensive range of filler metals ensures superior weld quality for every application.",
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "https://images.pexels.com/photos/3678228/pexels-photo-3678228.jpeg",
+
     cta: "View Filler Metals",
     ctaSecondary: "Technical Specs",
     contentPosition: "right", // Content on right side
@@ -37,7 +38,8 @@ const heroSlides = [
     subtitle: "Building Tomorrow's Industrial Landscape",
     description:
       "Integrate smart automation solutions with comprehensive safety systems to create safer, more productive work environments.",
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "https://images.pexels.com/photos/585418/pexels-photo-585418.jpeg",
+
     cta: "Automation Solutions",
     ctaSecondary: "Safety Guide",
     contentPosition: "left", // Content on left side
@@ -106,7 +108,7 @@ export default function HeroSection() {
 
             {/* Content */}
             <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-              <div className={`max-w-2xl text-white ${slide.contentPosition === "right" ? "ml-auto text-right" : ""}`}>
+              <div className={`max-w-3xl text-white ${slide.contentPosition === "right" ? "ml-auto text-right" : ""}`}>
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}

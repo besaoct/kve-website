@@ -89,7 +89,7 @@ export default function GlobalSuccessSection() {
               {/* Simplified World Map SVG */}
             
                <Image 
-                src={'/map.jpg'}
+                src={'/images/home/map.jpg'}
                 height={1000}
                 width={1000}
                 alt="map"
@@ -135,24 +135,10 @@ export default function GlobalSuccessSection() {
                 </motion.div>
               ))}
 
-              {/* Globe Icon */}
-              <div className="absolute top-4 right-4">
-                <Globe className="h-8 w-8 text-red-600" />
-              </div>
+        
             </div>
 
-            {/* <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mt-8"
-            >
-              <button className="inline-flex items-center px-8 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors">
-                Explore Our Global Network
-                <Globe className="h-5 w-5 ml-2" />
-              </button>
-            </motion.div> */}
+
           </motion.div>
         </div>
       </div>

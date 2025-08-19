@@ -11,7 +11,7 @@ const newsItems = [
       "Introducing our latest MIG welding systems with advanced arc control and improved efficiency for industrial applications.",
     date: "2024-08-15",
     category: "Product Launch",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/2381463/pexels-photo-2381463.jpeg",
     readTime: "3 min read",
   },
   {
@@ -21,7 +21,7 @@ const newsItems = [
       "New state-of-the-art facility in Southeast Asia strengthens our commitment to serving customers worldwide with faster delivery.",
     date: "2024-08-10",
     category: "Company News",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/320621/pexels-photo-320621.jpeg",
     readTime: "4 min read",
   },
   {
@@ -31,19 +31,10 @@ const newsItems = [
       "Our new eco-friendly welding consumables reduce environmental impact while maintaining superior performance standards.",
     date: "2024-08-05",
     category: "Innovation",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "https://images.pexels.com/photos/3997249/pexels-photo-3997249.jpeg",
     readTime: "5 min read",
   },
-  {
-    id: 4,
-    title: "Advanced Training Programs Now Available",
-    excerpt:
-      "Comprehensive certification courses for welding professionals, featuring hands-on training with latest KVE equipment.",
-    date: "2024-07-28",
-    category: "Education",
-    image: "/placeholder.svg?height=300&width=400",
-    readTime: "2 min read",
-  },
+
 ]
 
 export default function WhatsNewSection() {
@@ -58,7 +49,7 @@ export default function WhatsNewSection() {
 
   return (
     <section className="py-16 lg:py-24 bg-neutral-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl w-full justify-center items-center flex flex-col  mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -72,7 +63,7 @@ export default function WhatsNewSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {newsItems.map((item, index) => (
             <motion.article
               key={item.id}
@@ -80,7 +71,7 @@ export default function WhatsNewSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-lg transition-all duration-300 group"
+              className="bg-white rounded-2xl max-w-md overflow-hidden shadow-none border border-neutral-200 hover:shadow-sm transition-all duration-300 group"
             >
               <div className="relative overflow-hidden">
                 <img

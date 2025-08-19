@@ -12,7 +12,7 @@ const testimonials = [
     content:
       "KVE has been our trusted partner for over 5 years. Their welding equipment consistently delivers exceptional quality and reliability in our high-volume production environment.",
     rating: 5,
-    image: "/placeholder.svg?height=80&width=80",
+    image: "https://images.pexels.com/photos/2968948/pexels-photo-2968948.jpeg",
   },
   {
     name: "Michael Chen",
@@ -21,7 +21,7 @@ const testimonials = [
     content:
       "The technical support and product quality from KVE is unmatched. Their solutions have significantly improved our operational efficiency and reduced downtime.",
     rating: 5,
-    image: "/placeholder.svg?height=80&width=80",
+    image: "https://images.pexels.com/photos/2968948/pexels-photo-2968948.jpeg",
   },
   {
     name: "Elena Rodriguez",
@@ -30,7 +30,7 @@ const testimonials = [
     content:
       "KVE's innovative automation solutions have transformed our production line. The ROI was evident within the first quarter of implementation.",
     rating: 5,
-    image: "/placeholder.svg?height=80&width=80",
+    image: "https://images.pexels.com/photos/2968948/pexels-photo-2968948.jpeg",
   },
   {
     name: "David Thompson",
@@ -39,7 +39,7 @@ const testimonials = [
     content:
       "Outstanding customer service and world-class products. KVE understands our industry needs and consistently exceeds our expectations.",
     rating: 5,
-    image: "/placeholder.svg?height=80&width=80",
+    image: "https://images.pexels.com/photos/2968948/pexels-photo-2968948.jpeg",
   },
 ]
 
