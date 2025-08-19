@@ -4,12 +4,15 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
 import { navigationData } from "@/data/navigation"
 import LogoHorizontal from "./logo/logo-h"
 import Link from "next/link"
 
+
+
 export default function Navigation() {
+
   const [isProductsOpen, setIsProductsOpen] = useState(false)
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -18,9 +21,9 @@ export default function Navigation() {
 
   return (
     <>
-      <header className="bg-white border-b border-neutral-200 shadow-sm">
+      <header className="bg-white border-b border-neutral-200 shadow-sm w-full">
         <nav className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 w-full">
             {/* Logo */}
             <div className="flex items-center">
               <motion.div
@@ -28,7 +31,7 @@ export default function Navigation() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-2xl font-serif font-bold text-red-600"
               >
-                <Link href={'/'} className="h-16 flex justify-start items-center m-auto w-fit">
+                <Link href={'/'} className="h-16 flex justify-start items-start w-fit -ml-4">
                   <LogoHorizontal/>
                 </Link>
               </motion.div>
@@ -36,6 +39,7 @@ export default function Navigation() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
+             
               {navigationData.mainNav.map((item) => (
                 <Link
                   key={item.name}
@@ -47,19 +51,35 @@ export default function Navigation() {
                   {item.name}
                 </Link>
               ))}
+               <Button asChild>
+                  <Link href={"/partner-page"}>
+                        Become a Partner
+                  </Link>
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <Sheet  open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen }>
               <SheetTrigger asChild className="lg:hidden">
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" >
                   <Menu className="h-6 w-6" />
                 </Button>
+
               </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:w-80 p-0">
-                <SheetHeader className="px-6 py-4 border-b border-neutral-200">
-                  <SheetTitle className="text-left text-xl font-serif font-bold text-red-600">KVE Menu</SheetTitle>
+       
+
+              <SheetContent side="right" className="w-full sm:w-80 p-0" >
+                <SheetHeader className="px-6 py-4 h-16 border-b border-neutral-200" >
+                  <SheetTitle className="text-left text-xl font-serif font-bold text-red-600">
+                  <Link href={'/'} className="h-10 flex justify-start items-start mr-auto w-fit">
+                  <LogoHorizontal/>
+                </Link>
+                
+                  </SheetTitle>
+               
                 </SheetHeader>
+
+            
 
                 <div className="flex flex-col h-full overflow-y-auto">
                   {/* Main Navigation */}
@@ -80,6 +100,7 @@ export default function Navigation() {
                           {item.name}
                         </a>
                       ))}
+          
                     </div>
                   </div>
 
@@ -160,7 +181,7 @@ export default function Navigation() {
 
                   {/* Footer Section with Contact Info */}
                   <div className="px-6 py-4 border-t border-neutral-100 bg-neutral-50">
-                    <div className="text-center">
+                    <div className="text-center flex flex-col gap-2">
                       <p className="text-sm text-neutral-600 mb-2">Need Help?</p>
                       <Button
                         variant="outline"
@@ -170,9 +191,19 @@ export default function Navigation() {
                       >
                         Contact Us
                       </Button>
+                         <Button
+                        variant="default"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Become a Partner
+                      </Button>
+                      
                     </div>
                   </div>
                 </div>
+            
               </SheetContent>
             </Sheet>
           </div>

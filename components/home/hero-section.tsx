@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 
+
 const heroSlides = [
   {
     id: 1,
@@ -54,6 +55,9 @@ const popularSearches = [
   "Automation Systems",
   "Flux-Cored Wires",
 ]
+
+
+
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)

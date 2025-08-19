@@ -1,3 +1,5 @@
+'use client'
+
 import Navigation from "@/components/common/navigation"
 import NewsletterPopup from "@/components/home/newsletter-popup"
 import HeroSection from "@/components/home/hero-section"
@@ -9,13 +11,15 @@ import WhatsNewSection from "@/components/home/whats-new-section"
 import GlobalSuccessSection from "@/components/home/global-success-section"
 import NewsletterSection from "@/components/home/newsletter-section"
 import Footer from "@/components/common/footer"
+import { useState } from "react"
 
 export default function HomePage() {
+  const [isPopupVisible, setIsPopupVisible] = useState(false)
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      <NewsletterPopup />
-      <HeroSection />
+     <Navigation/>
+     <HeroSection /> 
+      <NewsletterPopup  /> 
       <StatisticsSection />
       <ProductSegments />
       <FeaturedProducts />

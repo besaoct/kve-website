@@ -13,7 +13,7 @@ export default function PartnerPage() {
       <main className="flex-1">
         <Hero />
         <Stages />
-        <PartnerTier />
+        {/* <PartnerTier /> */}
       </main>
       <Footer />
     </div>
