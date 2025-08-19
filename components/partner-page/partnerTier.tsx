@@ -1,6 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 import { partnerTiers } from "./content"
+import { Award, Star, Crown } from "lucide-react"
 
 export default function PartnerTier() {
   return (
@@ -16,86 +17,46 @@ export default function PartnerTier() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {partnerTiers.map((tier, index) => (
-            <motion.div
-              key={tier.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className={`relative rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 ${
-                index === 2 
-                  ? 'bg-red-500 text-white border-2 border-red-600 transform lg:scale-105' 
-                  : 'bg-white text-black border border-gray-200'
-              }`}
-            >
-              {index === 2 && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    RECOMMENDED
-                  </span>
+        <div className="space-y-16 min-h-full">
+          {partnerTiers.map((tier, index) => {
+            const icons = [Award, Star, Crown];
+            const Icon = icons[index];
+            
+            return (
+              <motion.div
+                key={tier.name}
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="flex items-start space-x-8 py-8"
+              >
+                <div className="flex-shrink-0">
+                  <Icon className="w-12 h-12 text-red-500" />
                 </div>
-              )}
-              
-              <div className="text-center mb-8">
-                <h3 className={`text-2xl font-bold mb-3 ${
-                  index === 2 ? 'text-white' : 'text-red-500'
-                }`}>
-                  {tier.name}
-                </h3>
-                <p className={`text-sm ${
-                  index === 2 ? 'text-red-100' : 'text-gray-600'
-                } italic`}>
-                  {tier.description}
-                </p>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className={`font-semibold text-lg mb-4 ${
-                  index === 2 ? 'text-white' : 'text-black'
-                }`}>
-                  Key Benefits:
-                </h4>
-                <ul className="space-y-3">
-                  {tier.benefits.map((benefit) => (
-                    <li key={benefit} className="flex items-start">
-                      <svg className={`w-5 h-5 mr-3 mt-0.5 flex-shrink-0 ${
-                        index === 2 ? 'text-white' : 'text-red-500'
-                      }`} fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      <span className={`text-sm leading-relaxed ${
-                        index === 2 ? 'text-white' : 'text-gray-700'
-                      }`}>
-                        {benefit}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors duration-300 ${
-                  index === 2 
-                    ? 'bg-white text-red-500 hover:bg-gray-100' 
-                    : 'bg-red-500 text-white hover:bg-red-600'
-                }`}>
-                  Learn More
-                </button>
-              </div>
-            </motion.div>
-          ))}
+                
+                <div className="flex-1">
+                  <h3 className="text-3xl font-bold text-red-500 mb-2">
+                    {tier.name}
+                  </h3>
+                  <p className="text-lg text-gray-600 mb-6 italic">
+                    {tier.description}
+                  </p>
+                  
+                  <ul className="space-y-3 text-black">
+                    {tier.benefits.map((benefit) => (
+                      <li key={benefit} className="flex items-start">
+                        <span className="text-red-500 mr-3 mt-1">•</span>
+                        <span className="text-lg">{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
-        
-        <div className="text-center mt-12">
-          <p className="text-gray-600 mb-6">
-            Ready to take your business to the next level?
-          </p>
-          <button className="bg-black text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-300">
-            Contact Us Today
-          </button>
-        </div>
+
       </div>
     </section>
   )

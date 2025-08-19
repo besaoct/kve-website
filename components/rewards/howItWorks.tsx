@@ -1,60 +1,49 @@
-"use client"
-import { motion } from "framer-motion"
+import React from 'react';
+import { Store, HandCoins, Gift } from 'lucide-react';
 
-const steps = [
-  {
-    step: "1",
-    title: "Sign Up",
-    description: "Create your free KVE Rewards account in seconds",
-    icon: "👤"
-  },
-  {
-    step: "2", 
-    title: "Shop & Earn",
-    description: "Earn 1 point for every $1 spent on qualifying purchases",
-    icon: "🛒"
-  },
-  {
-    step: "3",
-    title: "Redeem Rewards",
-    description: "Use your points for discounts, exclusive products, and special offers",
-    icon: "🎁"
-  }
-]
-
-export default function HowItWorks() {
+const App = () => {
   return (
-    <section className="bg-white py-20 px-6 lg:px-20">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6">
-            How It Works
-          </h2>
-          <p className="text-xl text-gray-600">
-            Start earning rewards in three simple steps
+    <div className="flex flex-col items-center justify-center bg-white p-4 sm:p-6 lg:p-8 py-8">
+      {/* Title Section */}
+      <h2 className="text-3xl sm:text-4xl font-semibold text-black mb-8 sm:mb-12">How it works</h2>
+
+      {/* Steps Container */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 max-w-5xl w-full">
+        {/* Step 1: Join */}
+        <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+          <div className="p-4 bg-red-100 rounded-full mb-4">
+            <Store className="w-10 h-10 text-red-600" />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-medium text-black mb-2">Join</h3>
+          <p className="text-black text-sm sm:text-base leading-relaxed">
+            Sign up or login to start earning straight away.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.step}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <div className="w-20 h-20 bg-red-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
-                {step.step}
-              </div>
-              <div className="text-4xl mb-4">{step.icon}</div>
-              <h3 className="text-2xl font-bold text-black mb-4">{step.title}</h3>
-              <p className="text-gray-600 text-lg">{step.description}</p>
-            </motion.div>
-          ))}
+        {/* Step 2: Earn */}
+        <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+          <div className="p-4 bg-red-100 rounded-full mb-4">
+            <HandCoins className="w-10 h-10 text-red-600" />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-medium text-black mb-2">Earn</h3>
+          <p className="text-black text-sm sm:text-base leading-relaxed">
+            Earn points for every dollar spent.*
+          </p>
+        </div>
+
+        {/* Step 3: Redeem */}
+        <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+          <div className="p-4 bg-red-100 rounded-full mb-4">
+            <Gift className="w-10 h-10 text-red-600" />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-medium text-black mb-2">Redeem</h3>
+          <p className="text-black text-sm sm:text-base leading-relaxed">
+            Redeem points for discounts on your next purchase.
+          </p>
         </div>
       </div>
-    </section>
-  )
-}
+    </div>
+  );
+};
+
+export default App;
