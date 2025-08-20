@@ -206,8 +206,9 @@ export default function HeroSection() {
             </form>
 
             {/* Popular Searches */}
-            <div className="flex flex-wrap justify-center items-center gap-3">
-              <span className="text-sm text-neutral-500 font-medium">Popular searches:</span>
+            <div className="flex flex-wrap sm:justify-center items-start sm:items-center gap-3">
+              <span className="text-sm text-neutral-500 font-medium ">Popular searches:</span>
+    
               {popularSearches.map((search) => (
                 <button
                   key={search}
