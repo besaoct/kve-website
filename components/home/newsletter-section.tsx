@@ -174,7 +174,7 @@ export default function NewsletterSection() {
                   {/* Preferences */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-3">Email Preferences</label>
-                    <div className="space-y-3">
+                    <div className="flex gap-4 flex-wrap w-full">
                       {Object.entries(preferences).map(([key, value]) => (
                         <div key={key} className="flex items-center space-x-2">
                           <Checkbox

@@ -140,6 +140,12 @@
   }
 
   .container {
-    @apply mx-auto max-w-[96rem] w-full px-4 sm:px-6 lg:px-8;
+    @apply mx-auto !max-w-[90rem] w-full px-4 sm:px-6 lg:px-8;
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: 0;
+    scroll-behavior: smooth;
+    scrollbar-color: transparent;
   }
 }

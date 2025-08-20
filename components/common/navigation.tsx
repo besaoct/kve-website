@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle} from "@/components/ui/sheet"
 import { navigationData } from "@/data/navigation"
 import LogoHorizontal from "./logo/logo-h"
 import Link from "next/link"
@@ -247,7 +247,8 @@ export default function Navigation() {
                 <div className="grid grid-cols-3 gap-8">
                   {/* Left Column - Main Categories */}
                   <div className="border-r border-neutral-200 pr-6">
-                    <h3 className="font-semibold text-neutral-900 mb-4 text-sm uppercase tracking-wide">Categories</h3>
+                    <h3 className="font-semibold text-neutral-900 mb-2 text-sm uppercase tracking-wide">Categories</h3>
+                    <div className="border-b-2 border-primary w-[15%] mb-4"/>
                     <div className="space-y-1">
                       {Object.keys(navigationData.productCategories).map((category) => (
                         <button
@@ -272,9 +273,11 @@ export default function Navigation() {
                   <div className="border-r border-neutral-200 px-6">
                     {hoveredCategory && (
                       <>
-                        <h3 className="font-semibold text-neutral-900 mb-4 text-sm uppercase tracking-wide">
+                        <h3 className="font-semibold text-neutral-900 mb-2 text-sm uppercase tracking-wide">
                           {hoveredCategory}
                         </h3>
+                    <div className="border-b-2 border-primary w-[15%] mb-4"/>
+
                         <div className="space-y-1">
                           {Object.keys(
                             navigationData.productCategories[
@@ -298,9 +301,11 @@ export default function Navigation() {
                   <div className="pl-6">
                     {hoveredCategory && (
                       <>
-                        <h3 className="font-semibold text-neutral-900 mb-4 text-sm uppercase tracking-wide">
+                        <h3 className="font-semibold text-neutral-900 mb-2 text-sm uppercase tracking-wide">
                           Products
                         </h3>
+                    <div className="border-b-2 border-primary w-[15%] mb-4"/>
+
                         <div className="space-y-1">
                           {Object.values(
                             navigationData.productCategories[

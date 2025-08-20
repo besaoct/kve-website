@@ -4,6 +4,7 @@ export const navigationData = {
     { name: "About", href: "/about", active: false },
     { name: "CSR", href: "/csr", active: false },
     { name: "Contact Us", href: "/contact", active: false },
+    { name: "Rewards", href: "/rewards", active: false },
   ],
 
   subNav: [

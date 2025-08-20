@@ -1,4 +1,4 @@
-// content.tsx
+// content.ts
 
 // Hero section content
 const heroContent = {
@@ -58,6 +58,7 @@ const stagesContent = [
 const partnerTiers = [
   {
     name: "Authorized Partner",
+    image: "/images/partner-tiers/1.png",
     description: "Basic Partnership level",
     benefits: [
       "Authorized level discounts and sales incentives",
@@ -70,6 +71,8 @@ const partnerTiers = [
   },
   {
     name: "Advanced Partner",
+    image: "/images/partner-tiers/2.png",
+
     description: "In addition to Authorized level benefits",
     benefits: [
       "Advanced level discounts and sales incentives",
@@ -80,6 +83,8 @@ const partnerTiers = [
   },
   {
     name: "Premium Partner",
+    image: "/images/partner-tiers/3.png",
+
     description:
       "Highest partnership recognition. In addition to Authorized and Advanced level benefits",
     benefits: [

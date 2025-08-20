@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 export default function RewardsHero() {
   return (
     <section className="bg-black text-white py-24 px-6 lg:px-20">
-      <div className="max-w-6xl mx-auto text-center">
+      <div className="max-w-7xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

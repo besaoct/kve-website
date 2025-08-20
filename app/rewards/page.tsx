@@ -1,8 +1,7 @@
 import Navigation from "@/components/common/navigation"
 import RewardsHero from "@/components/rewards/hero"
-import HowItWorks from "@/components/rewards/howItWorks"
-import Benefits from "@/components/rewards/benefits"
-import RewardTiers from "@/components/rewards/tiers"
+import HowItWorks from "@/components/rewards/how-it-works"
+
 import Footer from "@/components/common/footer"
 
 export default function RewardsPage() {
@@ -12,8 +11,6 @@ export default function RewardsPage() {
       <main className="flex-1">
         <RewardsHero />
         <HowItWorks />
-        <Benefits />
-        <RewardTiers />
       </main>
       <Footer />
     </div>

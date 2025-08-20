@@ -21,7 +21,7 @@ const productSegments = [
     title: "Filler Metals",
     description: "Comprehensive range of electrodes, wires, and rods for superior weld quality",
     icon: Factory,
-    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
+    image: "https://images.pexels.com/photos/32200455/pexels-photo-32200455.jpeg",
     features: ["Stick Electrodes", "MIG/TIG Wires", "Flux-Cored Wires"],
     color: "from-secondary to-secondary/80",
   },
@@ -30,7 +30,7 @@ const productSegments = [
     title: "Automation Solutions",
     description: "Smart robotic systems and automated welding solutions for enhanced productivity",
     icon: Cog,
-    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
+    image: "https://images.pexels.com/photos/29988981/pexels-photo-29988981.jpeg",
     features: ["Robotic Welding", "Control Systems", "Integration Services"],
     color: "from-primary to-secondary",
   },
@@ -39,7 +39,7 @@ const productSegments = [
     title: "Safety & PPE",
     description: "Complete personal protective equipment and safety solutions for industrial environments",
     icon: Shield,
-    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
+    image: "https://images.pexels.com/photos/13930446/pexels-photo-13930446.jpeg",
     features: ["Protective Gear", "Safety Training", "Compliance Solutions"],
     color: "from-gray-600 to-gray-800",
   },
@@ -48,7 +48,7 @@ const productSegments = [
     title: "Cutting Equipment",
     description: "Precision cutting tools and plasma systems for metal fabrication",
     icon: Wrench,
-    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
+    image: "https://images.pexels.com/photos/9665381/pexels-photo-9665381.jpeg",
     features: ["Plasma Cutters", "Oxy-Fuel Systems", "Cutting Accessories"],
     color: "from-secondary to-primary",
   },
@@ -57,7 +57,7 @@ const productSegments = [
     title: "Accessories & Tools",
     description: "Essential tools, software, and accessories to support your welding operations",
     icon: Truck,
-    image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
+    image: "https://images.pexels.com/photos/5845907/pexels-photo-5845907.jpeg",
     features: ["Welding Tools", "Software Solutions", "Maintenance Kits"],
     color: "from-gray-700 to-primary/80",
   },
@@ -100,7 +100,7 @@ export default function ProductSegments() {
                       alt={segment.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-br ${segment.color} opacity-30`} />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${segment.color} opacity-10`} />
                   </div>
 
                   {/* Icon */}

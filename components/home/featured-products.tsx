@@ -14,8 +14,8 @@ const featuredProducts = [
     description:
       "Premium low-hydrogen electrodes for structural steel welding with superior arc stability and weld quality.",
     image: "https://images.pexels.com/photos/9754818/pexels-photo-9754818.jpeg",
-    price: "$89.99",
-    originalPrice: "$109.99",
+    price: "₹89.99",
+    originalPrice: "₹109.99",
     rating: 4.8,
     reviews: 124,
     features: ["Low Hydrogen", "All Position", "AC/DC Compatible"],
@@ -29,7 +29,7 @@ const featuredProducts = [
     description:
       "Advanced MIG welding system with digital controls and superior arc performance for professional applications.",
     image: "https://images.pexels.com/photos/3158651/pexels-photo-3158651.jpeg",
-    price: "$2,499.99",
+    price: "₹2,499.99",
     originalPrice: null,
     rating: 4.9,
     reviews: 87,
@@ -44,8 +44,8 @@ const featuredProducts = [
     description:
       "Self-shielded flux-cored wire for outdoor welding applications with excellent penetration and bead appearance.",
     image: "https://images.pexels.com/photos/9754818/pexels-photo-9754818.jpeg",
-    price: "$156.99",
-    originalPrice: "$179.99",
+    price: "₹156.99",
+    originalPrice: "₹179.99",
     rating: 4.7,
     reviews: 203,
     features: ["Self-Shielded", "Outdoor Use", "Fast Travel Speed"],
@@ -59,8 +59,8 @@ const featuredProducts = [
     description:
       "Auto-darkening welding helmet with crystal clear optics and advanced protection for professional welders.",
     image: "https://images.pexels.com/photos/3158651/pexels-photo-3158651.jpeg",
-    price: "$299.99",
-    originalPrice: "$349.99",
+    price: "₹299.99",
+    originalPrice: "₹349.99",
     rating: 4.6,
     reviews: 156,
     features: ["Auto-Darkening", "4 Arc Sensors", "Grind Mode"],

@@ -1,34 +1,41 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
+import Cookies from "js-cookie"
 
 export default function NewsletterPopup() {
   const [isVisible, setIsVisible] = useState(false)
   const [email, setEmail] = useState("")
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true)
-    }, 3000) // Show after 3 seconds
-
-    return () => clearTimeout(timer)
+    // Check if the popup was previously dismissed
+    const isDismissed = Cookies.get("newsletter_popup_dismissed")
+    if (!isDismissed) {
+      const timer = setTimeout(() => {
+        setIsVisible(true)
+      }, 3000) // Show after 3 seconds
+      return () => clearTimeout(timer)
+    }
   }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle newsletter signup
     console.log("Newsletter signup:", email)
+    // Set cookie to prevent popup from showing again
+    Cookies.set("newsletter_popup_dismissed", "true", { expires: 30 }) // Expires in 30 days
     setIsVisible(false)
   }
 
   const handleClose = () => {
+    // Set cookie to prevent popup from showing again
+    Cookies.set("newsletter_popup_dismissed", "true", { expires: 30 }) // Expires in 30 days
     setIsVisible(false)
   }
 
@@ -49,7 +56,11 @@ export default function NewsletterPopup() {
           >
             <Card className="bg-gradient-to-br from-red-600 to-red-400 text-white">
               <CardContent className="p-6">
-                <button onClick={handleClose} className="absolute top-4 right-4 text-white hover:text-gray-200">
+                <button
+                  onClick={handleClose}
+                  className="absolute top-4 right-4 text-white hover:text-gray-200"
+                  aria-label="Close popup"
+                >
                   <X className="h-5 w-5" />
                 </button>
 
@@ -70,7 +81,7 @@ export default function NewsletterPopup() {
                     required
                     className="bg-white text-foreground"
                   />
-                  <Button type="submit" className="w-full h-10 bg-neutral-950 hover:bg-neutral-900 text-white ">
+                  <Button type="submit" className="w-full h-10 bg-neutral-950 hover:bg-neutral-900 text-white">
                     Subscribe Now
                   </Button>
                 </form>
