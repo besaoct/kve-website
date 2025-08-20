@@ -13,7 +13,7 @@ const steps = [
   {
     step: "2", 
     title: "Shop & Earn",
-    description: "Earn 1 point for every $1 spent on qualifying purchases",
+    description: "Earn 1 point for every ₹1 spent on qualifying purchases",
     icon: '/images/rewards/earn.svg'
   },
   {
@@ -28,7 +28,7 @@ export default function HowItWorks() {
   return (
     <section className="bg-white py-20 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto flex flex-col gap-32">
-     <div className="w-full">
+      <div className="w-full">
           <div className="text-center mb-8">
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6">
             How It Works
