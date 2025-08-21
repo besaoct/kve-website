@@ -1,10 +1,10 @@
 export const navigationData = {
   mainNav: [
-    { name: "Home", href: "/", active: true },
-    { name: "About", href: "/about", active: false },
-    { name: "CSR", href: "/csr", active: false },
-    { name: "Contact Us", href: "/contact", active: false },
-    { name: "Rewards", href: "/rewards", active: false },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "CSR", href: "/csr" },
+    { name: "Contact Us", href: "/contact" },
+    { name: "Rewards", href: "/rewards" },
   ],
 
   subNav: [

@@ -57,18 +57,16 @@ const popularSearches = [
 ]
 
 
-
-
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+  //   }, 5000)
+  //   return () => clearInterval(timer)
+  // }, [])
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
@@ -120,11 +118,14 @@ export default function HeroSection() {
                 >
                   <Badge className="mb-6 bg-red-600 text-white px-4 py-2 text-sm font-medium">{slide.subtitle}</Badge>
                   <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">{slide.title}</h1>
-                  <p className="text-xl text-neutral-200 mb-8 leading-relaxed max-w-xl">{slide.description}</p>
+                  <p className={`text-xl text-neutral-200 mb-8 leading-relaxed max-w-xl
+                    ${
+                      slide.contentPosition === "right" ? "ml-auto text-right" : ""
+                    }`}>{slide.description}</p>
                   <div
                     className={`flex flex-col sm:flex-row gap-4 ${
                       slide.contentPosition === "right" ? "justify-end" : ""
-                    }`}
+                    }` }
                   >
                     <Button
                       size="lg"

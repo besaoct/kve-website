@@ -115,13 +115,18 @@ export default function WhatsNewSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="text-center mt-12 w-full flex flex-col items-center lg:items-end"
         >
-          <button className="inline-flex items-center px-8 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors">
+<div className="group transition-all duration-300 ease-in-out px-4">
+            <button className="inline-flex items-center bg-transparent text-black duration-300 ease-in-out group-hover:text-red-600 font-medium transition-colors">
             View All News
             <ArrowRight className="h-5 w-5 ml-2" />
           </button>
+          <div className="border-b-2 border-primary w-[30%] mb-4 group-hover:w-[90%] duration-300 ease-in-out"/>
+</div>
+          
         </motion.div>
+        
       </div>
     </section>
   )

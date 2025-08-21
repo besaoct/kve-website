@@ -1,17 +1,19 @@
 import Footer from '@/components/common/footer'
 import Navigation from '@/components/common/navigation'
-import React from 'react'
+import Hero from '@/components/csr/hero'
+import CsrReports from '@/components/csr/csr-reports'
 
-const page = () => {
+const CsrPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="flex-1">
-
+        <Hero />
+        <CsrReports />
       </main>
       <Footer />
     </div>
   )
 }
 
-export default page
+export default CsrPage

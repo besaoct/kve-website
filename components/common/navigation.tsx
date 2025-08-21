@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle} from "@/components/ui/sheet"
-import { navigationData } from "@/data/navigation"
+import { navigationData } from "@/data/constants/navigation"
 import LogoHorizontal from "./logo/logo-h"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 
 
@@ -18,6 +19,8 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false)
   const [mobileSelectedCategory, setMobileSelectedCategory] = useState<string | null>(null)
+
+  const pathname = usePathname()
 
   return (
     <>
@@ -45,7 +48,8 @@ export default function Navigation() {
                   key={item.name}
                   href={item.href}
                   className={`font-semibold transition-colors ${
-                    item.active ? "text-red-600" : "text-neutral-700 hover:text-red-600"
+                  item.href==pathname
+                    ? "text-red-600" : "text-neutral-700 hover:text-red-600"
                   }`}
                 >
                   {item.name}
@@ -91,7 +95,7 @@ export default function Navigation() {
                           key={item.name}
                           href={item.href}
                           className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                            item.active
+                           item.href==pathname
                               ? "text-red-600 bg-red-50"
                               : "text-neutral-700 hover:text-red-600 hover:bg-neutral-50"
                           }`}
@@ -229,6 +233,7 @@ export default function Navigation() {
                       {item.name}
                     </Link>
                   )}
+
                 </div>
               ))}
             </div>
@@ -265,7 +270,13 @@ export default function Navigation() {
                             className={`h-4 w-4 transition-transform ${hoveredCategory === category ? "text-red-600" : "text-neutral-400"}`}
                           />
                         </button>
+                        
                       ))}
+                                   <Button asChild variant={'link'}>
+                                      <Link href={'/products'} >
+                                      View all Products
+                                      </Link>
+                                   </Button>
                     </div>
                   </div>
 
