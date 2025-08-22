@@ -12,9 +12,12 @@ import GlobalSuccessSection from "@/components/home/global-success-section"
 import NewsletterSection from "@/components/home/newsletter-section"
 import Footer from "@/components/common/footer"
 import { useState } from "react"
+import { PartnerLogos } from "@/components/home/partner-logos"
 
 export default function HomePage() {
+  
   const [isPopupVisible, setIsPopupVisible] = useState(false)
+
   return (
     <div className="min-h-screen bg-background">
      <Navigation/>
@@ -26,6 +29,7 @@ export default function HomePage() {
       <TestimonialsSection />
       <WhatsNewSection />
       <GlobalSuccessSection />
+      <PartnerLogos/>
       <NewsletterSection />
       <Footer />
     </div>
