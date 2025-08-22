@@ -61,12 +61,12 @@ export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-  //   }, 5000)
-  //   return () => clearInterval(timer)
-  // }, [])
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length)

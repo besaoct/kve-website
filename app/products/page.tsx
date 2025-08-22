@@ -159,7 +159,7 @@ export default function Page() {
                   </Sheet>
                 </div>
                 <Select onValueChange={setSortOption} defaultValue={sortOption}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-[180px] border-border shadow-none">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
