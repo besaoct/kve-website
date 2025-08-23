@@ -20,6 +20,9 @@ export default function Navigation() {
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false)
   const [mobileSelectedCategory, setMobileSelectedCategory] = useState<string | null>(null)
 
+    const [activeDropdownMain, setActiveDropdownMain] = useState<string | null>(null)
+
+
   const pathname = usePathname()
 
   return (
@@ -41,19 +44,52 @@ export default function Navigation() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-8 py-3 h-full">
              
               {navigationData.mainNav.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
+               <div key={item.name}
+                  className="relative group h-full flex items-center"
+                 onMouseEnter={() => item.hasDropdown?  setActiveDropdownMain(item.name) : null}
+                 onMouseLeave={() => setActiveDropdownMain(null)}
+               >
+                 <Link
+            
+                  href={item.href || "#"}
+          
                   className={`font-semibold transition-colors ${
                   item.href==pathname
                     ? "text-red-600" : "text-neutral-700 hover:text-red-600"
                   }`}
                 >
-                  {item.name}
+                 <span> {item.name} </span> 
+                  {item.hasDropdown && (
+                    <ChevronDown
+                      className={`inline-block ml-1 h-4 w-4 transition-transform ${
+                        activeDropdownMain === item.name ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
+
+                  
                 </Link>
+
+                {item.hasDropdown && activeDropdownMain === item.name && (
+                   <div className="absolute top-full left-0 mt-0 w-48 bg-white border border-neutral-200 shadow-lg z-[999] rounded-lg overflow-hidden">
+                     <div className="py-0">
+                       {navigationData.companyDropdown.map((subItem) => (
+                         <Link
+                           key={subItem.name}
+                           href={subItem.href || '#'}
+                           className="block font-medium px-4 py-2 text-neutral-700 hover:text-red-600 hover:bg-red-50 transition-colors"
+                         >
+                           {subItem.name}
+                         </Link>
+                       ))}
+                     </div>
+                   </div>
+                )}
+
+               </div>
               ))}
                <Button asChild>
                   <Link href={"/partner-page"}>

@@ -1,10 +1,20 @@
 export const navigationData = {
   mainNav: [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
+    { name: "Company", hasDropdown: true},
     { name: "CSR", href: "/csr" },
     { name: "Contact Us", href: "/contact" },
     { name: "Rewards", href: "/rewards" },
+  ],
+
+  companyDropdown: [  
+    { name: "About Us", href: "/about" },
+    { name: "Global Market", href: "/capturing-global-market" },
+    // { name: "Careers", href: "/careers" },
+    // { name: "Sustainability", href: "/sustainability" },
+    // { name: "Investor Relations", href: "/investors" },
+    // { name: "Media Newsroom", href: "/media" },
+    // { name: "Visitor Information", href: "/visitors" },
   ],
 
   subNav: [
