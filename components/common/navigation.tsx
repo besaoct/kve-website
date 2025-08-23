@@ -37,7 +37,7 @@ export default function Navigation() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-2xl font-serif font-bold text-red-600"
               >
-                <Link href={'/'} className="h-16 flex justify-start items-start w-fit -ml-4">
+                <Link href={'/'} className="block w-[200px]  -ml-4">
                   <LogoHorizontal/>
                 </Link>
               </motion.div>

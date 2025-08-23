@@ -80,9 +80,9 @@ export default function FeaturedProducts() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="flex items-center justify-center mb-4">
-            <Award className="h-8 w-8 text-primary mr-3" />
-            <h2 className="text-4xl font-heading font-bold text-foreground">Featured Products</h2>
+          <div className="flex items-center flex-col flex-wrap sm:flex-row gap-4 sm:items-start justify-center mb-4">
+            <Award className="h-8 w-8 text-primary" />
+            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-foreground ">Featured Products</h2>
           </div>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Discover our most popular and innovative industrial solutions, trusted by professionals worldwide for their

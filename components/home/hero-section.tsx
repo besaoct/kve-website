@@ -192,7 +192,7 @@ export default function HeroSection() {
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-neutral-400" />
                 <Input
                   type="text"
-                  placeholder="Search for products, solutions, or equipment..."
+                  placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-16 pr-36 py-6 text-lg rounded-2xl border-2 border-neutral-200 focus:border-red-500 shadow-lg bg-white"
@@ -207,7 +207,7 @@ export default function HeroSection() {
             </form>
 
             {/* Popular Searches */}
-            <div className="flex flex-wrap sm:justify-center items-start sm:items-center gap-3">
+            <div className="flex flex-wrap sm:justify-center items-center gap-3">
               <span className="text-sm text-neutral-500 font-medium ">Popular searches:</span>
     
               {popularSearches.map((search) => (

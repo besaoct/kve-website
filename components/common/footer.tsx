@@ -138,7 +138,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-                <Link href={'/'} className="h-16 flex justify-start items-center mb-8 w-fit">
+                <Link href={'/'} className="h-16 flex justify-start items-center mb-8 w-[200px]">
                   <LogoHorizontal/>
                 </Link>
            

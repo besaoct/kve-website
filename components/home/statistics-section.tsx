@@ -70,7 +70,7 @@ export default function StatisticsSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 h-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 h-full">
           {statistics.map((stat, index) => (
             <motion.div
               key={index}

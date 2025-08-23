@@ -5,11 +5,11 @@ const LogoHorizontal = () => {
   return (
     <Image
      src={"/images/icons/logo-h.png"}
-     width={100}
-     height={100}
+     width={1000}
+     height={1000}
      alt='logo'
      priority
-     className='h-full w-full'
+     className=''
     />
   )
 }

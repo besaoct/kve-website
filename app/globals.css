@@ -143,9 +143,16 @@
     @apply mx-auto !max-w-[90rem] w-full px-4 sm:px-6 lg:px-8;
   }
 
-  .scrollbar-hide {
-    scrollbar-width: 0;
-    scroll-behavior: smooth;
-    scrollbar-color: transparent;
-  }
+
+}
+
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scrollbar-color: transparent;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

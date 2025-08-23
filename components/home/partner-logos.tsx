@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button"
 
 const tabs = [
   "Automobile & Heavy Engineering Industries",
-  "Construction, Commercial Buildings, Hotels, Malls & Hospitals",
+  "Construction, Commercial Buildings",
+  "Hotels, Malls & Hospitals",
   "FMCG & Pharma",
   "Defence / Railways / Aerospace / Ship Building",
   "Warehouse / Retail Chain",
@@ -45,10 +46,11 @@ export function PartnerLogos() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-start gap-2 mb-8 break-all overflow-x-auto scrollbar-hide">
           {tabs.map((tab) => (
             <Button
               key={tab}
+              className=""
               variant={activeTab === tab ? "default" : "outline"}
               onClick={() => setActiveTab(tab)}
             >
