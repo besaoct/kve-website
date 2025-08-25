@@ -1,6 +1,7 @@
 export const navigationData = {
   mainNav: [
     { name: "Home", href: "/" },
+    { name: "Blog & News", href: "/blog-news" },
     { name: "Company", hasDropdown: true},
     { name: "CSR", href: "/csr" },
     { name: "Contact Us", href: "/contact" },
