@@ -241,12 +241,12 @@ const MorePosts = () => {
                       <h3 className="text-xl font-bold text-gray-800 mb-4 line-clamp-2">
                         {blog.title}
                       </h3>
-                      <a
+                      <Link
                         href={`/blog-news/${blog.id}`}
                         className="text-red-600 hover:underline font-semibold"
                       >
                         Read more
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ))
