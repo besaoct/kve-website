@@ -110,10 +110,11 @@ export default function Navigation() {
 
               <SheetContent side="right" className="w-full sm:w-80 p-0" >
                 <SheetHeader className="px-6 py-4 h-16 border-b border-neutral-200" >
-                  <SheetTitle className="text-left text-xl font-serif font-bold text-red-600">
-                  <Link href={'/'} className="h-10 flex justify-start items-start mr-auto w-fit">
-                  <LogoHorizontal/>
-                </Link>
+                  <SheetTitle className="text-left h-12 text-xl font-serif font-bold text-red-600">
+                   
+                    <Link href={'/'} className="block w-[150px]">
+                      <LogoHorizontal/>
+                    </Link>
                 
                   </SheetTitle>
                
@@ -161,13 +162,13 @@ export default function Navigation() {
                               />
                             </button>
                           ) : (
-                            <a
-                              href={item.href}
+                            <Link
+                              href={item.href||"#"}
                               className="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:text-red-600 hover:bg-neutral-50 transition-colors"
                               onClick={() => setIsMobileMenuOpen(false)}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           )}
 
                           {item.hasDropdown && isMobileProductsOpen && (
@@ -359,13 +360,13 @@ export default function Navigation() {
                               hoveredCategory as keyof typeof navigationData.productCategories
                             ].subcategories,
                           )[0]?.map((product) => (
-                            <a
+                            <Link
                               key={product}
-                              href="#"
+                              href="/single-product"
                               className="block px-4 py-2 text-sm text-neutral-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             >
                               {product}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       </>

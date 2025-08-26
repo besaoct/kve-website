@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react"
 import Cookies from "js-cookie"
 
 const CookieConsentBanner: React.FC = () => {

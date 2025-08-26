@@ -179,9 +179,9 @@ export default function FeaturedProducts() {
                       <Badge variant="outline" className="text-xs">
                         Save{" "}
                         {Math.round(
-                          ((Number.parseFloat(product.originalPrice.replace(/[$,]/g, "")) -
-                            Number.parseFloat(product.price.replace(/[$,]/g, ""))) /
-                            Number.parseFloat(product.originalPrice.replace(/[$,]/g, ""))) *
+                          ((Number.parseFloat(product.originalPrice.replace(/[₹,]/g, "")) -
+                            Number.parseFloat(product.price.replace(/[₹,]/g, ""))) /
+                            Number.parseFloat(product.originalPrice.replace(/[₹,]/g, ""))) *
                             100,
                         )}
                         %
