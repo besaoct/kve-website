@@ -7,7 +7,8 @@ import { Search, ChevronLeft, ChevronRight, Play, ArrowRight } from "lucide-reac
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-
+import { FaTools, FaCalculator, FaShieldAlt, FaCogs, FaLightbulb, FaUsers } from 'react-icons/fa';
+import Link from "next/link"
 
 const heroSlides = [
   {
@@ -31,7 +32,7 @@ const heroSlides = [
 
     cta: "View Filler Metals",
     ctaSecondary: "Technical Specs",
-    contentPosition: "right", // Content on right side
+    contentPosition: "left", // Content on left side
   },
   {
     id: 3,
@@ -110,13 +111,14 @@ export default function HeroSection() {
 
             {/* Content */}
             <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-              <div className={`max-w-3xl text-white ${slide.contentPosition === "right" ? "ml-auto text-right" : ""}`}>
+       <div className="w-full flex justify-between items-center gap-8">
+               <div className={`max-w-3xl text-white ${slide.contentPosition === "right" ? "ml-auto text-right" : ""}`}>
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <Badge className="mb-6 bg-red-600 text-white px-4 py-2 text-sm font-medium">{slide.subtitle}</Badge>
+                  <Badge className="mb-6 bg-amber-600 text-white px-4 py-2 text-sm font-medium">{slide.subtitle}</Badge>
                   <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">{slide.title}</h1>
                   <p className={`text-xl text-neutral-200 mb-8 leading-relaxed max-w-xl
                     ${
@@ -129,7 +131,7 @@ export default function HeroSection() {
                   >
                     <Button
                       size="lg"
-                      className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg font-semibold"
+                      className="bg-amber-600 hover:bg-amber-600/90 text-white px-8 py-4 text-lg font-semibold"
                     >
                       {slide.cta}
                       <ArrowRight className="ml-2 h-5 w-5" />
@@ -145,6 +147,54 @@ export default function HeroSection() {
                   </div>
                 </motion.div>
               </div>
+ <div className="hidden lg:block lg:min-w-[400px] lg:w-[400px] lg:h-fit bg-white rounded-lg p-6 border border-white/20">
+      <h2 className="text-4xl font-bold text-red-600 mb-6">Power Your Progress</h2>
+      <div className="grid grid-cols-2 gap-4">
+        <Link href="/services/welding-fabrication" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaTools className="w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Welding &</p>
+            <p className="text-sm text-gray-500">fabrication</p>
+          </div>
+        </Link>
+        <Link href="/services/project-estimation" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaCalculator className="w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Project</p>
+            <p className="text-sm text-gray-500">estimation</p>
+          </div>
+        </Link>
+        <Link href="/services/quality-control" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaShieldAlt className="w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Quality</p>
+            <p className="text-sm text-gray-500">control</p>
+          </div>
+        </Link>
+        <Link href="/services/automation-systems" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaCogs className="w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Automation</p>
+            <p className="text-sm text-gray-500">systems</p>
+          </div>
+        </Link>
+        <Link href="/services/innovative-solutions" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaLightbulb className="w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Innovative</p>
+            <p className="text-sm text-gray-500">solutions</p>
+          </div>
+        </Link>
+        <Link href="/services/expert-consulting" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaUsers className="w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Expert</p>
+            <p className="text-sm text-gray-500">consulting</p>
+          </div>
+        </Link>
+      </div>
+    </div>
+       </div>
             </div>
           </motion.div>
         ))}
@@ -175,6 +225,57 @@ export default function HeroSection() {
         </div>
       </div>
 
+
+    <div className="container mx-auto px-4 pb-8  w-full flex justify-center -mt-4 z-[100] relative"> 
+         <div className="block lg:hidden w-fit lg:h-fit bg-white rounded-lg p-6 border border-border shadow">
+      <h2 className="text-xl sm:text-2xl font-bold text-red-600 mb-6">Power Your Progress</h2>
+      <div className="grid grid-cols-2 gap-4 overflow-x-auto scrollbar-hide">
+        <Link href="/services/welding-fabrication" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaTools className="min-w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Welding &</p>
+            <p className="text-sm text-gray-500">fabrication</p>
+          </div>
+        </Link>
+        <Link href="/services/project-estimation" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaCalculator className="min-w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Project</p>
+            <p className="text-sm text-gray-500">estimation</p>
+          </div>
+        </Link>
+        <Link href="/services/quality-control" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaShieldAlt className="min-w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Quality</p>
+            <p className="text-sm text-gray-500">control</p>
+          </div>
+        </Link>
+        <Link href="/services/automation-systems" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaCogs className="min-w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Automation</p>
+            <p className="text-sm text-gray-500">systems</p>
+          </div>
+        </Link>
+        <Link href="/services/innovative-solutions" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaLightbulb className="min-w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Innovative</p>
+            <p className="text-sm text-gray-500">solutions</p>
+          </div>
+        </Link>
+        <Link href="/services/expert-consulting" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
+          <FaUsers className="min-w-8 h-8 text-amber-400" />
+          <div>
+            <p className="text-base font-medium text-gray-700">Expert</p>
+            <p className="text-sm text-gray-500">consulting</p>
+          </div>
+        </Link>
+      </div>
+    </div>
+
+    </div>
       <div className="bg-white py-16 border-b border-neutral-100">
         <div className="container mx-auto px-4">
           <motion.div
@@ -199,7 +300,7 @@ export default function HeroSection() {
                 />
                 <Button
                   type="submit"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold"
                 >
                   Search
                 </Button>
@@ -214,7 +315,7 @@ export default function HeroSection() {
                 <button
                   key={search}
                   onClick={() => setSearchQuery(search)}
-                  className="text-sm bg-neutral-100 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all px-4 py-2 rounded-full border border-neutral-200 font-medium"
+                  className="text-sm bg-neutral-100 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200 transition-all px-4 py-2 rounded-full border border-neutral-200 font-medium"
                 >
                   {search}
                 </button>

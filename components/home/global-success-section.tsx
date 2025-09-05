@@ -68,8 +68,8 @@ export default function GlobalSuccessSection() {
                 viewport={{ once: true }}
                 className="text-center group"
               >
-                <div className="w-16 h-16 bg-red-50 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-red-100 transition-colors">
-                  <feature.icon className="h-8 w-8 text-red-600" />
+                <div className="w-16 h-16 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-100 transition-colors">
+                  <feature.icon className="h-8 w-8 text-amber-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900 mb-3">{feature.title}</h3>
                 <p className="text-neutral-600 leading-relaxed">{feature.description}</p>

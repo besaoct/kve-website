@@ -42,7 +42,7 @@ function AnimatedCounter({ target, suffix, inView }: { target: number; suffix: s
   }
 
   return (
-    <span className="text-4xl lg:text-5xl font-bold text-red-600">
+    <span className="text-4xl lg:text-5xl font-bold text-amber-600">
       {formatNumber(count)}
       {suffix}
     </span>
@@ -79,7 +79,7 @@ export default function StatisticsSection() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="text-center group h-full"
             >
-              <div className="bg-white rounded-2xl p-6 lg:p-8 border border-neutral-200 hover:bg-red-50 transition-all duration-300 group-hover:border-red-200 h-full">
+              <div className="bg-white rounded-2xl p-6 lg:p-8 border border-neutral-200 hover:bg-amber-50 transition-all duration-300 group-hover:border-amber-200 h-full">
                 <AnimatedCounter target={stat.number} suffix={stat.suffix} inView={isInView} />
                 <h3 className="text-lg font-semibold text-neutral-900 mt-3 mb-2">{stat.label}</h3>
                 <p className="text-sm text-neutral-600">{stat.description}</p>

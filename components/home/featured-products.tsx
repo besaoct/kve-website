@@ -100,7 +100,7 @@ export default function FeaturedProducts() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border hover:border-primary/20 py-0 shadow-none bg-muted">
+              <Card className="h-full overflow-hidden hover:shadow-none transition-all duration-300 border hover:border-amber-300/20 py-0 shadow-none bg-muted">
                 <div className="relative overflow-hidden">
                   {/* Product Image */}
                   <div className="relative h-48 bg-gray-100">
@@ -191,7 +191,7 @@ export default function FeaturedProducts() {
 
                   {/* CTA Buttons */}
                   <div className="flex gap-2">
-                    <Button className="flex-1 bg-primary hover:bg-primary/90" size="sm">
+                    <Button className="flex-1 " size="sm">
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to Cart
                     </Button>
@@ -222,7 +222,7 @@ export default function FeaturedProducts() {
               professional applications.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg" className="">
                 View All Products
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

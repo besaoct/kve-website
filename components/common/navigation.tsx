@@ -91,7 +91,7 @@ export default function Navigation() {
 
                </div>
               ))}
-               <Button asChild>
+               <Button asChild className="" >
                   <Link href={"/partner-page"}>
                         Become a Partner
                   </Link>

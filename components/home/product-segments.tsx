@@ -136,7 +136,7 @@ export default function ProductSegments() {
 
                   {/* CTA */}
                   <div className="mt-6 pt-4 border-t border-border">
-                    <button className="text-primary hover:text-primary/80 font-medium text-sm flex items-center group/btn">
+                    <button className="text-amber-600 hover:text-amber-600/80 font-medium text-sm flex items-center group/btn">
                       Learn More
                       <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                     </button>
@@ -163,7 +163,7 @@ export default function ProductSegments() {
               requirements and applications.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg" className="">
                 Contact Our Experts
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
