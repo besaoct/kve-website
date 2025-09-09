@@ -136,7 +136,7 @@ export default function ProductSegments() {
 
                   {/* CTA */}
                   <div className="mt-6 pt-4 border-t border-border">
-                    <button className="text-amber-600 hover:text-amber-600/80 font-medium text-sm flex items-center group/btn">
+                    <button className="text-[#D2A564] hover:text-[#D2A564]/80 font-medium text-sm flex items-center group/btn">
                       Learn More
                       <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                     </button>

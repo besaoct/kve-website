@@ -42,7 +42,7 @@ function AnimatedCounter({ target, suffix, inView }: { target: number; suffix: s
   }
 
   return (
-    <span className="text-4xl lg:text-5xl font-bold text-amber-600">
+    <span className="text-4xl lg:text-5xl font-bold text-[#D2A564]">
       {formatNumber(count)}
       {suffix}
     </span>

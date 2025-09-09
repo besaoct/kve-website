@@ -80,7 +80,7 @@ export default function WhatsNewSection() {
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-600 text-white">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#D2A564] text-white">
                     <Tag className="h-3 w-3 mr-1" />
                     {item.category}
                   </span>
@@ -95,13 +95,13 @@ export default function WhatsNewSection() {
                   {item.readTime}
                 </div>
 
-                <h3 className="text-lg font-semibold text-neutral-900 mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors">
+                <h3 className="text-lg font-semibold text-neutral-900 mb-3 line-clamp-2 group-hover:text-[#D2A564] transition-colors">
                   {item.title}
                 </h3>
 
                 <p className="text-neutral-600 text-sm mb-4 line-clamp-3">{item.excerpt}</p>
 
-                <button className="inline-flex items-center text-amber-600 font-medium text-sm hover:text-amber-600/90 transition-colors group/btn">
+                <button className="inline-flex items-center text-[#D2A564] font-medium text-sm hover:text-[#D2A564]/90 transition-colors group/btn">
                   Read More
                   <ArrowRight className="h-4 w-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
                 </button>
@@ -118,11 +118,11 @@ export default function WhatsNewSection() {
           className="text-center mt-12 w-full flex flex-col items-center lg:items-end"
         >
 <div className="group transition-all duration-300 ease-in-out px-4">
-            <button className="inline-flex items-center bg-transparent text-black duration-300 ease-in-out group-hover:text-amber-600 font-medium transition-colors">
+            <button className="inline-flex items-center bg-transparent text-black duration-300 ease-in-out group-hover:text-[#D2A564] font-medium transition-colors">
             View All News
             <ArrowRight className="h-5 w-5 ml-2" />
           </button>
-          <div className="border-b-2 border-amber-600 w-[30%] mb-4 group-hover:w-[90%] duration-300 ease-in-out"/>
+          <div className="border-b-2 border-[#D2A564] w-[30%] mb-4 group-hover:w-[90%] duration-300 ease-in-out"/>
 </div>
           
         </motion.div>

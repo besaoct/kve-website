@@ -118,7 +118,7 @@ export default function HeroSection() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <Badge className="mb-6 bg-amber-600 text-white px-4 py-2 text-sm font-medium">{slide.subtitle}</Badge>
+                  <Badge className="mb-6 bg-[#D2A564] text-white px-4 py-2 text-sm font-medium">{slide.subtitle}</Badge>
                   <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">{slide.title}</h1>
                   <p className={`text-xl text-neutral-200 mb-8 leading-relaxed max-w-xl
                     ${
@@ -131,7 +131,7 @@ export default function HeroSection() {
                   >
                     <Button
                       size="lg"
-                      className="bg-amber-600 hover:bg-amber-600/90 text-white px-8 py-4 text-lg font-semibold"
+                      className="bg-[#D2A564] hover:bg-[#D2A564]/90 text-white px-8 py-4 text-lg font-semibold"
                     >
                       {slide.cta}
                       <ArrowRight className="ml-2 h-5 w-5" />
@@ -151,42 +151,42 @@ export default function HeroSection() {
       <h2 className="text-4xl font-bold text-red-600 mb-6">Power Your Progress</h2>
       <div className="grid grid-cols-2 gap-4">
         <Link href="/services/welding-fabrication" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaTools className="w-8 h-8 text-amber-400" />
+          <FaTools className="w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Welding &</p>
             <p className="text-sm text-gray-500">fabrication</p>
           </div>
         </Link>
         <Link href="/services/project-estimation" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaCalculator className="w-8 h-8 text-amber-400" />
+          <FaCalculator className="w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Project</p>
             <p className="text-sm text-gray-500">estimation</p>
           </div>
         </Link>
         <Link href="/services/quality-control" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaShieldAlt className="w-8 h-8 text-amber-400" />
+          <FaShieldAlt className="w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Quality</p>
             <p className="text-sm text-gray-500">control</p>
           </div>
         </Link>
         <Link href="/services/automation-systems" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaCogs className="w-8 h-8 text-amber-400" />
+          <FaCogs className="w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Automation</p>
             <p className="text-sm text-gray-500">systems</p>
           </div>
         </Link>
         <Link href="/services/innovative-solutions" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaLightbulb className="w-8 h-8 text-amber-400" />
+          <FaLightbulb className="w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Innovative</p>
             <p className="text-sm text-gray-500">solutions</p>
           </div>
         </Link>
         <Link href="/services/expert-consulting" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaUsers className="w-8 h-8 text-amber-400" />
+          <FaUsers className="w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Expert</p>
             <p className="text-sm text-gray-500">consulting</p>
@@ -231,42 +231,42 @@ export default function HeroSection() {
       <h2 className="text-xl sm:text-2xl font-bold text-red-600 mb-6">Power Your Progress</h2>
       <div className="grid grid-cols-2 gap-4 overflow-x-auto scrollbar-hide">
         <Link href="/services/welding-fabrication" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaTools className="min-w-8 h-8 text-amber-400" />
+          <FaTools className="min-w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Welding &</p>
             <p className="text-sm text-gray-500">fabrication</p>
           </div>
         </Link>
         <Link href="/services/project-estimation" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaCalculator className="min-w-8 h-8 text-amber-400" />
+          <FaCalculator className="min-w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Project</p>
             <p className="text-sm text-gray-500">estimation</p>
           </div>
         </Link>
         <Link href="/services/quality-control" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaShieldAlt className="min-w-8 h-8 text-amber-400" />
+          <FaShieldAlt className="min-w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Quality</p>
             <p className="text-sm text-gray-500">control</p>
           </div>
         </Link>
         <Link href="/services/automation-systems" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaCogs className="min-w-8 h-8 text-amber-400" />
+          <FaCogs className="min-w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Automation</p>
             <p className="text-sm text-gray-500">systems</p>
           </div>
         </Link>
         <Link href="/services/innovative-solutions" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaLightbulb className="min-w-8 h-8 text-amber-400" />
+          <FaLightbulb className="min-w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Innovative</p>
             <p className="text-sm text-gray-500">solutions</p>
           </div>
         </Link>
         <Link href="/services/expert-consulting" className="flex items-start space-x-3 hover:bg-gray-100 p-2 rounded-md transition-colors">
-          <FaUsers className="min-w-8 h-8 text-amber-400" />
+          <FaUsers className="min-w-8 h-8 text-[#D2A564]" />
           <div>
             <p className="text-base font-medium text-gray-700">Expert</p>
             <p className="text-sm text-gray-500">consulting</p>
@@ -300,7 +300,7 @@ export default function HeroSection() {
                 />
                 <Button
                   type="submit"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-8 py-3 bg-[#D2A564] hover:bg-amber-700 text-white font-semibold"
                 >
                   Search
                 </Button>
@@ -315,7 +315,7 @@ export default function HeroSection() {
                 <button
                   key={search}
                   onClick={() => setSearchQuery(search)}
-                  className="text-sm bg-neutral-100 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200 transition-all px-4 py-2 rounded-full border border-neutral-200 font-medium"
+                  className="text-sm bg-neutral-100 hover:bg-amber-50 hover:text-[#D2A564] hover:border-amber-200 transition-all px-4 py-2 rounded-full border border-neutral-200 font-medium"
                 >
                   {search}
                 </button>

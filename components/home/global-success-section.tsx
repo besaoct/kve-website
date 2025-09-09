@@ -69,7 +69,7 @@ export default function GlobalSuccessSection() {
                 className="text-center group"
               >
                 <div className="w-16 h-16 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-100 transition-colors">
-                  <feature.icon className="h-8 w-8 text-amber-600" />
+                  <feature.icon className="h-8 w-8 text-[#D2A564]" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900 mb-3">{feature.title}</h3>
                 <p className="text-neutral-600 leading-relaxed">{feature.description}</p>
