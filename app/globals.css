@@ -171,3 +171,24 @@ table{
   display: block;
   overflow-x: auto;
 }
+
+.upload-box {
+  @apply border-2 border-dashed border-[#D2A564] bg-gradient-to-br from-white/10 to-white/5 
+         rounded-lg shadow-lg hover:shadow-xl  transition-all duration-300 
+         flex flex-col items-center justify-center cursor-pointer;
+}
+
+.upload-box:hover .upload-icon {
+  @apply  opacity-90;
+}
+
+.thumbnail {
+  @apply w-24 h-24 rounded-lg border-2 bg-white overflow-hidden 
+         transition-all duration-200;
+}
+
+.control-button {
+  @apply px-4 py-2 rounded-lg border border-black bg-white text-black 
+         hover:border-[#D2A564] hover:bg-[#D2A564] hover:text-white 
+         transition-all duration-200 text-sm font-semibold;
+}

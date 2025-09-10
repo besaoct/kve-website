@@ -39,8 +39,11 @@ export default function ProductInfo({
             </Link>
           </p>
 
-          <div className="mt-6">
-            <Button className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-6 rounded-xl">
+          <div className="mt-6 w-full flex items-center gap-4 overflow-x-auto scrollbar-hide">
+            <Button asChild className=" bg-[#D2A564] hover:bg-[#D2A564] text-white text-lg py-6 rounded-xl">
+              <Link href="/preview">TRY IN YOUR SPACE</Link>
+            </Button>
+             <Button className=" bg-red-600 hover:bg-red-700 text-white text-lg py-6 rounded-xl">
               BUY NOW
             </Button>
           </div>

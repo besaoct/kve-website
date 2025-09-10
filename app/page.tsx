@@ -13,6 +13,8 @@ import NewsletterSection from "@/components/home/newsletter-section"
 import Footer from "@/components/common/footer"
 import { useState } from "react"
 import { PartnerLogos } from "@/components/home/partner-logos"
+import { WhatsAppButton } from "@/components/common/wa-btn"
+import { LiveChat } from "@/components/common/live-chat"
 
 export default function HomePage() {
   
@@ -32,6 +34,8 @@ export default function HomePage() {
       <PartnerLogos/>
       <NewsletterSection />
       <Footer />
+      <WhatsAppButton/>
+      <LiveChat/>
     </div>
   )
 }
