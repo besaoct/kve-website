@@ -14,7 +14,7 @@ export default function TryOn() {
         <main className="flex-1">
              <div className="container mx-auto px-6 py-10">
       <h1 className="text-3xl font-bold mb-2 text-center">Product Preview</h1>
-      <p className="text-lg mb-8 text-center">Upload a room image, then add the product to preview.</p>
+      <p className="text-lg mb-8 text-center">Upload a image to preview the product in your space.</p>
       <Suspense fallback={<div className="text-xl">Loading Editor...</div>}>
         <PreviewEditor />
       </Suspense>
