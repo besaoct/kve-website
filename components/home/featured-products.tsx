@@ -5,6 +5,7 @@ import { Star, ArrowRight, Eye, ShoppingCart, Award, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 const featuredProducts = [
   {
@@ -133,7 +134,7 @@ export default function FeaturedProducts() {
                   <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wide">{product.category}</p>
 
                   {/* Product Name */}
-                  <h3 className="text-lg font-heading font-bold text-foreground mb-2 line-clamp-2">{product.name}</h3>
+                 <Link href={`/single-product`}  className="text-lg font-heading font-bold text-foreground mb-2 line-clamp-2">{product.name}</Link>
 
                   {/* Rating */}
                   <div className="flex items-center mb-3">
@@ -195,8 +196,10 @@ export default function FeaturedProducts() {
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to Cart
                     </Button>
-                    <Button variant="outline" size="sm" className="px-3 bg-transparent">
-                      <Eye className="h-4 w-4" />
+                    <Button asChild variant="outline" size="sm" className="px-3 bg-transparent">
+                      <Link href={`/single-product`} className="flex items-center">
+                          <Eye className="h-4 w-4" />
+                      </Link>
                     </Button>
                   </div>
                 </CardContent>
