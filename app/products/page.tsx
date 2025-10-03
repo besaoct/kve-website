@@ -1,55 +1,74 @@
 "use client";
 
-import Hero from '@/components/products/hero';
-import Navigation from '@/components/common/navigation';
-import Footer from '@/components/common/footer';
+import Hero from "@/components/products/hero";
+import Navigation from "@/components/common/navigation";
+import Footer from "@/components/common/footer";
 
-
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { dummyProducts } from "@/data/products";
-import { productCatalogs } from '@/data/catalogs';
-import { Filter, Search } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { dummyProducts } from "@/data/dummy/products";
+import { productCatalogs } from "@/data/dummy/catalogs";
+import { Filter, Search } from "lucide-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 
 const PRODUCTS_PER_PAGE = 5;
 
 export default function Page() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOption, setSortOption] = useState('name-asc');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("name-asc");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
+    []
+  );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let products = dummyProducts.filter(p =>
+    let products = dummyProducts.filter((p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (selectedCategories.length > 0) {
-      products = products.filter(p => selectedCategories.includes(p.catalog.title));
+      products = products.filter((p) =>
+        selectedCategories.includes(p.catalog.title)
+      );
     }
 
     if (selectedSubCategories.length > 0) {
-      products = products.filter(p => selectedSubCategories.includes(p.catalog.subCategory.title));
+      products = products.filter((p) =>
+        selectedSubCategories.includes(p.catalog.subCategory.title)
+      );
     }
 
-    if (sortOption === 'name-asc') {
+    if (sortOption === "name-asc") {
       products.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortOption === 'name-desc') {
+    } else if (sortOption === "name-desc") {
       products.sort((a, b) => b.name.localeCompare(a.name));
     }
 
     return products;
   }, [searchTerm, sortOption, selectedCategories, selectedSubCategories]);
 
-  const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
+  const totalPages = Math.ceil(
+    filteredAndSortedProducts.length / PRODUCTS_PER_PAGE
+  );
   const paginatedProducts = filteredAndSortedProducts.slice(
     (currentPage - 1) * PRODUCTS_PER_PAGE,
     currentPage * PRODUCTS_PER_PAGE
@@ -60,19 +79,23 @@ export default function Page() {
       return [];
     }
     return productCatalogs
-      .filter(catalog => selectedCategories.includes(catalog.title))
-      .flatMap(catalog => catalog.subcategories);
+      .filter((catalog) => selectedCategories.includes(catalog.title))
+      .flatMap((catalog) => catalog.subcategories);
   }, [selectedCategories]);
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
     );
   };
 
   const handleSubCategoryChange = (subCategory: string) => {
-    setSelectedSubCategories(prev =>
-      prev.includes(subCategory) ? prev.filter(s => s !== subCategory) : [...prev, subCategory]
+    setSelectedSubCategories((prev) =>
+      prev.includes(subCategory)
+        ? prev.filter((s) => s !== subCategory)
+        : [...prev, subCategory]
     );
   };
 
@@ -81,11 +104,11 @@ export default function Page() {
       <div>
         <h3 className="text-lg font-semibold mb-4">Categories</h3>
         <div className="space-y-2">
-          {productCatalogs.map(catalog => (
+          {productCatalogs.map((catalog) => (
             <div key={catalog.title}>
               <label className="flex items-center space-x-2">
                 <input
-                className='accent-red-600'
+                  className="accent-red-600"
                   type="checkbox"
                   checked={selectedCategories.includes(catalog.title)}
                   onChange={() => handleCategoryChange(catalog.title)}
@@ -100,13 +123,12 @@ export default function Page() {
         <div>
           <h3 className="text-lg font-semibold mb-4">Sub-Categories</h3>
           <div className="space-y-2">
-            {availableSubCategories.map(sub => (
+            {availableSubCategories.map((sub) => (
               <div key={sub.title}>
                 <label className="flex items-center space-x-2">
                   <input
                     type="checkbox"
-                className='accent-red-600'
-
+                    className="accent-red-600"
                     checked={selectedSubCategories.includes(sub.title)}
                     onChange={() => handleSubCategoryChange(sub.title)}
                   />
@@ -122,7 +144,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <Navigation/>
+      <Navigation />
       <Hero />
       <div className="container mx-auto max-w-8xl px-4 py-8">
         <div className="flex gap-8">
@@ -148,7 +170,10 @@ export default function Page() {
                         <Filter className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="top" className="h-screen flex flex-col gap-0">
+                    <SheetContent
+                      side="top"
+                      className="h-screen flex flex-col gap-0"
+                    >
                       <SheetHeader className="gap-0 border-b p-4">
                         <SheetTitle>Filter Products</SheetTitle>
                       </SheetHeader>
@@ -183,16 +208,31 @@ export default function Page() {
                   >
                     {product.sustainable && (
                       <div className="absolute top-2 right-2">
-                        <Image src="/images/icons/leaf.svg" alt="Sustainable" width={24} height={24} />
+                        <Image
+                          src="/images/icons/leaf.svg"
+                          alt="Sustainable"
+                          width={24}
+                          height={24}
+                        />
                       </div>
                     )}
-                    <div className='w-full sm:w-1/3'>
-                      <Image src={product.image} alt={product.name} width={500} height={500} className="object-cover rounded-lg aspect-square" />
+                    <div className="w-full sm:w-1/3">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={500}
+                        height={500}
+                        className="object-cover rounded-lg aspect-square"
+                      />
                     </div>
                     <div className="flex-grow">
-                      <p className="text-sm text-neutral-500">{product.catalog.title}</p>
+                      <p className="text-sm text-neutral-500">
+                        {product.catalog.title}
+                      </p>
                       <h3 className="text-lg font-semibold">{product.name}</h3>
-                      <p className="text-neutral-600 mt-2">{product.lineCamp2Desc}</p>
+                      <p className="text-neutral-600 mt-2">
+                        {product.lineCamp2Desc}
+                      </p>
                       <div className="mt-4">
                         <h4 className="font-semibold">Features:</h4>
                         <ul className="list-disc marker:text-red-400 list-inside text-neutral-600">
@@ -203,11 +243,11 @@ export default function Page() {
                       </div>
                       <div className="flex flex-wrap items-center gap-2 mt-4">
                         <Link href={`/products/${product.slug}`} passHref>
-                          <Button>
-                           View Product
-                          </Button>
+                          <Button>View Product</Button>
                         </Link>
-                        <Button variant="outline" className='w-fit'>Request a Quote</Button>
+                        <Button variant="outline" className="w-fit">
+                          Request a Quote
+                        </Button>
                       </div>
                     </div>
                   </motion.div>
@@ -219,14 +259,16 @@ export default function Page() {
 
             <div className="flex justify-start items-center mt-8 space-x-4">
               <Button
-                onClick={() => setCurrentPage(p => p - 1)}
+                onClick={() => setCurrentPage((p) => p - 1)}
                 disabled={currentPage === 1}
               >
                 Previous
               </Button>
-              <span>Page {currentPage} of {totalPages}</span>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
               <Button
-                onClick={() => setCurrentPage(p => p + 1)}
+                onClick={() => setCurrentPage((p) => p + 1)}
                 disabled={currentPage === totalPages}
               >
                 Next
@@ -235,7 +277,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, notFound } from "next/navigation";
-import { dummyProducts } from "@/data/products";
+import { dummyProducts } from "@/data/dummy/products";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, ChevronRight } from "lucide-react";

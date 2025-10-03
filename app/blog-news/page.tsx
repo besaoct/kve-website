@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { dummyBlogs } from '@/data/blog';
-import Footer from '@/components/common/footer';
-import Navigation from '@/components/common/navigation';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Image from "next/image";
+import { dummyBlogs } from "@/data/dummy/blog";
+import Footer from "@/components/common/footer";
+import Navigation from "@/components/common/navigation";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -16,7 +16,8 @@ const Hero = () => {
           Blog & News
         </h1>
         <p className="text-lg text-center lg:text-start text-gray-600">
-          Welcome to our blog! Here you will find the latest news, updates, and insights on welding and our products.
+          Welcome to our blog! Here you will find the latest news, updates, and
+          insights on welding and our products.
         </p>
       </div>
     </section>
@@ -37,7 +38,7 @@ const FeaturedPosts = () => {
             <div
               key={blog.id}
               className={`relative rounded-lg shadow-md overflow-hidden ${
-                index === 0 ? 'md:col-span-2' : 'md:col-span-1'
+                index === 0 ? "md:col-span-2" : "md:col-span-1"
               }`}
             >
               <Image
@@ -49,7 +50,9 @@ const FeaturedPosts = () => {
               />
               <div className="absolute inset-0 bg-black/70 flex flex-col justify-end p-6">
                 <p className="text-white text-sm mb-2">{blog.date}</p>
-               <h3 className="text-xl md:text-2xl font-bold text-white mb-4">{blog.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
+                  {blog.title}
+                </h3>
                 <Link
                   href={`/blog-news/${blog.id}`}
                   className="text-black rounded hover:text-red-500 px-3 py-2 bg-white w-fit font-semibold"
@@ -66,33 +69,33 @@ const FeaturedPosts = () => {
 };
 
 const FilterToolbar = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [activeFilter, setActiveFilter] = useState("All");
   const [isBlogDropdownOpen, setIsBlogDropdownOpen] = useState(false);
   const blogSubcategories = [
-    'All',
-    'People',
-    'Manual Welding',
-    'Welding ABC',
-    'Innovation',
-    'Welding Automation',
-    'Safety',
-    'Digitalization',
+    "All",
+    "People",
+    "Manual Welding",
+    "Welding ABC",
+    "Innovation",
+    "Welding Automation",
+    "Safety",
+    "Digitalization",
   ];
 
   return (
     <div className="flex flex-col space-y-4 w-fit font-medium">
       <button
-        onClick={() => setActiveFilter('All')}
+        onClick={() => setActiveFilter("All")}
         className={`py-2 text-left text-gray-700 hover:text-red-600 ${
-          activeFilter === 'All' ? 'text-red-600 underline' : ''
+          activeFilter === "All" ? "text-red-600 underline" : ""
         } focus:outline-none`}
       >
         All
       </button>
       <button
-        onClick={() => setActiveFilter('News')}
+        onClick={() => setActiveFilter("News")}
         className={`py-2 text-left text-gray-700 hover:text-red-600 ${
-          activeFilter === 'News' ? 'text-red-600 underline' : ''
+          activeFilter === "News" ? "text-red-600 underline" : ""
         } focus:outline-none`}
       >
         News
@@ -101,25 +104,32 @@ const FilterToolbar = () => {
         <button
           onClick={() => setIsBlogDropdownOpen(!isBlogDropdownOpen)}
           className={`py-2 text-left w-fit text-gray-700 hover:text-red-600 ${
-            activeFilter.startsWith('Blog posts') ? 'text-red-600 underline' : ''
+            activeFilter.startsWith("Blog posts")
+              ? "text-red-600 underline"
+              : ""
           } focus:outline-none flex justify-between items-center`}
         >
-          <span className='mr-4'>Blog posts</span>
+          <span className="mr-4">Blog posts</span>
           <svg
             className={`w-4 h-4 transform transition-transform duration-300 ${
-              isBlogDropdownOpen ? 'rotate-180' : ''
+              isBlogDropdownOpen ? "rotate-180" : ""
             }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </button>
         <div
           className={`transition-all duration-300 ease-in-out overflow-hidden ${
-            isBlogDropdownOpen ? 'max-h-96' : 'max-h-0'
+            isBlogDropdownOpen ? "max-h-96" : "max-h-0"
           }`}
         >
           <div className="mt-2  rounded-md shadow-lg">
@@ -131,7 +141,9 @@ const FilterToolbar = () => {
                   setIsBlogDropdownOpen(false);
                 }}
                 className={`block w-full text-left px-4 py-2 text-gray-700 hover:text-red-600 ${
-                  activeFilter === `Blog posts: ${subcategory}` ? 'text-red-600 underline' : ''
+                  activeFilter === `Blog posts: ${subcategory}`
+                    ? "text-red-600 underline"
+                    : ""
                 }`}
               >
                 {subcategory}
@@ -141,9 +153,9 @@ const FilterToolbar = () => {
         </div>
       </div>
       <button
-        onClick={() => setActiveFilter('Whitepapers')}
+        onClick={() => setActiveFilter("Whitepapers")}
         className={`py-2 text-left text-gray-700 hover:text-red-600 ${
-          activeFilter === 'Whitepapers' ? 'text-red-600 underline' : ''
+          activeFilter === "Whitepapers" ? "text-red-600 underline" : ""
         } focus:outline-none`}
       >
         Whitepapers
@@ -154,16 +166,19 @@ const FilterToolbar = () => {
 
 const MorePosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
   const postsPerPage = 6;
 
   const filteredBlogs = dummyBlogs.slice(3).filter((blog) => {
-    const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase());
-    if (activeFilter === 'All') return matchesSearch;
-    if (activeFilter.startsWith('Blog posts')) {
-      const subcategory = activeFilter.split(': ')[1];
-      if (subcategory === 'All') return matchesSearch && blog.category.includes('Blog');
+    const matchesSearch = blog.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    if (activeFilter === "All") return matchesSearch;
+    if (activeFilter.startsWith("Blog posts")) {
+      const subcategory = activeFilter.split(": ")[1];
+      if (subcategory === "All")
+        return matchesSearch && blog.category.includes("Blog");
       return matchesSearch && blog.category.includes(subcategory);
     }
     return matchesSearch && blog.category.includes(activeFilter);
@@ -175,7 +190,7 @@ const MorePosts = () => {
     currentPage * postsPerPage
   );
 
-  const handlePageChange = (page:number) => {
+  const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
@@ -225,7 +240,10 @@ const MorePosts = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentPosts.length > 0 ? (
                 currentPosts.map((blog) => (
-                  <div key={blog.id} className="bg-white border overflow-hidden">
+                  <div
+                    key={blog.id}
+                    className="bg-white border overflow-hidden"
+                  >
                     <Image
                       src={blog.image}
                       alt={blog.title}
@@ -235,7 +253,7 @@ const MorePosts = () => {
                     />
                     <div className="p-6">
                       <p className="text-red-600 text-sm font-semibold mb-2">
-                        {blog.category.join(', ')}
+                        {blog.category.join(", ")}
                       </p>
                       <p className="text-gray-500 text-sm mb-2">{blog.date}</p>
                       <h3 className="text-xl font-bold text-gray-800 mb-4 line-clamp-2">
@@ -271,8 +289,8 @@ const MorePosts = () => {
                     onClick={() => handlePageChange(index + 1)}
                     className={`px-4 py-2 rounded-md ${
                       currentPage === index + 1
-                        ? 'bg-red-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? "bg-red-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
                     {index + 1}

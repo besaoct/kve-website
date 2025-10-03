@@ -1,5 +1,5 @@
 "use client";
-import { dummyBlogs } from "@/data/blog";
+import { dummyBlogs } from "@/data/dummy/blog";
 import Image from "next/image";
 import React, { use } from "react";
 import Navigation from "@/components/common/navigation";
@@ -33,27 +33,27 @@ const SingleBlogPage = ({ params }: { params: Promise<{ slug?: string }> }) => {
   const blog = dummyBlogs.find((blog) => blog.id === parseInt(slug));
 
   const blogHtmlContent = `
-    <h2>What is ${blog?.title.split(':')[0] || 'Welding'}?</h2>
+    <h2>What is ${blog?.title.split(":")[0] || "Welding"}?</h2>
     <p>${
-      blog?.title.includes('TIG Welding')
-        ? 'TIG (Tungsten Inert Gas) welding, also known as Gas Tungsten Arc Welding (GTAW), is a precise welding process that uses a non-consumable tungsten electrode to produce high-quality welds. It’s ideal for materials like stainless steel, aluminum, and thin metals.'
-        : blog?.title.includes('MIG vs. TIG')
-        ? 'MIG (Metal Inert Gas) and TIG (Tungsten Inert Gas) welding are two popular welding techniques, each with unique advantages. MIG uses a consumable wire electrode, while TIG uses a non-consumable tungsten electrode, offering precision for different applications.'
-        : blog?.title.includes('Safety')
-        ? 'Welding safety involves protecting welders from hazards like arc flash, fumes, and burns. Proper gear and practices ensure a safe working environment.'
-        : 'Welding is a critical process in industries like construction and manufacturing, joining metals through heat and pressure to create durable structures.'
+      blog?.title.includes("TIG Welding")
+        ? "TIG (Tungsten Inert Gas) welding, also known as Gas Tungsten Arc Welding (GTAW), is a precise welding process that uses a non-consumable tungsten electrode to produce high-quality welds. It’s ideal for materials like stainless steel, aluminum, and thin metals."
+        : blog?.title.includes("MIG vs. TIG")
+        ? "MIG (Metal Inert Gas) and TIG (Tungsten Inert Gas) welding are two popular welding techniques, each with unique advantages. MIG uses a consumable wire electrode, while TIG uses a non-consumable tungsten electrode, offering precision for different applications."
+        : blog?.title.includes("Safety")
+        ? "Welding safety involves protecting welders from hazards like arc flash, fumes, and burns. Proper gear and practices ensure a safe working environment."
+        : "Welding is a critical process in industries like construction and manufacturing, joining metals through heat and pressure to create durable structures."
     }</p>
     <p>This process is known for its versatility, allowing welders to work on various metals and achieve clean, aesthetically pleasing results.</p>
     <p>Many modern welding techniques, especially TIG, offer precise control, reducing the need for post-weld cleanup.</p>
     <p>It’s an essential skill for professionals aiming to produce high-quality, durable welds while maintaining safety and efficiency.</p>
     <p>Here’s a breakdown of key aspects to understand this welding technique better:</p>
 
-    <h2>Why is ${blog?.title.split(':')[0] || 'Welding'} Important?</h2>
+    <h2>Why is ${blog?.title.split(":")[0] || "Welding"} Important?</h2>
     <ul>
       <li><strong>High-Quality Welds:</strong> ${
-        blog?.title.includes('TIG')
-          ? 'TIG welding produces clean, precise welds with minimal spatter, ideal for critical applications like aerospace and automotive.'
-          : 'This welding method ensures strong, reliable joints that meet industry standards.'
+        blog?.title.includes("TIG")
+          ? "TIG welding produces clean, precise welds with minimal spatter, ideal for critical applications like aerospace and automotive."
+          : "This welding method ensures strong, reliable joints that meet industry standards."
       }</li>
       <li><strong>Versatility:</strong> Suitable for a wide range of materials, including steel, aluminum, and exotic alloys, making it a go-to choice for diverse projects.</li>
       <li><strong>Safety and Durability:</strong> Proper techniques reduce the risk of weld imperfections, ensuring long-lasting structures and safe operations.</li>
@@ -154,7 +154,9 @@ const SingleBlogPage = ({ params }: { params: Promise<{ slug?: string }> }) => {
       </tbody>
     </table>
 
-    <h2>Key Features of ${blog?.title.split(':')[0] || 'Welding'} Equipment:</h2>
+    <h2>Key Features of ${
+      blog?.title.split(":")[0] || "Welding"
+    } Equipment:</h2>
     <h3>KVE</h3>
     <ul>
       <li><strong>Induction Welding:</strong> Patented KVE INDUCT® technology for seamless thermoplastic composite joints.</li>
@@ -258,7 +260,7 @@ const SingleBlogPage = ({ params }: { params: Promise<{ slug?: string }> }) => {
       <li>Best for Advanced Technology: Fronius</li>
     </ul>
 
-    <h2>Benefits of ${blog?.title.split(':')[0] || 'Welding'}:</h2>
+    <h2>Benefits of ${blog?.title.split(":")[0] || "Welding"}:</h2>
     <ul>
       <li><strong>Precision:</strong> Offers unparalleled control for high-quality welds, especially with KVE’s induction welding for composites.</li>
       <li><strong>Durability:</strong> Creates strong, long-lasting joints, critical for aerospace and automotive applications.</li>
@@ -283,7 +285,7 @@ const SingleBlogPage = ({ params }: { params: Promise<{ slug?: string }> }) => {
 
     <h2>Conclusion:</h2>
     <p>Mastering ${
-      blog?.title.split(':')[0] || 'welding'
+      blog?.title.split(":")[0] || "welding"
     } is a valuable skill that enhances project quality and safety. By choosing the right equipment from brands like KVE for thermoplastic composites or Kemppi and Miller for traditional welding, and following best practices, welders can achieve professional results.</p>
     <p>Whether you're a beginner or a seasoned professional, investing time in learning and using high-quality tools, like KVE’s innovative induction welding solutions, will pay off in durable, aesthetically pleasing welds.</p>
     <p>Stay updated with industry trends and prioritize safety to excel in this craft.</p>
@@ -332,9 +334,7 @@ const SingleBlogPage = ({ params }: { params: Promise<{ slug?: string }> }) => {
                 </div>
 
                 {/* Blog Content */}
-                <div
-                  className="prose prose-neutral max-w-none prose-headings:text-neutral-900 prose-headings:font-semibold prose-h2:text-2xl prose-h3:text-xl prose-headings:mt-4 prose-p:text-neutral-700 prose-p:leading-relaxed prose-ul:list-disc prose-ul:pl-6 prose-ul:text-neutral-700 prose-ul:marker:text-red-600 prose-li:my-2 prose-table:border-collapse prose-table:border prose-table:border-neutral-300 prose-th:border prose-th:border-neutral-300 prose-td:border prose-td:border-neutral-300 prose-th:bg-neutral-200 prose-th:p-2 prose-td:p-2 prose-table:overflow-x-auto"
-                >
+                <div className="prose prose-neutral max-w-none prose-headings:text-neutral-900 prose-headings:font-semibold prose-h2:text-2xl prose-h3:text-xl prose-headings:mt-4 prose-p:text-neutral-700 prose-p:leading-relaxed prose-ul:list-disc prose-ul:pl-6 prose-ul:text-neutral-700 prose-ul:marker:text-red-600 prose-li:my-2 prose-table:border-collapse prose-table:border prose-table:border-neutral-300 prose-th:border prose-th:border-neutral-300 prose-td:border prose-td:border-neutral-300 prose-th:bg-neutral-200 prose-th:p-2 prose-td:p-2 prose-table:overflow-x-auto">
                   <div className="w-full overflow-x-auto">
                     <div
                       dangerouslySetInnerHTML={{ __html: blogHtmlContent }}
