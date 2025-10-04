@@ -84,3 +84,12 @@ export const getProductsBySubSegment = async (
   const result = await response.json();
   return result.data;
 };
+
+
+export const getFeaturedProducts = async (limit: number = 4): Promise<Product[]> => {
+  return getProducts({
+    per_page: limit,
+    sort_by: "created_at",
+    sort_order: "desc",
+  });
+};
