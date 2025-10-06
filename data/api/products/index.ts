@@ -31,8 +31,8 @@ export const getProducts = async (params: GetProductsParams): Promise<Product[]>
   return result.data;
 };
 
-export const getProduct = async (id: number): Promise<Product> => {
-  const response = await fetch(`${API_BASE_URL}/products/${id}`, requestOptions);
+export const getProduct = async (slug: string): Promise<Product> => {
+  const response = await fetch(`${API_BASE_URL}/products/${slug}`, { ...requestOptions, cache: 'no-store' });
   const result = await response.json();
   return result.data;
 };
@@ -43,7 +43,8 @@ export const getProductsByCategory = async (
 ): Promise<Product[]> => {
   const response = await fetch(
     `${API_BASE_URL}/products/category/${id}?per_page=${perPage}`,
-    requestOptions
+    requestOptions,
+  
   );
   const result = await response.json();
   return result.data;
