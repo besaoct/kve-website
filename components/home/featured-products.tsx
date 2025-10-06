@@ -235,7 +235,7 @@ export default function FeaturedProducts() {
                         Add to Cart
                       </Button>
                       <Button asChild variant="outline" size="sm" className="px-3 bg-transparent">
-                        <Link href={`/single-product`} className="flex items-center">
+                        <Link href={`/products/${product.slug}`} className="flex items-center">
                           <Eye className="h-4 w-4" />
                         </Link>
                       </Button>

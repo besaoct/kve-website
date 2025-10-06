@@ -1,8 +1,21 @@
+export interface ProductImage {
+  id: number;
+  product_id: number;
+  image_path: string;
+  alt_text: string;
+  sort_order: number;
+  is_primary: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Product {
   id: number;
   title: string;
   slug: string;
   short_description: string;
+  product_details: string;
+  specifications: string;
   price: string;
   formatted_price: string;
   status: boolean;
@@ -10,7 +23,7 @@ export interface Product {
   primary_image_url: string | null;
   has_images: boolean;
   images_count: number;
-  images: any[];
+  images: ProductImage[];
   category: {
     id: number;
     title: string;

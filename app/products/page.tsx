@@ -177,6 +177,7 @@ export default function Page() {
 
   const Sidebar = () => (
     <div className="flex flex-col gap-6 lg:sticky lg:top-24">
+     
       {/* Clear Filters */}
       {(selectedCategories.length > 0 || selectedSubCategories.length > 0 || selectedSegments.length > 0) && (
         <Button variant="outline" onClick={clearFilters} className="w-full">
@@ -190,14 +191,14 @@ export default function Page() {
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {categories.map((category) => (
             <div key={category.id}>
-              <label className="flex items-center space-x-2 cursor-pointer">
+              <label className="flex items-start space-x-2 cursor-pointer">
                 <input
                   className="accent-red-600"
                   type="checkbox"
                   checked={selectedCategories.includes(category.id)}
                   onChange={() => handleCategoryChange(category.id)}
                 />
-                <span className="text-sm">
+                <span className="text-sm -mt-1">
                   {category.title} ({category.products_count})
                 </span>
               </label>
@@ -213,14 +214,14 @@ export default function Page() {
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {availableSubCategories.map((sub) => (
               <div key={sub.id}>
-                <label className="flex items-center space-x-2 cursor-pointer">
+                <label className="flex items-start space-x-2 cursor-pointer">
                   <input
                     type="checkbox"
                     className="accent-red-600"
                     checked={selectedSubCategories.includes(sub.id)}
                     onChange={() => handleSubCategoryChange(sub.id)}
                   />
-                  <span className="text-sm">{sub.title}</span>
+                  <span className="text-sm -mt-1">{sub.title}</span>
                 </label>
               </div>
             ))}
@@ -287,11 +288,11 @@ export default function Page() {
                         <Filter className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="w-80 overflow-y-auto">
-                      <SheetHeader>
+                    <SheetContent side="top" className="h-screen flex flex-col gap-0">
+                   <SheetHeader className="gap-0 border-b p-4">
                         <SheetTitle>Filter Products</SheetTitle>
                       </SheetHeader>
-                      <div className="py-4">
+                      <div className="py-4 px-4 overflow-y-auto flex-grow">
                         <Sidebar />
                       </div>
                     </SheetContent>
@@ -349,7 +350,7 @@ export default function Page() {
                   >
                     {/* Product Image */}
                     <div className="w-full sm:w-1/3 flex-shrink-0">
-                      <Link href={`/products/${product.id}`}>
+                      <Link href={`/products/${product.slug}`}>
                         {product.primary_image_url ? (
                           <Image
                             src={product.primary_image_url}
@@ -375,7 +376,7 @@ export default function Page() {
                         </div>
 
                         {/* Product Title */}
-                        <Link href={`/products/${product.id}`}>
+                        <Link href={`/products/${product.slug}`}>
                           <h3 className="text-2xl font-bold text-neutral-900 mb-3 hover:text-red-600 transition-colors">
                             {product.title}
                           </h3>
@@ -418,7 +419,7 @@ export default function Page() {
                         </div>
                         <div className="flex gap-3">
                           <Button asChild variant="outline">
-                            <Link href={`/products/${product.id}`}>
+                            <Link href={`/products/${product.slug}`}>
                               View Details
                             </Link>
                           </Button>
@@ -433,7 +434,7 @@ export default function Page() {
 
             {/* Pagination */}
             {!isLoading && products.length > 0 && (
-              <div className="flex justify-center items-center gap-2 mt-12">
+              <div className="flex justify-start items-center gap-2 mt-12">
                 <Button
                   variant="outline"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}

@@ -11,10 +11,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getNavbarHierarchy } from "@/data/api/nav"
 import type { Nav } from "@/data/api/nav/types"
+import type { SubCategory } from "@/data/api/category/types"
 
 export default function Navigation() {
   const [isProductsOpen, setIsProductsOpen] = useState(false)
   const [hoveredCategory, setHoveredCategory] = useState<Nav | null>(null)
+  const [hoveredSubCategory, setHoveredSubCategory] = useState<SubCategory | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false)
   const [mobileSelectedCategory, setMobileSelectedCategory] = useState<string | null>(null)
@@ -43,6 +45,14 @@ export default function Navigation() {
 
     fetchCategories()
   }, [])
+
+  useEffect(() => {
+    if (hoveredCategory && hoveredCategory.sub_categories && hoveredCategory.sub_categories.length > 0) {
+      setHoveredSubCategory(hoveredCategory.sub_categories[0]);
+    } else {
+      setHoveredSubCategory(null);
+    }
+  }, [hoveredCategory]);
 
   return (
     <>
@@ -335,7 +345,8 @@ export default function Navigation() {
                               <Link
                                 key={subcategory.id}
                                 href={subcategory.url || '#'}
-                                className="block px-4 py-2 text-neutral-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
+                                className={`block px-4 py-2 text-neutral-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium ${hoveredSubCategory?.id === subcategory.id ? "bg-red-50 text-red-600" : ""}`}
+                                onMouseEnter={() => setHoveredSubCategory(subcategory)}
                               >
                                 {subcategory.title}
                               </Link>
@@ -347,15 +358,15 @@ export default function Navigation() {
 
                     {/* Right Column - Products (Segments) */}
                     <div className="pl-6">
-                      {hoveredCategory && hoveredCategory.sub_categories && hoveredCategory.sub_categories.length > 0 && (
+                      {hoveredSubCategory && (
                         <>
                           <h3 className="font-semibold text-neutral-900 mb-2 text-sm uppercase tracking-wide">
-                            Products
+                            {hoveredSubCategory.title || "Segments"}
                           </h3>
                           <div className="border-b-2 border-primary w-[15%] mb-4"/>
 
                           <div className="space-y-1">
-                            {hoveredCategory.sub_categories[0]?.segments?.slice(0, 10).map((segment) => (
+                            {hoveredSubCategory.segments?.slice(0, 10).map((segment) => (
                               <Link
                                 key={segment.id}
                                 href={`/products?segment_id=${segment.id}`}

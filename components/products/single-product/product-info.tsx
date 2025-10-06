@@ -6,7 +6,6 @@ interface ProductInfoProps {
   name: string;
   sku: string;
   description: string;
-  rebate: string;
   price: string;
   partnerText: string;
 }
@@ -15,7 +14,6 @@ export default function ProductInfo({
   name,
   sku,
   description,
-  rebate,
   price,
   partnerText,
 }: ProductInfoProps) {
@@ -27,7 +25,7 @@ export default function ProductInfo({
 
         <p className="mt-4 text-lg text-gray-700">{description}</p>
 
-        <p className="mt-4 text-green-600 font-medium">{rebate}</p>
+
 
         <div className="mt-6">
           <p className="text-gray-500">MSRP</p>
