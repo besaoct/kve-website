@@ -58,7 +58,7 @@ export default function Navigation() {
     <>
       <header className="bg-white border-b border-neutral-200 shadow-sm w-full">
         <nav className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16 w-full">
+          <div className="flex items-center justify-between h-24 w-full">
             {/* Logo */}
             <div className="flex items-center">
               <motion.div
@@ -66,7 +66,7 @@ export default function Navigation() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-2xl font-serif font-bold text-red-600"
               >
-                <Link href={'/'} className="block w-[200px] -ml-4">
+                <Link href={'/'} className="block w-[240px] sm:w-[320px] -ml-4">
                   <LogoHorizontal/>
                 </Link>
               </motion.div>
