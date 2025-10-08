@@ -29,6 +29,9 @@ import { getProducts, getFeaturedProducts } from "@/data/api/products";
 import { getCategories } from "@/data/api/category";
 import type { Product } from "@/data/api/products/types";
 import type { Category } from "@/data/api/category/types";
+import { useCart } from "@/context/cart-context";
+import { toast } from "sonner";
+
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -47,6 +50,11 @@ export default function Page() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
+
+
+   const { cartItems, addToCart } = useCart();
+
+
 
   // Fetch categories on mount
   useEffect(() => {
@@ -339,17 +347,38 @@ export default function Page() {
               </div>
             ) : (
               <div className="flex flex-col gap-8">
-                {products.map((product, index) => (
+                {products.map((product, index) => {
+                  const handleAddToCart = () => {
+    addToCart(product);
+    toast.success(`${product.title} has been added to your cart.`, 
+      
+    );
+  };
+
+  const isProductInCart = cartItems.some(item => item.product.id === product.id);
+
+                return(
                   <motion.div
                     key={product.id}
                     initial={{ y: 50, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
-                    className="bg-white border rounded-lg p-6 flex items-start flex-col sm:flex-row gap-6 hover:shadow-lg transition-shadow"
+                      className="border-0 rounded-lg p-0 flex items-center flex-col sm:flex-row gap-8 relative"
                   >
+                      {/* {product.sustainable && ( */}
+                      <div className="absolute top-2 right-2">
+                        <Image
+                          src="/images/icons/leaf.svg"
+                          alt="Sustainable"
+                          width={24}
+                          height={24}
+                        />
+                      </div>
+                    {/* )} */}
+
                     {/* Product Image */}
-                    <div className="w-full sm:w-1/3 flex-shrink-0">
+                     <div className="w-full sm:w-1/3">
                       <Link href={`/products/${product.slug}`}>
                         {product.primary_image_url ? (
                           <Image
@@ -391,7 +420,7 @@ export default function Page() {
                         )}
 
                         {/* Description */}
-                        <p className="text-neutral-600 mb-4 line-clamp-3">
+                        <p className="text-neutral-600 mb-4 line-clamp-2">
                           {product.short_description || "High-quality industrial equipment for professional use."}
                         </p>
 
@@ -418,17 +447,28 @@ export default function Page() {
                           </span>
                         </div>
                         <div className="flex gap-3">
-                          <Button asChild variant="outline">
+                          <Button asChild >
                             <Link href={`/products/${product.slug}`}>
                               View Details
                             </Link>
-                          </Button>
-                          <Button>Add to Cart</Button>
+                          </Button >
+                              {isProductInCart ? (
+              <Button asChild className="">
+                <Link href="/cart">GO TO CART</Link>
+              </Button>
+            ) : (
+                          <Button 
+                          variant="outline"
+                         onClick={handleAddToCart}
+                          >Add to Cart</Button>
+                        )}
                         </div>
                       </div>
                     </div>
                   </motion.div>
-                ))}
+                
+                 ) }
+              )}
               </div>
             )}
 

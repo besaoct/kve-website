@@ -75,4 +75,13 @@ export interface Product {
   created_at: string;
   updated_at: string;
   formatted_created_at: string;
+  //  new
+
+  included: string[];
+  documentation?: string;
+  services: { name: string; href: string }[];
+  sku: string;
+  disclaimer? : string;
+  
+
 }
