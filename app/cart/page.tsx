@@ -26,7 +26,7 @@ export default function CartPage() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gray-50 py-12">
         <div className="container max-w-7xl mx-auto lg:p-8">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-8">My Cart</h1>
           {cartItems.length === 0 ? (
@@ -35,13 +35,13 @@ export default function CartPage() {
             <div className="flex flex-col lg:flex-row gap-12">
               {/* Left side: Cart Items */}
               <div className="lg:w-3/4">
-                <ul className="space-y-6">
+                <div className="flex flex-col gap-6">
                   {cartItems.map(({ product, quantity }) => (
-                    <li
+                    <div
                       key={product.id}
                       className="flex flex-wrap gap-6 items-center bg-white border border-gray-200 rounded-lg p-4"
                     >
-                      <div className="flex-shrink-0 overflow-hidden rounded-lg">
+                      <div className="flex-shrink-0 overflow-hidden rounded-lg w-full sm:w-fit">
                         <Image
                           src={product.images.length > 0 ? `${IMAGE_BASE_URL}${product.images[0].image_path}` : 'https://dummyimage.com/150x150/e0e0e0/000&text=No+Image'}
                           alt={product.title}
@@ -101,9 +101,9 @@ export default function CartPage() {
                           </div>
                         </div>
                       </div>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
               {/* Right side: Cart Totals */}
               <div className="lg:w-1/4">

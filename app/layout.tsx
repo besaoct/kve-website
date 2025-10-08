@@ -28,7 +28,7 @@ export default function RootLayout({
       <body  className={`${font.className} antialiased tabular-nums`}  cz-shortcut-listen="true">
         <CartProvider>
           {children}
-          <Toaster className="font-['montserrat']" />
+          <Toaster className="!font-['montserrat'] " />
         </CartProvider>
         <CookieConsentBanner/>
        </body>
