@@ -129,7 +129,10 @@ export default function ProductPage() {
 
           {/* Tab Content */}
           <div className="mt-6">
-            {activeTab === "details" && <ProductDetails details={product.product_details} />}
+            {activeTab === "details" && <ProductDetails 
+              product={product} 
+              
+            />}
             {activeTab === "specs" && <ProductSpecifications specifications={product.specifications} />}
             {activeTab === "need" && <ProductAccessories accessories={dummyProductData.accessories} />}
             {activeTab === "consumables" && <ProductPopular items={dummyProductData.consumables} />}

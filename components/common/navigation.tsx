@@ -74,7 +74,7 @@ export default function Navigation() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-4 py-3 h-full overflow-x-auto  scrollbar-hide pr-4 ">
+            <div className="hidden lg:flex items-center space-x-4 py-3  scrollbar-hide pr-4 ">
               {navigationData.mainNav.map((item) => (
                 <div key={item.name}
                   className="relative group h-full flex items-center whitespace-nowrap"
@@ -117,7 +117,7 @@ export default function Navigation() {
               ))}
               <Button asChild className="">
                 <Link href={"/partner-page"}>
-                  Become a Partner
+                  Join Us
                 </Link>
               </Button>
               <Link href="/cart">

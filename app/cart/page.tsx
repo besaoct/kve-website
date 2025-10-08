@@ -63,7 +63,7 @@ export default function CartPage() {
                             variant="ghost"
                             size="icon"
                             onClick={() => removeFromCart(product.id)}
-                            className="text-red-600 hover:text-red-700"
+                            className="text-red-600 hover:text-red-100"
                             aria-label={`Remove ${product.title} from cart`}
                           >
                             <Trash2 size={20} />

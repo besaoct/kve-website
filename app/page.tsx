@@ -11,14 +11,14 @@ import WhatsNewSection from "@/components/home/whats-new-section"
 import GlobalSuccessSection from "@/components/home/global-success-section"
 import NewsletterSection from "@/components/home/newsletter-section"
 import Footer from "@/components/common/footer"
-import { useState } from "react"
+// import { useState } from "react"
 import { PartnerLogos } from "@/components/home/partner-logos"
 import { WhatsAppButton } from "@/components/common/wa-btn"
 import { LiveChat } from "@/components/common/live-chat"
 
 export default function HomePage() {
   
-  const [isPopupVisible, setIsPopupVisible] = useState(false)
+  // const [isPopupVisible, setIsPopupVisible] = useState(false)
 
   return (
     <div className="min-h-screen bg-background">

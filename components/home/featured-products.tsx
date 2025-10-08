@@ -11,26 +11,26 @@ import { getFeaturedProducts } from "@/data/api/products"
 import type { Product } from "@/data/api/products/types"
 
 // Badge configuration based on index
-const getBadgeConfig = (index: number) => {
-  const configs = [
-    { label: "Best Seller", color: "bg-primary" },
-    { label: "New", color: "bg-teal-600" },
-    { label: "Popular", color: "bg-green-600" },
-    { label: "Featured", color: "bg-purple-600" },
-  ]
-  return configs[index] || configs[3]
-}
+// const getBadgeConfig = (index: number) => {
+//   const configs = [
+//     { label: "Best Seller", color: "bg-primary" },
+//     { label: "New", color: "bg-teal-600" },
+//     { label: "Popular", color: "bg-green-600" },
+//     { label: "Featured", color: "bg-purple-600" },
+//   ]
+//   return configs[index] || configs[3]
+// }
 
 // Generate mock rating (replace with real data when available)
-const getMockRating = (productId: number) => {
-  const baseRating = 4.5
-  const variation = (productId % 10) * 0.05
-  return Math.min(5, baseRating + variation)
-}
+// const getMockRating = (productId: number) => {
+//   const baseRating = 4.5
+//   const variation = (productId % 10) * 0.05
+//   return Math.min(5, baseRating + variation)
+// }
 
-const getMockReviewCount = (productId: number) => {
-  return 50 + (productId % 150)
-}
+// const getMockReviewCount = (productId: number) => {
+//   return 50 + (productId % 150)
+// }
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState<Product[]>([])
@@ -103,9 +103,9 @@ export default function FeaturedProducts() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {products.map((product, index) => {
-            const badgeConfig = getBadgeConfig(index)
-            const rating = getMockRating(product.id)
-            const reviewCount = getMockReviewCount(product.id)
+            // const badgeConfig = getBadgeConfig(index)
+            // const rating = getMockRating(product.id)
+            // const reviewCount = getMockReviewCount(product.id)
             
             // Extract features from hierarchy
             const features = []
@@ -126,41 +126,37 @@ export default function FeaturedProducts() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group"
               >
-                <Card className="h-full overflow-hidden hover:shadow-none transition-all duration-300 border hover:border-amber-300/20 py-0 shadow-none bg-muted">
-                  <div className="relative overflow-hidden">
-                    {/* Product Image */}
-                    <div className="relative h-48 bg-gray-100">
-                      {product.primary_image_url ? (
-                        <img
-                          src={product.primary_image_url}
-                          alt={product.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-neutral-200">
-                          <span className="text-6xl">📦</span>
-                        </div>
-                      )}
+               <Card className="h-full overflow-hidden hover:shadow-none transition-all duration-300 border hover:border-amber-300/20 py-0 shadow-none bg-muted">
+                <div className="relative overflow-hidden">
+                  {/* Product Image */}
+                  <div className="relative h-48 bg-gray-100">
+                    <img
+                      src={product.primary_image_url || "/placeholder.svg"}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
 
-                      {/* Badge */}
-                      <Badge className={`absolute top-3 left-3 ${badgeConfig.color} text-white`}>
-                        {badgeConfig.label}
+                    {/* Badge */}
+                  
+                      <Badge className={`absolute top-3 left-3 text-white `}>
+                        Featured
                       </Badge>
+             
 
-                      {/* Quick Actions */}
-                      <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <Button size="sm" variant="secondary" className="h-8 w-8 p-0 rounded-full">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button size="sm" variant="secondary" className="h-8 w-8 p-0 rounded-full">
-                          <ShoppingCart className="h-4 w-4" />
-                        </Button>
-                      </div>
+                    {/* Quick Actions */}
+                    {/* <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Button size="sm" variant="secondary" className="h-8 w-8 p-0 rounded-full">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button size="sm" variant="secondary" className="h-8 w-8 p-0 rounded-full">
+                        <ShoppingCart className="h-4 w-4" />
+                      </Button>
+                    </div> */}
 
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
-                    </div>
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
                   </div>
+                </div>
 
                   <CardContent className="p-4">
                     {/* Category */}
@@ -169,26 +165,11 @@ export default function FeaturedProducts() {
                     </p>
 
                     {/* Product Name */}
-                    <Link href={`/single-product`} className="text-lg font-heading font-bold text-foreground mb-2 line-clamp-2 block">
+                    <Link href={`/products/${product.slug}`} className="text-lg font-heading font-bold text-foreground mb-2 line-clamp-2 block">
                       {product.title}
                     </Link>
 
-                    {/* Rating */}
-                    <div className="flex items-center mb-3">
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${
-                              i < Math.floor(rating) ? "text-yellow-400 fill-current" : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-muted-foreground ml-2">
-                        {rating.toFixed(1)} ({reviewCount})
-                      </span>
-                    </div>
+           
 
                     {/* Description */}
                     <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
@@ -197,14 +178,14 @@ export default function FeaturedProducts() {
 
                     {/* Features */}
                     {features.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-4">
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {features.slice(0, 3).map((feature, featureIndex) => (
-                          <span
-                            key={featureIndex}
-                            className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full"
-                          >
-                            {feature}
-                          </span>
+                       <li
+                        key={featureIndex}
+                        className="text-xs list-disc bg-muted text-muted-foreground ml-2 py-1 rounded-full"
+                      >
+                        {feature}
+                      </li >
                         ))}
                       </div>
                     )}
