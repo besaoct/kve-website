@@ -119,10 +119,7 @@ export default function ProductPage() {
 
             {/* Right: Info */}
             <ProductInfo
-              name={product.title}
-              sku={product.slug}
-              description={product.short_description}
-              price={product.formatted_price}
+              product={product}
               partnerText={dummyProductData.partnerText}
             />
           </div>

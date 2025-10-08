@@ -144,27 +144,27 @@ export default function ProductPage() {
             />
 
             {/* Right: Info */}
-            <ProductInfo
+            {/* <ProductInfo
               name={productData.name}
               sku={productData.sku}
               description={productData.description}
               rebate={productData.rebate}
               price={productData.price}
               partnerText={productData.partnerText}
-            />
+            /> */}
           </div>
 
           {/* Tabs */}
           <ProductTabs tabs={tabs} activeTab={activeTab} onTabClick={setActiveTab} />
 
           {/* Tab Content */}
-          <div className="mt-6">
+          {/* <div className="mt-6">
             {activeTab === "details" && <ProductDetails details={productData.details} />}
             {activeTab === "need" && <ProductAccessories accessories={productData.accessories} />}
             {activeTab === "specs" && <ProductSpecifications specifications={productData.specifications} />}
             {activeTab === "consumables" && <ProductPopular items={productData.consumables} />}
             {activeTab === "models" && <ProductRelated models={productData.relatedModels} />}
-          </div>
+          </div> */}
         </div>
       </main>
       <Footer />
