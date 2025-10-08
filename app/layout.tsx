@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 import {  Montserrat,} from "next/font/google"
 import "./globals.css"
 import CookieConsentBanner from "@/components/common/cookie-consent-banner"
+import { CartProvider } from "@/context/cart-context"
+import { Toaster } from "@/components/ui/sonner"
 
 const font = Montserrat({
   subsets: ["latin"]
@@ -24,7 +26,10 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/images/icons/logo-s.png" type="image/x-icon" />
       </head>
       <body  className={`${font.className} antialiased tabular-nums`}  cz-shortcut-listen="true">
-        {children}
+        <CartProvider>
+          {children}
+          <Toaster />
+        </CartProvider>
         <CookieConsentBanner/>
        </body>
     </html>

@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation"
 import { getNavbarHierarchy } from "@/data/api/nav"
 import type { Nav } from "@/data/api/nav/types"
 import type { SubCategory } from "@/data/api/category/types"
+import CartIcon from "@/components/cart/cart-icon"
 
 export default function Navigation() {
   const [isProductsOpen, setIsProductsOpen] = useState(false)
@@ -58,7 +59,7 @@ export default function Navigation() {
     <>
       <header className="bg-white border-b border-neutral-200 shadow-sm w-full">
         <nav className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-24 w-full">
+          <div className="flex items-center gap-4 justify-between h-24 w-full">
             {/* Logo */}
             <div className="flex items-center">
               <motion.div
@@ -73,10 +74,10 @@ export default function Navigation() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8 py-3 h-full">
+            <div className="hidden lg:flex items-center space-x-4 py-3 h-full overflow-x-auto  scrollbar-hide pr-4 ">
               {navigationData.mainNav.map((item) => (
                 <div key={item.name}
-                  className="relative group h-full flex items-center"
+                  className="relative group h-full flex items-center whitespace-nowrap"
                   onMouseEnter={() => item.hasDropdown ? setActiveDropdownMain(item.name) : null}
                   onMouseLeave={() => setActiveDropdownMain(null)}
                 >
@@ -119,6 +120,9 @@ export default function Navigation() {
                   Become a Partner
                 </Link>
               </Button>
+              <Link href="/cart">
+                <CartIcon />
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -234,6 +238,10 @@ export default function Navigation() {
                   {/* Footer Section */}
                   <div className="px-6 py-4 border-t border-neutral-100 bg-neutral-50">
                     <div className="text-center flex flex-col gap-2">
+                        <Link href="/cart" className="flex items-center justify-center gap-2 text-sm text-neutral-600 mb-2">
+                            <CartIcon />
+                            <span>View Cart</span>
+                        </Link>
                       <p className="text-sm text-neutral-600 mb-2">Need Help?</p>
                       <Button
                         variant="outline"
