@@ -58,7 +58,7 @@ export default function CheckoutPage() {
       <Navigation />
       <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="container max-w-7xl mx-auto lg:p-8">
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-8">Checkout</h1>
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-8">Enquiry Checkout</h1>
           {cartItems.length === 0 ? (
             <p className="text-center text-gray-500">Your cart is empty. Add some products to proceed.</p>
           ) : (
@@ -105,7 +105,7 @@ export default function CheckoutPage() {
               <div className="lg:w-full">
                 <Card className="bg-white p-6 rounded-lg shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-gray-900">Order Summary</CardTitle>
+                    <CardTitle className="text-xl font-semibold text-gray-900">Request Summary</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
@@ -124,16 +124,16 @@ export default function CheckoutPage() {
                               <p className="text-sm text-gray-500">Quantity: {quantity}</p>
                             </div>
                           </div>
-                          <p className="font-medium">{product.formatted_price}</p>
+                          {/* <p className="font-medium">{product.formatted_price}</p> */}
                         </div>
                       ))}
                     </div>
-                    <div className="mt-6 border-t pt-6">
+                    {/* <div className="mt-6 border-t pt-6">
                       <div className="flex justify-between font-bold text-lg">
                         <p>Total</p>
                         <p>₹{totalPrice.toFixed(2)}</p>
                       </div>
-                    </div>
+                    </div> */}
                   </CardContent>
                 </Card>
               </div>
