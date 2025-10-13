@@ -18,7 +18,7 @@ interface ProductRelatedProps {
 export default function ProductRelated({ models }: ProductRelatedProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {models.map((model, i) => (
+      {/* {models.map((model, i) => (
         <div
           key={i}
           className="border rounded-xl p-4 shadow-sm bg-white hover:shadow-md transition"
@@ -32,7 +32,7 @@ export default function ProductRelated({ models }: ProductRelatedProps) {
             <p className="text-xl font-bold">{model.price}</p>
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }

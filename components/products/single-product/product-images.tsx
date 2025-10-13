@@ -14,13 +14,13 @@ export default function ProductImages({
 }: ProductImagesProps) {
   return (
     <div>
-      <div className="border rounded-2xl p-4 shadow-sm bg-white">
+      <div className="border rounded-2xl p-4 shadow-sm bg-transparent">
         <Image
           src={selectedImage}
           alt="Product"
-          width={600}
-          height={600}
-          className="mx-auto rounded-lg aspect-square object-contain"
+          width={400}
+          height={400}
+          className="mx-auto rounded-lg w-full aspect-square object-cover"
         />
       </div>
       <div className="flex gap-4 mt-4 justify-start flex-wrap">

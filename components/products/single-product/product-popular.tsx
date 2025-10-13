@@ -15,7 +15,7 @@ interface ProductPopularProps {
 export default function ProductPopular({ items }: ProductPopularProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {items.map((item, i) => (
+      {/* {items.map((item, i) => (
         <div
           key={i}
           className="border rounded-xl p-4 shadow-sm bg-white hover:shadow-md transition"
@@ -24,7 +24,7 @@ export default function ProductPopular({ items }: ProductPopularProps) {
           <p className="font-medium mt-4">{item.name}</p>
           <p className="text-gray-500">{item.code}</p>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }
