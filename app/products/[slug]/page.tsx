@@ -12,14 +12,14 @@ import ProductSpecifications from "@/components/products/single-product/product-
 import ProductPopular from "@/components/products/single-product/product-popular";
 import ProductRelated from "@/components/products/single-product/product-related";
 import { getProduct} from "@/data/api/products";
-import type { Product } from "@/data/api/products/types";
+import type { Product, singleProductResponse } from "@/data/api/products/types";
 import { IMAGE_BASE_URL } from "@/data/api/config";
+import { Loader2 } from "lucide-react";
 
 
 
 // Dummy data for parts of the page that are not yet supported by the API
 const dummyProductData = {
-  partnerText: "KVE Business Partner?",
   accessories: [
     { name: "Utility Cart (150 cu ft Bottle Capacity)", code: "K520", image: "https://dummyimage.com/200x200/000/fff&text=K520" },
   ],
@@ -35,7 +35,8 @@ export default function ProductPage() {
   const params = useParams();
   const { slug } = params;
 
-  const [product, setProduct] = useState<Product | null>(null);
+  const [productRes, setProductRes] = useState<singleProductResponse | null>(null);
+  const [product, setProduct] = useState<Product | null>(productRes ? productRes.product : null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,9 +52,10 @@ export default function ProductPage() {
         // if (products.length === 0) {
         //   notFound();
         // }
-        const detailedProduct = await getProduct(slug as string);
-        console.log("Detailed product from component:", detailedProduct);
-        setProduct(detailedProduct);
+        const detailedProductRes = await getProduct(slug as string);
+        console.log("Detailed product from component:", detailedProductRes);
+        setProductRes(detailedProductRes);
+        setProduct(detailedProductRes.product);
       } catch (err) {
         setError("Failed to fetch product data.");
         console.error(err);
@@ -68,7 +70,7 @@ export default function ProductPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+        <Loader2 className="animate-spin text-red-500 h-12 w-12"/>
       </div>
     );
   }
@@ -95,7 +97,7 @@ export default function ProductPage() {
   
   const getFullImageUrl = (path: string) => path.startsWith('http') ? path : IMAGE_BASE_URL + path;
 
-  const productImages = product.images.map(img => getFullImageUrl(img.image_path));
+  const productImages = (product.images || []).map(img => getFullImageUrl(img.image_path));
 
 
   const firstImage = productImages.length > 0 ? productImages[0] : 'https://dummyimage.com/600x600/e0e0e0/000&text=No+Image';
@@ -120,7 +122,7 @@ export default function ProductPage() {
             {/* Right: Info */}
             <ProductInfo
               product={product}
-              partnerText={dummyProductData.partnerText}
+              partnerText={product.partner?.label || ''}
             />
           </div>
 
@@ -134,7 +136,7 @@ export default function ProductPage() {
               
             />}
             {activeTab === "specs" && <ProductSpecifications specifications={product.specifications} />}
-            {activeTab === "need" && <ProductAccessories accessories={dummyProductData.accessories} />}
+            {activeTab === "need" && <ProductAccessories accessories={productRes?.you_may_also_need} />}
             {activeTab === "consumables" && <ProductPopular items={dummyProductData.consumables} />}
             {activeTab === "models" && <ProductRelated models={dummyProductData.relatedModels} />}
           </div>

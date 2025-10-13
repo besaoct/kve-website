@@ -107,17 +107,7 @@ export default function FeaturedProducts() {
             // const rating = getMockRating(product.id)
             // const reviewCount = getMockReviewCount(product.id)
             
-            // Extract features from hierarchy
-            const features = []
-            if (product.segment?.title) features.push(product.segment.title)
-            if (product.sub_segment?.title) features.push(product.sub_segment.title)
-            if (product.sub_category?.title) features.push(product.sub_category.title)
-
-            // Calculate discount
-            const price = parseFloat(product.price)
-            const originalPrice = price * 1.2 // Mock original price (20% higher)
-            const discount = Math.round(((originalPrice - price) / originalPrice) * 100)
-
+       
             return (
               <motion.div
                 key={product.id}
@@ -158,59 +148,50 @@ export default function FeaturedProducts() {
                   </div>
                 </div>
 
-                  <CardContent className="p-4">
+                  <CardContent className="p-4 flex flex-col h-64">
                     {/* Category */}
-                    <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wide">
+                    <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wide line-clamp-1">
                       {product.category?.title || "Product"}
                     </p>
 
                     {/* Product Name */}
-                    <Link href={`/products/${product.slug}`} className="text-lg font-heading font-bold text-foreground mb-2 line-clamp-2 block">
+                    <Link href={`/products/${product.slug}`} className="text-lg font-heading font-bold text-foreground mb-2 line-clamp-1 block">
                       {product.title}
                     </Link>
 
            
 
                     {/* Description */}
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-1">
                       {product.short_description || "High-quality industrial equipment for professional use."}
                     </p>
 
                     {/* Features */}
-                    {features.length > 0 && (
+                    {product.features.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {features.slice(0, 3).map((feature, featureIndex) => (
-                       <li
+                        {product.features.slice(0, 3).map((feature, featureIndex) => (
+                        <li
                         key={featureIndex}
-                        className="text-xs list-disc bg-muted text-muted-foreground ml-2 py-1 rounded-full"
-                      >
-                        {feature}
-                      </li >
+                        className="text-xs bg-muted text-muted-foreground ml-2 py-0 rounded-full flex items-center"
+                        >
+                        <span className="w-1 h-1 bg-primary rounded-full mr-1"></span>
+                        <span className="line-clamp-1">{feature}</span>
+                        </li>
                         ))}
                       </div>
                     )}
 
                     {/* Price */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-foreground">
-                          {product.formatted_price || `₹${product.price}`}
-                        </span>
-                        {discount > 0 && (
-                          <span className="text-sm text-muted-foreground line-through">
-                            ₹{originalPrice.toFixed(2)}
-                          </span>
-                        )}
+                    {/* {product.price && (
+                      <div className="flex items-center mb-4">
+                      <span className="text-lg font-bold text-foreground">
+                        {product.formatted_price || `₹${product.price}`}
+                      </span>
                       </div>
-                      {discount > 0 && (
-                        <Badge variant="outline" className="text-xs">
-                          Save {discount}%
-                        </Badge>
-                      )}
-                    </div>
+                    )} */}
 
                     {/* CTA Buttons */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-auto">
                       <Button className="flex-1" size="sm">
                         <ShoppingCart className="h-4 w-4 mr-2" />
                         Add to Cart

@@ -201,13 +201,16 @@ export default function Page() {
             <div key={category.id}>
               <label className="flex items-start space-x-2 cursor-pointer">
                 <input
-                  className="accent-red-600"
+                  className="accent-red-600 "
                   type="checkbox"
                   checked={selectedCategories.includes(category.id)}
                   onChange={() => handleCategoryChange(category.id)}
                 />
-                <span className="text-sm -mt-1">
-                  {category.title} ({category.products_count})
+                <span className="text-sm -mt-1 w-full gap-2 flex justify-start">
+                   <span className="max-w-[300px] line-clamp-1">  {category.title} </span>
+                  <span className="">
+                       ({category.products_count})
+                  </span>
                 </span>
               </label>
             </div>
@@ -229,7 +232,7 @@ export default function Page() {
                     checked={selectedSubCategories.includes(sub.id)}
                     onChange={() => handleSubCategoryChange(sub.id)}
                   />
-                  <span className="text-sm -mt-1">{sub.title}</span>
+                  <span className="text-sm -mt-1 ">{sub.title}</span>
                 </label>
               </div>
             ))}
@@ -366,7 +369,7 @@ export default function Page() {
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                       className="border-0 rounded-lg p-0 flex items-center flex-col sm:flex-row gap-8 relative"
                   >
-                      {/* {product.sustainable && ( */}
+                      {product.is_sustainable && (
                       <div className="absolute top-2 right-2">
                         <Image
                           src="/images/icons/leaf.svg"
@@ -375,7 +378,7 @@ export default function Page() {
                           height={24}
                         />
                       </div>
-                    {/* )} */}
+                    )}
 
                     {/* Product Image */}
                      <div className="w-full sm:w-1/3">
@@ -389,9 +392,13 @@ export default function Page() {
                             className="w-full h-auto rounded-lg object-cover"
                           />
                         ) : (
-                          <div className="w-full h-48 bg-neutral-200 rounded-lg flex items-center justify-center">
-                            <span className="text-6xl">📦</span>
-                          </div>
+                        <Image
+                            src={"/placeholder.svg"}
+                            alt={product.title}
+                            width={500}
+                            height={300}
+                            className="w-full h-auto rounded-lg object-cover"
+                          />
                         )}
                       </Link>
                     </div>
@@ -412,17 +419,29 @@ export default function Page() {
                         </Link>
 
                         {/* Hierarchy Breadcrumb */}
-                        {product.hierarchy && (
+                        {/* {product.hierarchy && (
                           <p className="text-sm text-neutral-500 mb-3">
                             {product.hierarchy.category} / {product.hierarchy.sub_category}
                             {product.hierarchy.segment && ` / ${product.hierarchy.segment}`}
                           </p>
-                        )}
+                        )} */}
 
                         {/* Description */}
                         <p className="text-neutral-600 mb-4 line-clamp-2">
                           {product.short_description || "High-quality industrial equipment for professional use."}
                         </p>
+
+                        {/* Features */}
+                        {product.features && product.features.length > 0 && (
+                          <div className="mb-4">
+                            <h4 className="font-semibold text-sm mb-2">Features:</h4>
+                            <ul className="list-disc list-inside text-sm text-neutral-600">
+                              {product.features.slice(0, 3).map((feature, index) => (
+                                <li key={index}>{feature}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
                         {/* Features/Tags */}
                         <div className="flex flex-wrap gap-2 mb-4">
@@ -439,13 +458,16 @@ export default function Page() {
                         </div>
                       </div>
 
-                      {/* Price and CTA */}
                       <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t">
-                        <div>
-                          <span className="text-3xl font-bold text-neutral-900">
-                            {product.formatted_price || `₹${product.price}`}
-                          </span>
-                        </div>
+                        {product.price ? (
+                          <div>
+                            <span className="text-3xl font-bold text-neutral-900">
+                              {product.formatted_price}
+                            </span>
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
                         <div className="flex gap-3">
                           <Button asChild >
                             <Link href={`/products/${product.slug}`}>
