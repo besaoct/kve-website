@@ -71,7 +71,7 @@ export default function CartPage() {
                         </div>
                         <p className="text-gray-600 text-sm line-clamp-2 mt-1">{product.short_description}</p>
                         <div className="flex items-center gap-4 mt-4">
-                          <span className="text-xl font-bold text-red-600">{product.formatted_price}</span>
+                          {/* <span className="text-xl font-bold text-red-600">{product.formatted_price}</span> */}
                           <div className="flex items-center">
                             <Button
                               variant="outline"
@@ -108,20 +108,20 @@ export default function CartPage() {
               {/* Right side: Cart Totals */}
               <div className="lg:w-1/4">
                 <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Cart Totals</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Cart Summary</h2>
                   <ul className="space-y-3">
                     <li className="flex justify-between text-gray-700">
-                      <span>Subtotal</span>
-                      <span>₹{totalPrice.toFixed(2)}</span>
+                        <span>Subtotal Items</span>
+                        <span className=""> {cartItems.reduce((total, item) => total + item.quantity, 0)} </span>
                     </li>
                     <li className="flex justify-between text-gray-700">
-                      <span>Shipping</span>
-                      <span>Free</span>
+                        <span>Categories</span>
+                        <span>{cartItems.length}</span>
                     </li>
-                    <li className="flex justify-between text-gray-900 font-bold text-lg border-t pt-4 mt-2">
+                    {/* <li className="flex justify-between text-gray-900 font-bold text-lg border-t pt-4 mt-2">
                       <span>Total</span>
                       <span>₹{totalPrice.toFixed(2)}</span>
-                    </li>
+                    </li> */}
                   </ul>
                   <div className="mt-6">
                     <Button
@@ -129,7 +129,7 @@ export default function CartPage() {
                       disabled={cartItems.length === 0}
                       className="w-full bg-red-600 hover:bg-red-700"
                     >
-                      Proceed to Checkout
+                      Continue Enquiry
                     </Button>
                   </div>
                 </div>

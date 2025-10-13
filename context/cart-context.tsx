@@ -84,7 +84,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   const totalPrice = cartItems.reduce((total, item) => {
-    const price = parseFloat(item.product.price);
+    const price = parseFloat(item.product.price ? item.product.price : '0');
     return total + price * item.quantity;
   }, 0);
 
