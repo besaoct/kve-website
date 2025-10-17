@@ -10,7 +10,13 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">DETAILS</h2>
-      <div className="prose max-w-full *:!font-['Montserrat']" dangerouslySetInnerHTML={{ __html: product.product_details }} />
+      <div className="
+      prose max-w-full *:!font-['Montserrat']
+      prose-p:m-0 prose-li:p-0 prose-li:m-0 prose-ul:mt-1.5
+      prose-headings:m-0
+       prose-h3:!text-base prose-h3:!font-inherit
+      prose-li:marker:text-inherit
+      " dangerouslySetInnerHTML={{ __html: product.product_details }} />
 
       {/* Features */}
       {product.features && product.features.length > 0 && (
