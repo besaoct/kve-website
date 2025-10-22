@@ -435,9 +435,21 @@ export default function Page() {
                         {product.features && product.features.length > 0 && (
                           <div className="mb-4">
                             <h4 className="font-semibold text-sm mb-2">Features:</h4>
-                            <ul className="list-disc list-inside text-sm text-neutral-600">
+                            <ul className="pl-0 space-y-1 text-sm text-neutral-600">
                               {product.features.slice(0, 3).map((feature, index) => (
-                                <li key={index}>{feature}</li>
+                                <li key={index} className="flex items-start gap-2">
+                                  <svg
+                                    className="flex-shrink-0 text-neutral-500 mt-1"
+                                    width="4"
+                                    height="4"
+                                    viewBox="0 0 4 4"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <circle cx="4" cy="4" r="4" />
+                                  </svg>
+                                  <span className="line-clamp-1">{feature}</span>
+                                </li>
                               ))}
                             </ul>
                           </div>
