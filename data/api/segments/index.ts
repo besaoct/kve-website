@@ -15,6 +15,15 @@ export const getSegments = async (
   return result.data.data;
 };
 
+export const getAllSegments = async (perPage = 1000): Promise<Segment[]> => {
+  const response = await fetch(
+    `${API_BASE_URL}/segments?per_page=${perPage}`,
+    requestOptions
+  );
+  const result = await response.json();
+  return result.data.data;
+};
+
 export const getSegment = async (id: number): Promise<Segment> => {
   const response = await fetch(
     `${API_BASE_URL}/segments/${id}`,
@@ -35,18 +44,14 @@ export const getSegmentSubSegments = async (
   return result.data;
 };
 
-export const getAllSubSegments = async (
-  categoryId: number,
-  subCategoryId: number,
-  perPage = 20
-): Promise<SubSegment[]> => {
+export const getSubSegments = async (params: any): Promise<any[]> => {
   const response = await fetch(
-    `${API_BASE_URL}/sub-segments?category_id=${categoryId}&sub_category_id=${subCategoryId}&per_page=${perPage}`,
+    `${API_BASE_URL}/sub-segments?segment_id=${params.segment_id}&per_page=${params.per_page}`,
     requestOptions
   );
   const result = await response.json();
   return result.data.data;
-};
+}
 
 export const getSubSegment = async (id: number): Promise<SubSegment> => {
   const response = await fetch(

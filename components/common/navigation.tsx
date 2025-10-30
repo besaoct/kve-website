@@ -182,7 +182,7 @@ export default function Navigation() {
                             </button>
                           ) : (
                             <Link
-                              href={item.href || "#"}
+                              href={`${item.href}` || "#"}
                               className="block px-4 py-3 rounded-lg text-base font-medium text-neutral-700 hover:text-red-600 hover:bg-neutral-50 transition-colors"
                               onClick={() => setIsMobileMenuOpen(false)}
                             >
@@ -217,7 +217,7 @@ export default function Navigation() {
                                       {category.sub_categories?.map((subcategory) => (
                                         <Link
                                           key={subcategory.id}
-                                          href={subcategory.url || "#"}
+                                          href={`/products?categories=${category.id}&sub_categories=${subcategory.id}` || "#"}
                                           className="block px-3 py-2 text-xs text-neutral-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                           onClick={() => setIsMobileMenuOpen(false)}
                                         >
@@ -352,7 +352,7 @@ export default function Navigation() {
                             {hoveredCategory.sub_categories?.map((subcategory) => (
                               <Link
                                 key={subcategory.id}
-                                href={subcategory.url || '#'}
+                                href={`/products?categories=${hoveredCategory.id}&sub_categories=${subcategory.id}` || '#'}
                                 className={`block px-4 py-2 text-neutral-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium ${hoveredSubCategory?.id === subcategory.id ? "bg-red-50 text-red-600" : ""}`}
                                 onMouseEnter={() => setHoveredSubCategory(subcategory)}
                               >
@@ -377,7 +377,7 @@ export default function Navigation() {
                             {hoveredSubCategory.segments?.slice(0, 10).map((segment) => (
                               <Link
                                 key={segment.id}
-                                href={`/products?segment_id=${segment.id}`}
+                                href={`/products?categories=${hoveredCategory? hoveredCategory.id: ''}&sub_categories=${hoveredSubCategory.id}&segments=${segment.id}`}
                                 className="block px-4 py-2 text-sm text-neutral-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                               >
                                 {segment.title}

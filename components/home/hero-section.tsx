@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { FaTools, FaCalculator, FaShieldAlt, FaCogs, FaLightbulb, FaUsers } from 'react-icons/fa';
 import Link from "next/link"
+import CategoryHeroSection from "../category-hero/hero-section"
 
 const heroSlides = [
   {
@@ -276,6 +277,10 @@ export default function HeroSection() {
     </div>
 
     </div>
+
+             <CategoryHeroSection/> 
+    
+
       <div className="bg-white py-16 border-b border-neutral-100">
         <div className="container mx-auto px-4">
           <motion.div
