@@ -4,7 +4,7 @@ import Hero from "@/components/products/hero";
 import Navigation from "@/components/common/navigation";
 import Footer from "@/components/common/footer";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -25,29 +25,34 @@ import { Filter, Search, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { getProducts, getFeaturedProducts } from "@/data/api/products";
-import { getCategories } from "@/data/api/category";
+import { useSearchParams, useRouter } from "next/navigation";
+import { getProducts } from "@/data/api/products";
+import { getNavbarHierarchy } from "@/data/api/nav";
+import type { Nav } from "@/data/api/nav/types";
 import type { Product } from "@/data/api/products/types";
-import type { Category } from "@/data/api/category/types";
 import { useCart } from "@/context/cart-context";
 import { toast } from "sonner";
 
 
 const PRODUCTS_PER_PAGE = 12;
 
-export default function Page() {
+function PageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   // State for filters and search
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("created_at-desc");
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>([]);
   const [selectedSegments, setSelectedSegments] = useState<number[]>([]);
+  const [selectedSubSegments, setSelectedSubSegments] = useState<number[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   
   // State for API data
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Nav[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
 
@@ -56,18 +61,38 @@ export default function Page() {
 
 
 
-  // Fetch categories on mount
+  // Fetch all data on mount
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchAllData = async () => {
       try {
-        const data = await getCategories(100); // Get all categories
-        setCategories(data);
+        const categoriesData = await getNavbarHierarchy();
+        setCategories(categoriesData);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchCategories();
+    fetchAllData();
   }, []);
+
+  // Update state from URL search params
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    setSearchTerm(params.get("search") || "");
+    setSortOption(params.get("sort") || "created_at-desc");
+    setSelectedCategories(
+      params.get("categories")?.split(",").map(Number).filter(Boolean) || []
+    );
+    setSelectedSubCategories(
+      params.get("sub_categories")?.split(",").map(Number).filter(Boolean) || []
+    );
+    setSelectedSegments(
+      params.get("segments")?.split(",").map(Number).filter(Boolean) || []
+    );
+    setSelectedSubSegments(
+      params.get("sub_segments")?.split(",").map(Number).filter(Boolean) || []
+    );
+    setCurrentPage(Number(params.get("page")) || 1);
+  }, [searchParams]);
 
   // Fetch products with filters
   useEffect(() => {
@@ -87,9 +112,10 @@ export default function Page() {
 
         // Add filters
         if (searchTerm) params.search = searchTerm;
-        if (selectedCategories.length === 1) params.category_id = selectedCategories[0];
-        if (selectedSubCategories.length === 1) params.sub_category_id = selectedSubCategories[0];
-        if (selectedSegments.length === 1) params.segment_id = selectedSegments[0];
+        if (selectedCategories.length > 0) params.category_id = selectedCategories.join(",");
+        if (selectedSubCategories.length > 0) params.sub_category_id = selectedSubCategories.join(",");
+        if (selectedSegments.length > 0) params.segment_id = selectedSegments.join(",");
+        if (selectedSubSegments.length > 0) params.sub_segment_id = selectedSubSegments.join(",");
 
         const data = await getProducts(params);
         setProducts(data);
@@ -103,37 +129,54 @@ export default function Page() {
     };
 
     fetchProducts();
-  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, currentPage]);
+  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments, currentPage]);
 
-  // Get available subcategories based on selected categories
+  // Update URL search params when filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (searchTerm) params.set("search", searchTerm);
+    if (sortOption !== "created_at-desc") params.set("sort", sortOption);
+    if (selectedCategories.length > 0) params.set("categories", selectedCategories.join(","));
+    if (selectedSubCategories.length > 0) params.set("sub_categories", selectedSubCategories.join(","));
+    if (selectedSegments.length > 0) params.set("segments", selectedSegments.join(","));
+    if (selectedSubSegments.length > 0) params.set("sub_segments", selectedSubSegments.join(","));
+    if (currentPage > 1) params.set("page", currentPage.toString());
+
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments, currentPage, router]);
+
   const availableSubCategories = useMemo(() => {
     if (selectedCategories.length === 0) return [];
-    
     return categories
-      .filter((cat) => selectedCategories.includes(cat.id))
-      .flatMap((cat) => cat.sub_categories || []);
+      .filter(cat => selectedCategories.includes(cat.id))
+      .flatMap(cat => cat.sub_categories || []);
   }, [selectedCategories, categories]);
 
-  // Get available segments based on selected subcategories
   const availableSegments = useMemo(() => {
     if (selectedSubCategories.length === 0) return [];
-    
     return availableSubCategories
-      .filter((sub) => selectedSubCategories.includes(sub.id))
-      .flatMap((sub) => sub.segments || []);
+      .filter(sub => selectedSubCategories.includes(sub.id))
+      .flatMap(sub => sub.segments || []);
   }, [selectedSubCategories, availableSubCategories]);
+
+  const availableSubSegments = useMemo(() => {
+    if (selectedSegments.length === 0) return [];
+    return availableSegments
+      .filter(seg => selectedSegments.includes(seg.id))
+      .flatMap(seg => seg.sub_segments || []);
+  }, [selectedSegments, availableSegments]);
 
   const handleCategoryChange = (categoryId: number) => {
     setSelectedCategories((prev) => {
       const newSelection = prev.includes(categoryId)
         ? prev.filter((c) => c !== categoryId)
         : [...prev, categoryId];
-      
-      // Reset subcategories and segments when categories change
-      if (!newSelection.includes(categoryId)) {
-        setSelectedSubCategories([]);
-        setSelectedSegments([]);
-      }
+
+      // Reset sub-selections
+      setSelectedSubCategories([]);
+      setSelectedSegments([]);
+      setSelectedSubSegments([]);
       
       return newSelection;
     });
@@ -146,10 +189,9 @@ export default function Page() {
         ? prev.filter((s) => s !== subCategoryId)
         : [...prev, subCategoryId];
       
-      // Reset segments when subcategories change
-      if (!newSelection.includes(subCategoryId)) {
-        setSelectedSegments([]);
-      }
+      // Reset sub-selections
+      setSelectedSegments([]);
+      setSelectedSubSegments([]);
       
       return newSelection;
     });
@@ -157,10 +199,24 @@ export default function Page() {
   };
 
   const handleSegmentChange = (segmentId: number) => {
-    setSelectedSegments((prev) =>
-      prev.includes(segmentId)
+    setSelectedSegments((prev) => {
+      const newSelection = prev.includes(segmentId)
         ? prev.filter((s) => s !== segmentId)
-        : [...prev, segmentId]
+        : [...prev, segmentId];
+
+      // Reset sub-selections
+      setSelectedSubSegments([]);
+
+      return newSelection;
+    });
+    setCurrentPage(1);
+  };
+
+  const handleSubSegmentChange = (subSegmentId: number) => {
+    setSelectedSubSegments((prev) =>
+      prev.includes(subSegmentId)
+        ? prev.filter((s) => s !== subSegmentId)
+        : [...prev, subSegmentId]
     );
     setCurrentPage(1);
   };
@@ -179,6 +235,7 @@ export default function Page() {
     setSelectedCategories([]);
     setSelectedSubCategories([]);
     setSelectedSegments([]);
+    setSelectedSubSegments([]);
     setSearchTerm("");
     setCurrentPage(1);
   };
@@ -187,7 +244,7 @@ export default function Page() {
     <div className="flex flex-col gap-6 lg:sticky lg:top-24">
      
       {/* Clear Filters */}
-      {(selectedCategories.length > 0 || selectedSubCategories.length > 0 || selectedSegments.length > 0) && (
+      {(selectedCategories.length > 0 || selectedSubCategories.length > 0 || selectedSegments.length > 0 || selectedSubSegments.length > 0) && (
         <Button variant="outline" onClick={clearFilters} className="w-full">
           Clear All Filters
         </Button>
@@ -256,6 +313,30 @@ export default function Page() {
                   />
                   <span className="text-sm">
                     {segment.title} ({segment.products_count})
+                  </span>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Sub-Segments */}
+      {availableSubSegments.length > 0 && (
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Sub-Segments</h3>
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+            {availableSubSegments.map((subSegment) => (
+              <div key={subSegment.id}>
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="accent-red-600"
+                    checked={selectedSubSegments.includes(subSegment.id)}
+                    onChange={() => handleSubSegmentChange(subSegment.id)}
+                  />
+                  <span className="text-sm">
+                    {subSegment.title} ({subSegment.products_count})
                   </span>
                 </label>
               </div>
@@ -455,7 +536,7 @@ export default function Page() {
                           </div>
                         )}
 
-                        {/* Features/Tags */}
+                        {/* segments and subsegment */}
                         <div className="flex flex-wrap gap-2 mb-4">
                           {product.segment?.title && (
                             <span className="text-xs bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full">
@@ -533,5 +614,13 @@ export default function Page() {
       </div>
       <Footer />
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageContent />
+    </Suspense>
   );
 }

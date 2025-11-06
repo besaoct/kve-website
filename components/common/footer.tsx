@@ -12,6 +12,7 @@ import {FaFacebook, FaLinkedin, FaTwitter, FaYoutube} from "react-icons/fa"
 
 import LogoHorizontal from "./logo/logo-h";
 import Link from "next/link";
+import { contactData } from "@/data/dummy/contactData";
 
 const footerSections = [
     {
@@ -151,18 +152,18 @@ export default function Footer() {
               <div className="space-y-3 mb-6">
                 <div className="flex items-center">
                   <Phone className="h-4 w-4 text-red-600 mr-3" />
-                  <span className="text-neutral-300">+1 (555) 123-4567</span>
+                  <span className="text-neutral-300">+91 9313939803</span>
                 </div>
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 text-red-600 mr-3" />
                   <span className="text-neutral-300">
-                    info@kve-industrial.com
+               {contactData.email.address}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 text-red-600 mr-3" />
                   <span className="text-neutral-300">
-                    123 Industrial Blvd, Manufacturing City, MC 12345
+                    {contactData.address.street}
                   </span>
                 </div>
               </div>
