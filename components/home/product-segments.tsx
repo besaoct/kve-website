@@ -9,20 +9,20 @@ import { Card, CardContent } from "@/components/ui/card"
 const productSegments = [
   {
     id: 1,
-    title: "Welding Equipment",
+    title: "Welding, Cutting & Air Cleaning Equipment",
     description: "Advanced welding machines and systems for precision industrial applications",
     icon: Zap,
     image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
-    features: ["MIG/TIG Systems", "Stick Welders", "Multi-Process Units"],
+    features: ["Welding Equipment", "Cutting & Gouging systems", "GAS manifold & Distribution systems"],
     color: "from-primary to-primary/80",
   },
   {
     id: 2,
-    title: "Filler Metals",
+    title: "Construction Chemicals",
     description: "Comprehensive range of electrodes, wires, and rods for superior weld quality",
     icon: Factory,
-    image: "https://images.pexels.com/photos/32200455/pexels-photo-32200455.jpeg",
-    features: ["Stick Electrodes", "MIG/TIG Wires", "Flux-Cored Wires"],
+    image: "https://condura.co.in/wp-content/uploads/2020/08/Engineering-Construction-01.jpg",
+    features: ["Floor coatings Systems", "Liquid Membranes/ HDPE/ PU/ Hybrid PU / APP/ Bitumen Waterproofing Solutions", "Refurbishment & Structural Restoration"],
     color: "from-secondary to-secondary/80",
   },
   {
@@ -121,26 +121,29 @@ export default function ProductSegments() {
                 </div>
 
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-heading font-bold text-foreground mb-3">{segment.title}</h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">{segment.description}</p>
+                  <h3 className="text-xl font-heading font-bold text-foreground mb-3 line-clamp-1">{segment.title}</h3>
+                  <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-2">{segment.description}</p>
 
                   {/* Features */}
                   <div className="space-y-2">
                     {segment.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center text-sm text-muted-foreground">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
+                      <div key={featureIndex} className="flex items-center text-sm text-muted-foreground ">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 " />
+                        <span className="line-clamp-1">
+
                         {feature}
+                        </span>
                       </div>
                     ))}
                   </div>
 
                   {/* CTA */}
-                  <div className="mt-6 pt-4 border-t border-border">
+                  {/* <div className="mt-6 pt-4 border-t border-border">
                     <button className="text-[#D2A564] hover:text-[#D2A564]/80 font-medium text-sm flex items-center group/btn">
                       Learn More
                       <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                     </button>
-                  </div>
+                  </div> */}
                 </CardContent>
               </Card>
             </motion.div>

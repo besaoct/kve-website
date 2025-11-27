@@ -4,7 +4,7 @@ import React from 'react'
 const LogoHorizontal = () => {
   return (
     <Image
-     src={"/images/icons/logo-s.png"}
+     src={"/images/icons/logo-t.png"}
      width={100}
      height={100}
      alt='logo'

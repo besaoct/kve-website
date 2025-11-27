@@ -57,9 +57,9 @@ export default function Navigation() {
 
   return (
     <>
-      <header className="bg-white border-b border-neutral-200 shadow-sm w-full">
+      <header className="bg-white sm:border-b sm:border-neutral-200 sm:shadow-sm w-full">
         <nav className="container mx-auto px-4">
-          <div className="flex items-center gap-4 justify-between h-24 w-full">
+          <div className="flex items-center gap-4 justify-between h-28 sm:h-36 w-full">
             {/* Logo */}
             <div className="flex items-center">
               <motion.div
@@ -67,7 +67,7 @@ export default function Navigation() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-2xl font-serif font-bold text-red-600"
               >
-                <Link href={'/'} className="block w-[240px] sm:w-[320px] -ml-4">
+                <Link href={'/'} className="block w-[120px] sm:w-[180px]">
                   <LogoHorizontal/>
                 </Link>
               </motion.div>
@@ -136,7 +136,7 @@ export default function Navigation() {
               <SheetContent side="right" className="w-full sm:w-80 p-0">
                 <SheetHeader className="px-6 py-4 h-16 border-b border-neutral-200">
                   <SheetTitle className="text-left h-12 text-xl font-serif font-bold text-red-600">
-                    <Link href={'/'} className="block w-[150px]">
+                    <Link href={'/'} className="block w-[60px]">
                       <LogoHorizontal/>
                     </Link>
                   </SheetTitle>
@@ -166,7 +166,7 @@ export default function Navigation() {
 
                   {/* Sub Navigation with API data */}
                   <div className="flex-1 px-6 py-4">
-                    <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wide mb-3">Categories</h3>
+                    <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wide mb-3">Divisions</h3>
                     <div className="space-y-1">
                       {navigationData.subNav.map((item) => (
                         <div key={item.name}>
@@ -312,7 +312,7 @@ export default function Navigation() {
                   <div className="grid grid-cols-3 gap-8">
                     {/* Left Column - Categories from API */}
                     <div className="border-r border-neutral-200 pr-6">
-                      <h3 className="font-semibold text-neutral-900 mb-2 text-sm uppercase tracking-wide">Categories</h3>
+                      <h3 className="font-semibold text-neutral-900 mb-2 text-sm uppercase tracking-wide">Divisions</h3>
                       <div className="border-b-2 border-primary w-[15%] mb-4"/>
                       <div className="space-y-1">
                         {categories.map((category) => (
@@ -331,6 +331,24 @@ export default function Navigation() {
                             />
                           </button>
                         ))}
+
+
+                        {/* <button
+                           
+                            className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center justify-between group ${
+                              hoveredCategory?.id === category.id
+                                ? "bg-red-50 text-red-600 border-l-4 border-red-600"
+                                : "text-neutral-700 hover:bg-neutral-50 hover:text-red-600"
+                            }`}
+                            // onMouseEnter={() => setHoveredCategory(category)}
+                          >
+                            <span className="font-medium">{category.title}</span>
+                            <ChevronRight
+                              className={`h-4 w-4 transition-transform ${hoveredCategory?.id === category.id ? "text-red-600" : "text-neutral-400"}`}
+                            />
+                          </button> */}
+
+
                         <Button asChild variant={'link'}>
                           <Link href={'/products'}>
                             View all Products

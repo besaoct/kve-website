@@ -33,7 +33,6 @@ import type { Product } from "@/data/api/products/types";
 import { useCart } from "@/context/cart-context";
 import { toast } from "sonner";
 
-
 const PRODUCTS_PER_PAGE = 12;
 
 function PageContent() {
@@ -44,22 +43,21 @@ function PageContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("created_at-desc");
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>(
+    []
+  );
   const [selectedSegments, setSelectedSegments] = useState<number[]>([]);
   const [selectedSubSegments, setSelectedSubSegments] = useState<number[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   // State for API data
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Nav[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
 
-
-   const { cartItems, addToCart } = useCart();
-
-
+  const { cartItems, addToCart } = useCart();
 
   // Fetch all data on mount
   useEffect(() => {
@@ -95,41 +93,72 @@ function PageContent() {
   }, [searchParams]);
 
   // Fetch products with filters
+  // FETCH PRODUCTS — This version works perfectly on hard refresh
   useEffect(() => {
+    let isCancelled = false;
+
     const fetchProducts = async () => {
+      if (!categories.length) return; // wait for categories to be loaded
+
       try {
         setIsLoading(true);
-        
-        // Parse sort option
+
         const [sortBy, sortOrder] = sortOption.split("-") as [string, "asc" | "desc"];
-        
-        const params: any = {
-          per_page: PRODUCTS_PER_PAGE,
-          page: currentPage,
+
+        const params: Record<string, string> = {
+          per_page: PRODUCTS_PER_PAGE.toString(),
+          page: currentPage.toString(),
           sort_by: sortBy,
           sort_order: sortOrder,
         };
 
-        // Add filters
         if (searchTerm) params.search = searchTerm;
-        if (selectedCategories.length > 0) params.category_id = selectedCategories.join(",");
-        if (selectedSubCategories.length > 0) params.sub_category_id = selectedSubCategories.join(",");
-        if (selectedSegments.length > 0) params.segment_id = selectedSegments.join(",");
-        if (selectedSubSegments.length > 0) params.sub_segment_id = selectedSubSegments.join(",");
+        if (selectedCategories.length > 0)
+          params.category_id = selectedCategories.join(",");
+        if (selectedSubCategories.length > 0)
+          params.sub_category_id = selectedSubCategories.join(",");
+        if (selectedSegments.length > 0)
+          params.segment_id = selectedSegments.join(",");
+        if (selectedSubSegments.length > 0)
+          params.sub_segment_id = selectedSubSegments.join(",");
 
-        const data = await getProducts(params);
-        setProducts(data);
-        setTotalProducts(data.length);
+        const response = await getProducts(params);
+
+        // Important: your API must return { data: Product[], total: number }
+        // If it doesn't → adjust accordingly
+        if (!isCancelled) {
+          setProducts(response);        // fallback for old format
+          setTotalProducts( response.length);
+        }
       } catch (error) {
-        console.error("Error fetching products:", error);
-        setProducts([]);
+        if (!isCancelled) {
+          console.error("Error fetching products:", error);
+          setProducts([]);
+          setTotalProducts(0);
+        }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchProducts();
-  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments, currentPage]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [
+    searchTerm,
+    sortOption,
+    selectedCategories,
+    selectedSubCategories,
+    selectedSegments,
+    selectedSubSegments,
+    currentPage,
+    categories.length, // ← ensures we don’t fetch before hierarchy is ready
+  ]);
+
 
   // Update URL search params when filters change
   useEffect(() => {
@@ -137,34 +166,47 @@ function PageContent() {
 
     if (searchTerm) params.set("search", searchTerm);
     if (sortOption !== "created_at-desc") params.set("sort", sortOption);
-    if (selectedCategories.length > 0) params.set("categories", selectedCategories.join(","));
-    if (selectedSubCategories.length > 0) params.set("sub_categories", selectedSubCategories.join(","));
-    if (selectedSegments.length > 0) params.set("segments", selectedSegments.join(","));
-    if (selectedSubSegments.length > 0) params.set("sub_segments", selectedSubSegments.join(","));
+    if (selectedCategories.length > 0)
+      params.set("categories", selectedCategories.join(","));
+    if (selectedSubCategories.length > 0)
+      params.set("sub_categories", selectedSubCategories.join(","));
+    if (selectedSegments.length > 0)
+      params.set("segments", selectedSegments.join(","));
+    if (selectedSubSegments.length > 0)
+      params.set("sub_segments", selectedSubSegments.join(","));
     if (currentPage > 1) params.set("page", currentPage.toString());
 
     router.push(`?${params.toString()}`, { scroll: false });
-  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments, currentPage, router]);
+  }, [
+    searchTerm,
+    sortOption,
+    selectedCategories,
+    selectedSubCategories,
+    selectedSegments,
+    selectedSubSegments,
+    currentPage,
+    router,
+  ]);
 
   const availableSubCategories = useMemo(() => {
     if (selectedCategories.length === 0) return [];
     return categories
-      .filter(cat => selectedCategories.includes(cat.id))
-      .flatMap(cat => cat.sub_categories || []);
+      .filter((cat) => selectedCategories.includes(cat.id))
+      .flatMap((cat) => cat.sub_categories || []);
   }, [selectedCategories, categories]);
 
   const availableSegments = useMemo(() => {
     if (selectedSubCategories.length === 0) return [];
     return availableSubCategories
-      .filter(sub => selectedSubCategories.includes(sub.id))
-      .flatMap(sub => sub.segments || []);
+      .filter((sub) => selectedSubCategories.includes(sub.id))
+      .flatMap((sub) => sub.segments || []);
   }, [selectedSubCategories, availableSubCategories]);
 
   const availableSubSegments = useMemo(() => {
     if (selectedSegments.length === 0) return [];
     return availableSegments
-      .filter(seg => selectedSegments.includes(seg.id))
-      .flatMap(seg => seg.sub_segments || []);
+      .filter((seg) => selectedSegments.includes(seg.id))
+      .flatMap((seg) => seg.sub_segments || []);
   }, [selectedSegments, availableSegments]);
 
   const handleCategoryChange = (categoryId: number) => {
@@ -177,7 +219,7 @@ function PageContent() {
       setSelectedSubCategories([]);
       setSelectedSegments([]);
       setSelectedSubSegments([]);
-      
+
       return newSelection;
     });
     setCurrentPage(1);
@@ -188,11 +230,11 @@ function PageContent() {
       const newSelection = prev.includes(subCategoryId)
         ? prev.filter((s) => s !== subCategoryId)
         : [...prev, subCategoryId];
-      
+
       // Reset sub-selections
       setSelectedSegments([]);
       setSelectedSubSegments([]);
-      
+
       return newSelection;
     });
     setCurrentPage(1);
@@ -242,9 +284,11 @@ function PageContent() {
 
   const Sidebar = () => (
     <div className="flex flex-col gap-6 lg:sticky lg:top-24">
-     
       {/* Clear Filters */}
-      {(selectedCategories.length > 0 || selectedSubCategories.length > 0 || selectedSegments.length > 0 || selectedSubSegments.length > 0) && (
+      {(selectedCategories.length > 0 ||
+        selectedSubCategories.length > 0 ||
+        selectedSegments.length > 0 ||
+        selectedSubSegments.length > 0) && (
         <Button variant="outline" onClick={clearFilters} className="w-full">
           Clear All Filters
         </Button>
@@ -264,10 +308,11 @@ function PageContent() {
                   onChange={() => handleCategoryChange(category.id)}
                 />
                 <span className="text-sm -mt-1 w-full gap-2 flex justify-start">
-                   <span className="max-w-[300px] line-clamp-1">  {category.title} </span>
-                  <span className="">
-                       ({category.products_count})
+                  <span className="max-w-[300px] line-clamp-1">
+                    {" "}
+                    {category.title}{" "}
                   </span>
+                  <span className="">({category.products_count})</span>
                 </span>
               </label>
             </div>
@@ -380,8 +425,11 @@ function PageContent() {
                         <Filter className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="top" className="h-screen flex flex-col gap-0">
-                   <SheetHeader className="gap-0 border-b p-4">
+                    <SheetContent
+                      side="top"
+                      className="h-screen flex flex-col gap-0"
+                    >
+                      <SheetHeader className="gap-0 border-b p-4">
                         <SheetTitle>Filter Products</SheetTitle>
                       </SheetHeader>
                       <div className="py-4 px-4 overflow-y-auto flex-grow">
@@ -392,30 +440,47 @@ function PageContent() {
                 </div>
 
                 {/* Sort Dropdown */}
-                <Select onValueChange={handleSortChange} defaultValue={sortOption}>
+                <Select
+                  onValueChange={handleSortChange}
+                  defaultValue={sortOption}
+                >
                   <SelectTrigger className="w-[180px] border-border shadow-none">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="title-asc">Name (A-Z)</SelectItem>
                     <SelectItem value="title-desc">Name (Z-A)</SelectItem>
-                    <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-                    <SelectItem value="price-desc">Price (High to Low)</SelectItem>
-                    <SelectItem value="created_at-desc">Newest First</SelectItem>
+                    <SelectItem value="price-asc">
+                      Price (Low to High)
+                    </SelectItem>
+                    <SelectItem value="price-desc">
+                      Price (High to Low)
+                    </SelectItem>
+                    <SelectItem value="created_at-desc">
+                      Newest First
+                    </SelectItem>
                     <SelectItem value="created_at-asc">Oldest First</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {/* Results Count */}
-            <div className="mb-4 text-sm text-neutral-600">
-              {isLoading ? (
-                "Loading..."
-              ) : (
-                `Showing ${products.length} product${products.length !== 1 ? 's' : ''}`
-              )}
-            </div>
+
+{/* Results Count */}
+<div className="mb-6 text-lg font-medium text-neutral-700">
+  {isLoading ? (
+    "Loading products..."
+  ) : totalProducts === 0 ? (
+    <div className="text-center py-20">
+      <p className="text-2xl text-neutral-600 mb-6">No products found matching your filters.</p>
+      <Button onClick={clearFilters} size="lg">
+        Clear All Filters
+      </Button>
+    </div>
+  ) : (
+    `Showing ${products.length} of ${totalProducts} product${totalProducts !== 1 ? "s" : ""}`
+  )}
+</div>
 
             {/* Products List */}
             {isLoading ? (
@@ -423,167 +488,183 @@ function PageContent() {
                 <Loader2 className="h-8 w-8 animate-spin text-red-600" />
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="text-xl text-neutral-600 mb-4">No products found</p>
-                <Button onClick={clearFilters} variant="outline">
-                  Clear Filters
-                </Button>
-              </div>
+              <></>
+              // <div className="text-center py-20">
+              //   <p className="text-xl text-neutral-600 mb-4">
+              //     No products found
+              //   </p>
+              //   <Button onClick={clearFilters} variant="outline">
+              //     Clear Filters
+              //   </Button>
+              // </div>
             ) : (
               <div className="flex flex-col gap-8">
                 {products.map((product, index) => {
                   const handleAddToCart = () => {
-    addToCart(product);
-    toast.success(`${product.title} has been added to your cart.`, 
-      
-    );
-  };
+                    addToCart(product);
+                    toast.success(
+                      `${product.title} has been added to your cart.`
+                    );
+                  };
 
-  const isProductInCart = cartItems.some(item => item.product.id === product.id);
+                  const isProductInCart = cartItems.some(
+                    (item) => item.product.id === product.id
+                  );
 
-                return(
-                  <motion.div
-                    key={product.id}
-                    initial={{ y: 50, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ y: 50, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
                       className="border-0 rounded-lg p-0 flex items-center flex-col sm:flex-row gap-8 relative"
-                  >
+                    >
                       {product.is_sustainable && (
-                      <div className="absolute top-2 right-2">
-                        <Image
-                          src="/images/icons/leaf.svg"
-                          alt="Sustainable"
-                          width={24}
-                          height={24}
-                        />
-                      </div>
-                    )}
-
-                    {/* Product Image */}
-                     <div className="w-full sm:w-1/3">
-                      <Link href={`/products/${product.slug}`}>
-                        {product.primary_image_url ? (
+                        <div className="absolute top-2 right-2">
                           <Image
-                            src={product.primary_image_url}
-                            alt={product.title}
-                            width={500}
-                            height={300}
-                            className="w-full h-auto rounded-lg object-cover"
+                            src="/images/icons/leaf.svg"
+                            alt="Sustainable"
+                            width={24}
+                            height={24}
                           />
-                        ) : (
-                        <Image
-                            src={"/placeholder.svg"}
-                            alt={product.title}
-                            width={500}
-                            height={300}
-                            className="w-full h-auto rounded-lg object-cover"
-                          />
-                        )}
-                      </Link>
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        {/* Category Badge */}
-                        <div className="inline-block bg-red-100 text-red-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                          {product.category?.title || "PRODUCT"}
                         </div>
+                      )}
 
-                        {/* Product Title */}
+                      {/* Product Image */}
+                      <div className="w-full sm:w-1/3">
                         <Link href={`/products/${product.slug}`}>
-                          <h3 className="text-2xl font-bold text-neutral-900 mb-3 hover:text-red-600 transition-colors">
-                            {product.title}
-                          </h3>
+                          {product.primary_image_url ? (
+                            <Image
+                              src={product.primary_image_url}
+                              alt={product.title}
+                              width={500}
+                              height={300}
+                              className="w-full h-auto rounded-lg object-cover"
+                            />
+                          ) : (
+                            <Image
+                              src={"/placeholder.svg"}
+                              alt={product.title}
+                              width={500}
+                              height={300}
+                              className="w-full h-auto rounded-lg object-cover"
+                            />
+                          )}
                         </Link>
+                      </div>
 
-                        {/* Hierarchy Breadcrumb */}
-                        {/* {product.hierarchy && (
+                      {/* Product Info */}
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          {/* Category Badge */}
+                          <div className="inline-block bg-red-100 text-red-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                            {product.category?.title || "PRODUCT"}
+                          </div>
+
+                          {/* Product Title */}
+                          <Link href={`/products/${product.slug}`}>
+                            <h3 className="text-2xl font-bold text-neutral-900 mb-3 hover:text-red-600 transition-colors">
+                              {product.title}
+                            </h3>
+                          </Link>
+
+                          {/* Hierarchy Breadcrumb */}
+                          {/* {product.hierarchy && (
                           <p className="text-sm text-neutral-500 mb-3">
                             {product.hierarchy.category} / {product.hierarchy.sub_category}
                             {product.hierarchy.segment && ` / ${product.hierarchy.segment}`}
                           </p>
                         )} */}
 
-                        {/* Description */}
-                        <p className="text-neutral-600 mb-4 line-clamp-2">
-                          {product.short_description || "High-quality industrial equipment for professional use."}
-                        </p>
+                          {/* Description */}
+                          <p className="text-neutral-600 mb-4 line-clamp-2">
+                            {product.short_description ||
+                              "High-quality industrial equipment for professional use."}
+                          </p>
 
-                        {/* Features */}
-                        {product.features && product.features.length > 0 && (
-                          <div className="mb-4">
-                            <h4 className="font-semibold text-sm mb-2">Features:</h4>
-                            <ul className="pl-0 space-y-1 text-sm text-neutral-600">
-                              {product.features.slice(0, 3).map((feature, index) => (
-                                <li key={index} className="flex items-start gap-2">
-                                  <svg
-                                    className="flex-shrink-0 text-neutral-500 mt-1"
-                                    width="4"
-                                    height="4"
-                                    viewBox="0 0 4 4"
-                                    fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <circle cx="4" cy="4" r="4" />
-                                  </svg>
-                                  <span className="line-clamp-1">{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
+                          {/* Features */}
+                          {product.features && product.features.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="font-semibold text-sm mb-2">
+                                Features:
+                              </h4>
+                              <ul className="pl-0 space-y-1 text-sm text-neutral-600">
+                                {product.features
+                                  .slice(0, 3)
+                                  .map((feature, index) => (
+                                    <li
+                                      key={index}
+                                      className="flex items-start gap-2"
+                                    >
+                                      <svg
+                                        className="flex-shrink-0 text-neutral-500 mt-1"
+                                        width="4"
+                                        height="4"
+                                        viewBox="0 0 4 4"
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <circle cx="4" cy="4" r="4" />
+                                      </svg>
+                                      <span className="line-clamp-1">
+                                        {feature}
+                                      </span>
+                                    </li>
+                                  ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* segments and subsegment */}
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {product.segment?.title && (
+                              <span className="text-xs bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full">
+                                {product.segment.title}
+                              </span>
+                            )}
+                            {product.sub_segment?.title && (
+                              <span className="text-xs bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full">
+                                {product.sub_segment.title}
+                              </span>
+                            )}
                           </div>
-                        )}
+                        </div>
 
-                        {/* segments and subsegment */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {product.segment?.title && (
-                            <span className="text-xs bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full">
-                              {product.segment.title}
-                            </span>
+                        <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t">
+                          {product.price ? (
+                            <div>
+                              <span className="text-3xl font-bold text-neutral-900">
+                                {product.formatted_price}
+                              </span>
+                            </div>
+                          ) : (
+                            <div></div>
                           )}
-                          {product.sub_segment?.title && (
-                            <span className="text-xs bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full">
-                              {product.sub_segment.title}
-                            </span>
-                          )}
+                          <div className="flex gap-3">
+                            <Button asChild>
+                              <Link href={`/products/${product.slug}`}>
+                                View Details
+                              </Link>
+                            </Button>
+                            {isProductInCart ? (
+                              <Button asChild className="">
+                                <Link href="/cart">GO TO CART</Link>
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                onClick={handleAddToCart}
+                              >
+                                Add to Cart
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
-
-                      <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t">
-                        {product.price ? (
-                          <div>
-                            <span className="text-3xl font-bold text-neutral-900">
-                              {product.formatted_price}
-                            </span>
-                          </div>
-                        ) : (
-                          <div></div>
-                        )}
-                        <div className="flex gap-3">
-                          <Button asChild >
-                            <Link href={`/products/${product.slug}`}>
-                              View Details
-                            </Link>
-                          </Button >
-                              {isProductInCart ? (
-              <Button asChild className="">
-                <Link href="/cart">GO TO CART</Link>
-              </Button>
-            ) : (
-                          <Button 
-                          variant="outline"
-                         onClick={handleAddToCart}
-                          >Add to Cart</Button>
-                        )}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                
-                 ) }
-              )}
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
 

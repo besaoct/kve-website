@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Phone, Mail, MapPin, Clock, Upload } from "lucide-react";
-import { contactData } from "@/data/dummy/contactData";
+import { contactData } from "@/data/constants/contactData";
 import Navigation from "@/components/common/navigation";
 import Footer from "@/components/common/footer";
 
@@ -105,7 +105,7 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-              <Card className="border shadow-none  h-full">
+              <Card className="border shadow-none  h-full py-8">
                 <CardHeader>
                   <CardTitle className="text-2xl text-neutral-900">
                     Send us an Enquiry
@@ -269,7 +269,7 @@ export default function ContactPage() {
 
               {/* Map and Additional Info */}
               <div className="space-y-8">
-                <Card className="border bg-white shadow-none">
+                <Card className="border bg-white shadow-none py-8">
                   <CardHeader>
                     <CardTitle className="text-xl text-neutral-900">
                       Visit Our Office

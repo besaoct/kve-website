@@ -22,9 +22,9 @@ export const navigationData = {
     { name: "Products", hasDropdown: true },
     { name: "Solutions", href: "/solutions" },
     { name: "Automation", href: "/automation" },
-    { name: "Education", href: "/education" },
-    { name: "EV Charging", href: "/ev-charging" },
-    { name: "Resources", href: "/resources" },
+    { name: "Knowledge Center", href: "/knowledge-center" },
+    // { name: "EV Charging", href: "/ev-charging" },
+    // { name: "Resources", href: "/resources" },
   ],
 
   productCategories: {
