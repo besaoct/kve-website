@@ -1,5 +1,6 @@
 export interface Testimonial {
   id: number;
+  image?: string;
   name: string;
   designation: string;
   company: string;
