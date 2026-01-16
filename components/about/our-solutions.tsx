@@ -1,40 +1,35 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Zap, Cog, Shield, Cpu, Settings, Wind } from "lucide-react"
+import { ArrowRight, Zap, Palette, Package, Lightbulb, Wrench } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "../ui/button"
 
 const solutions = [
   {
-    title: "Welding & Arc Solutions",
-    image: "https://images.pexels.com/photos/5726794/pexels-photo-5726794.jpeg",
+    title: "Welding & Cutting Solutions",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK0ClJkeFL0nJ2xvRusPW3720rGJHppcQODo5u9fkWQdHEqNmeMdlomoZeOc-yU4E-8PI&usqp=CAU",
     icon: Zap,
   },
   {
-    title: "Industrial Automation & Robotics",
-    image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg",
-    icon: Cog,
+    title: "Floorings & Coatings",
+    image: "https://www.baumerk.com/storage/app/media/blog/flooring.jpg",
+    icon: Palette,
   },
   {
-    title: "Valve & Flow Control Systems",
-    image: "https://images.pexels.com/photos/5907591/pexels-photo-5907591.jpeg",
-    icon: Settings,
+    title: "Materials Handling & Storage Solutions",
+    image: "https://mecaluxcom.cdnwm.com/documents/20128/474714/M2P10-Blogp-material-handling-systems-mistakes+-+ImageHeader.jpg/6f1181a4-5c09-f634-246f-89f5c6174876?t=1644957945000&e=jpg",
+    icon: Package,
   },
   {
-    title: "Safety & PPE Solutions",
-    image: "https://images.pexels.com/photos/4491448/pexels-photo-4491448.jpeg",
-    icon: Shield,
+    title: "Energy Efficiency Solutions for Establishments",
+    image: "https://c3newsmag.com/wp-content/uploads/2020/11/Untitled-1_0005_nuclear-860x575.jpg",
+    icon: Lightbulb,
   },
   {
-    title: "Digital & Software Services",
-    image: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg",
-    icon: Cpu,
-  },
-  {
-    title: "Custom Engineering Solutions",
-    image: "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
-    icon: Wind,
+    title: "Engineering & Project Consultancy",
+    image: "https://www.rites.com/images/Consultancy%20Reference%20Pic.jpg",
+    icon: Wrench,
   },
 ]
 
@@ -48,9 +43,11 @@ export default function OurSolutions() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-heading font-bold text-foreground mb-4">Our Solutions Ecosystem</h2>
+          <h2 className="text-4xl font-heading font-bold text-foreground mb-4">
+            Our Core Businesses
+          </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A complete ecosystem of products, services, and expertise designed to solve your toughest industrial challenges.
+            Specialized solutions built on decades of expertise, engineered to deliver measurable improvements in performance and efficiency.
           </p>
         </motion.div>
 
@@ -63,7 +60,7 @@ export default function OurSolutions() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden  transition-all duration-300 border bg-muted/30 hover:border-primary/20 gap-0">
+              <Card className="h-full overflow-hidden transition-all duration-300 border bg-muted/30 hover:border-primary/20 gap-0">
                 <div className="relative h-64 overflow-hidden">
                   <img
                     src={solution.image}
@@ -79,8 +76,8 @@ export default function OurSolutions() {
                   </div>
                 </div>
                 <CardContent className="p-6">
-                  <Button className=" group/btn">
-                    Read More
+                  <Button className="group/btn">
+                    Explore Solution
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                   </Button>
                 </CardContent>

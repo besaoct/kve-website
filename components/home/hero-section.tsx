@@ -85,6 +85,9 @@ export default function HeroSection() {
 
   return (
     <section className="relative overflow-hidden">
+
+                   <CategoryHeroSection/> 
+    
       {/* Hero Carousel */}
       <div className="relative h-[80vh] min-h-[700px]">
         {heroSlides.map((slide, index) => (
@@ -278,8 +281,7 @@ export default function HeroSection() {
 
     </div>
 
-             <CategoryHeroSection/> 
-    
+
 
       <div className="bg-white py-16 border-b border-neutral-100">
         <div className="container mx-auto px-4">

@@ -1,21 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Mail,
-  Phone,
-  MapPin,
+import { Mail, Phone, MapPin } from "lucide-react";
 
-} from "lucide-react";
-
-import {FaFacebook, FaLinkedin, FaTwitter, FaYoutube} from "react-icons/fa"
+import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from "react-icons/fa";
 
 import LogoHorizontal from "./logo/logo-h";
 import Link from "next/link";
-import { contactData } from "@/data/dummy/contactData";
+import { contactData } from "@/data/constants/contactData";
 
 const footerSections = [
-    {
+  {
     title: "Quick Links",
     links: [
       "Financing Options",
@@ -128,8 +123,6 @@ export default function Footer() {
     <footer className="bg-neutral-950 text-white">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-16">
-
-
         <div className="flex flex-wrap gap-8 lg:gap-12 border-neutral-800">
           {/* Company Info */}
 
@@ -139,10 +132,13 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-                <Link href={'/'} className="h-16 flex justify-start items-center mb-8 w-[200px]">
-                  <LogoHorizontal/>
-                </Link>
-           
+              <Link
+                href={"/"}
+                className="h-16 flex justify-start items-center mb-12 w-[200px]"
+              >
+                <LogoHorizontal />
+              </Link>
+
               <p className="text-neutral-300 mb-6 leading-relaxed">
                 Leading provider of industrial solutions, welding equipment, and
                 automation systems. Trusted by professionals worldwide for
@@ -157,7 +153,7 @@ export default function Footer() {
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 text-red-600 mr-3" />
                   <span className="text-neutral-300">
-               {contactData.email.address}
+                    {contactData.email.address}
                   </span>
                 </div>
                 <div className="flex items-center">
@@ -212,7 +208,7 @@ export default function Footer() {
               <h3 className="text-lg font-sans font-semibold text-white ">
                 {section.title}
               </h3>
-              <div className="border-b border-primary mb-4 w-[30%]"/>
+              <div className="border-b border-primary mb-4 w-[30%]" />
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link}>
@@ -238,14 +234,13 @@ export default function Footer() {
               © 2025 KVE Industrial Solutions. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm flex-wrap justify-start whitespace-nowrap">
-       
               <a
                 href="#"
                 className="text-neutral-400 hover:text-red-600 transition-colors"
               >
                 Partner Program
               </a>
-    
+
               <a
                 href="#"
                 className="text-neutral-400 hover:text-red-600 transition-colors"

@@ -4,6 +4,7 @@ import Hero from '@/components/about/hero'
 import OurSolutions from '@/components/about/our-solutions'
 import IndustriesWeServe from '@/components/about/industries-we-serve'
 import GetToKnowUs from '@/components/about/get-to-know-us'
+import MissionVisionValues from '@/components/about/mission-vision-values'
 
 const AboutPage = () => {
   return (
@@ -11,6 +12,7 @@ const AboutPage = () => {
       <Navigation />
       <main className="flex-1">
         <Hero />
+        <MissionVisionValues />
         <OurSolutions />
         <IndustriesWeServe />
         <GetToKnowUs />

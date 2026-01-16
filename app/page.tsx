@@ -15,6 +15,7 @@ import Footer from "@/components/common/footer"
 import { PartnerLogos } from "@/components/home/partner-logos"
 import { WhatsAppButton } from "@/components/common/wa-btn"
 import { LiveChat } from "@/components/common/live-chat"
+import { CategoryPopup } from "@/components/category-hero/popup"
 // import CategoryHeroSection from "@/components/category-hero/hero-section"
 
 export default function HomePage() {
@@ -24,7 +25,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
      <Navigation/>
-     <HeroSection />
+      <HeroSection />
+      {/* <CategoryPopup/> */}
       <NewsletterPopup  /> 
       <StatisticsSection />
       <ProductSegments />
