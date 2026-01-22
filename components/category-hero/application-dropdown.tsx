@@ -25,7 +25,7 @@ export default function ApplicationDropdown({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative w-full max-w-sm text-sm">
+    <div className="relative w-full mx-auto flex items-center justify-center text-sm">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-4 py-2 bg-[#D2A564] hover:bg-[#c59950] text-white font-semibold rounded-xl flex items-center justify-between gap-3 transition-colors shadow-lg max-w-62.5"

@@ -45,14 +45,14 @@ function buildTitleToIdMap(hierarchy: Nav[]): TitleToIdMap {
 }
 
 // ── Segment / Orbit item type ────────────────────────────────────────────
-interface SubSegment {
+export interface SubSegment {
   id: string;
   title: string;
   image: string;
   link: string;
 }
 
-interface Segment {
+export interface Segment {
   id: string;
   link: string;
   title: string;
@@ -60,7 +60,7 @@ interface Segment {
   categories: SubSegment[];
 }
 
-type OrbitItem = {
+export type OrbitItem = {
   id: string;
   link: string;
   title: string;
