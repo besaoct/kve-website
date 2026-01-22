@@ -4,7 +4,7 @@ import Hero from "@/components/products/hero";
 import Navigation from "@/components/common/navigation";
 import Footer from "@/components/common/footer";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, Suspense, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -42,13 +42,21 @@ function PageContent() {
   // Filter & UI state
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("created_at-desc");
-  const [selectedCategories, setSelectedCategories] = useState<(number | string)[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<(number | string)[]>([]);
-  const [selectedSegments, setSelectedSegments] = useState<(number | string)[]>([]);
-  const [selectedSubSegments, setSelectedSubSegments] = useState<(number | string)[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    (number | string)[]
+  >([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<
+    (number | string)[]
+  >([]);
+  const [selectedSegments, setSelectedSegments] = useState<(number | string)[]>(
+    [],
+  );
+  const [selectedSubSegments, setSelectedSubSegments] = useState<
+    (number | string)[]
+  >([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-// Add this new state near your other states
-const [isHydrated, setIsHydrated] = useState(false);
+  // Add this new state near your other states
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,11 +68,26 @@ const [isHydrated, setIsHydrated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const { cartItems, addToCart } = useCart();
-
+   
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   // Scroll to top when filters or page change
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments]);
+      if (!sectionRef.current) return;
+
+sectionRef.current?.scrollIntoView({
+  behavior: "smooth",
+  block: "start",
+});
+
+  }, [
+    currentPage,
+    sortOption,
+    selectedCategories,
+    selectedSubCategories,
+    selectedSegments,
+    selectedSubSegments,
+
+  ]);
 
   // Load hierarchy + all products once
   useEffect(() => {
@@ -97,43 +120,40 @@ const [isHydrated, setIsHydrated] = useState(false);
     };
   }, []);
 
+  // ── Sync filters from URL ── only when hierarchy is loaded ──────────────────
+  useEffect(() => {
+    // Prevent running before we have real category data
+    if (categories.length === 0) return;
 
-// ── Sync filters from URL ── only when hierarchy is loaded ──────────────────
-useEffect(() => {
-  // Prevent running before we have real category data
-  if (categories.length === 0) return;
+    const params = new URLSearchParams(searchParams.toString());
 
-  const params = new URLSearchParams(searchParams.toString());
+    const parseParam = (key: string): (number | string)[] => {
+      const val = params.get(key);
+      if (!val) return [];
+      return val.split(",").map((item) => {
+        const trimmed = item.trim();
+        return /^\d+$/.test(trimmed) ? Number(trimmed) : trimmed;
+      });
+    };
 
-  const parseParam = (key: string): (number | string)[] => {
-    const val = params.get(key);
-    if (!val) return [];
-    return val.split(",").map(item => {
-      const trimmed = item.trim();
-      return /^\d+$/.test(trimmed) ? Number(trimmed) : trimmed;
-    });
-  };
+    const catParams = parseParam("categories");
+    const subCatParams = parseParam("sub_categories");
+    const segParams = parseParam("segments");
+    const subSegParams = parseParam("sub_segments");
 
-  const catParams    = parseParam("categories");
-  const subCatParams = parseParam("sub_categories");
-  const segParams    = parseParam("segments");
-  const subSegParams = parseParam("sub_segments");
+    // Apply values from URL (this is the important initial hydration)
+    setSearchTerm(params.get("search") || "");
+    setSortOption(params.get("sort") || "created_at-desc");
+    setCurrentPage(Number(params.get("page")) || 1);
 
-// Apply values from URL (this is the important initial hydration)
-  setSearchTerm(params.get("search") || "");
-  setSortOption(params.get("sort") || "created_at-desc");
-  setCurrentPage(Number(params.get("page")) || 1);
+    setSelectedCategories(catParams);
+    setSelectedSubCategories(subCatParams);
+    setSelectedSegments(segParams);
+    setSelectedSubSegments(subSegParams);
 
-  setSelectedCategories(catParams);
-  setSelectedSubCategories(subCatParams);
-  setSelectedSegments(segParams);
-  setSelectedSubSegments(subSegParams);
-
-  // Now we're done hydrating → allow URL updates
-  setIsHydrated(true);
-
-}, [categories]);   // ← categories is important dependency
-
+    // Now we're done hydrating → allow URL updates
+    setIsHydrated(true);
+  }, [categories]); // ← categories is important dependency
 
   // Client-side filtering + sorting
   const updateFilteredProducts = useCallback(() => {
@@ -146,24 +166,26 @@ useEffect(() => {
       (str || "").toLowerCase().trim().replace(/\s+/g, " ");
 
     // Category filter (ID or name)
-// Category filter — supports both ID and title matching
-if (selectedCategories.length > 0) {
-  result = result.filter((p) => {
-    const catId    = p.category?.id;
-    const catTitle = normalize(p.category?.title);
+    // Category filter — supports both ID and title matching
+    if (selectedCategories.length > 0) {
+      result = result.filter((p) => {
+        const catId = p.category?.id;
+        const catTitle = normalize(p.category?.title);
 
-    return selectedCategories.some((sel) => {
-      if (typeof sel === "number") {
-        return catId === sel;
-      }
-      // string → fuzzy-ish title match
-      const selNorm = normalize(sel.toString());
-      return catTitle === selNorm ||      // exact match (most common case)
-             catTitle.includes(selNorm) || // contains
-             selNorm.includes(catTitle);   // user typed partial
-    });
-  });
-}
+        return selectedCategories.some((sel) => {
+          if (typeof sel === "number") {
+            return catId === sel;
+          }
+          // string → fuzzy-ish title match
+          const selNorm = normalize(sel.toString());
+          return (
+            catTitle === selNorm || // exact match (most common case)
+            catTitle.includes(selNorm) || // contains
+            selNorm.includes(catTitle)
+          ); // user typed partial
+        });
+      });
+    }
 
     // Sub-category filter (ID or name)
     if (selectedSubCategories.length > 0) {
@@ -303,7 +325,9 @@ if (selectedCategories.length > 0) {
     }
 
     const query = params.toString();
-    router.replace(query ? `?${query}` : window.location.pathname, { scroll: false });
+    router.replace(query ? `?${query}` : window.location.pathname, {
+      scroll: false,
+    });
   }, [
     searchTerm,
     sortOption,
@@ -316,20 +340,32 @@ if (selectedCategories.length > 0) {
   ]);
 
   // Update URL when any filter or pagination changes
-useEffect(() => {
-  if (!isHydrated) return;   // ← this line prevents clearing on first render
+  useEffect(() => {
+    if (!isHydrated) return; // ← this line prevents clearing on first render
 
-  updateURL();
-}, [updateURL, isHydrated]);   // or keep your previous deps + isHydrated
+    updateURL();
+  }, [updateURL, isHydrated]); // or keep your previous deps + isHydrated
 
   // Reset page when filters change (but not when pagination changes)
   useEffect(() => {
-    if (searchTerm || sortOption !== "created_at-desc" || 
-        selectedCategories.length > 0 || selectedSubCategories.length > 0 ||
-        selectedSegments.length > 0 || selectedSubSegments.length > 0) {
+    if (
+      searchTerm ||
+      sortOption !== "created_at-desc" ||
+      selectedCategories.length > 0 ||
+      selectedSubCategories.length > 0 ||
+      selectedSegments.length > 0 ||
+      selectedSubSegments.length > 0
+    ) {
       setCurrentPage(1);
     }
-  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments]);
+  }, [
+    searchTerm,
+    sortOption,
+    selectedCategories,
+    selectedSubCategories,
+    selectedSegments,
+    selectedSubSegments,
+  ]);
 
   // Available dependent options
   const availableSubCategories = useMemo(() => {
@@ -341,7 +377,7 @@ useEffect(() => {
         }
         const normTitle = cat.title.toLowerCase().trim();
         return selectedCategories.some((sel) =>
-          normTitle.includes(sel.toString().toLowerCase().trim())
+          normTitle.includes(sel.toString().toLowerCase().trim()),
         );
       })
       .flatMap((cat) => cat.sub_categories || []);
@@ -356,7 +392,7 @@ useEffect(() => {
         }
         const normTitle = sub.title.toLowerCase().trim();
         return selectedSubCategories.some((sel) =>
-          normTitle.includes(sel.toString().toLowerCase().trim())
+          normTitle.includes(sel.toString().toLowerCase().trim()),
         );
       })
       .flatMap((sub) => sub.segments || []);
@@ -371,7 +407,7 @@ useEffect(() => {
         }
         const normTitle = seg.title.toLowerCase().trim();
         return selectedSegments.some((sel) =>
-          normTitle.includes(sel.toString().toLowerCase().trim())
+          normTitle.includes(sel.toString().toLowerCase().trim()),
         );
       })
       .flatMap((seg) => seg.sub_segments || []);
@@ -415,7 +451,7 @@ useEffect(() => {
     setSelectedSubSegments((prev) =>
       prev.includes(subSegmentId)
         ? prev.filter((s) => s !== subSegmentId)
-        : [...prev.filter((s) => typeof s === "number"), subSegmentId]
+        : [...prev.filter((s) => typeof s === "number"), subSegmentId],
     );
   };
 
@@ -439,7 +475,10 @@ useEffect(() => {
   // ── Pagination logic ────────────────────────────────────────────────
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredProducts.length);
+  const endIndex = Math.min(
+    startIndex + ITEMS_PER_PAGE,
+    filteredProducts.length,
+  );
   const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   // Ensure current page is valid
@@ -474,7 +513,9 @@ useEffect(() => {
                   onChange={() => handleCategoryChange(category.id)}
                 />
                 <span className="text-sm -mt-1 w-full gap-2 flex justify-start">
-                  <span className="max-w-75 line-clamp-1">{category.title}</span>
+                  <span className="max-w-75 line-clamp-1">
+                    {category.title}
+                  </span>
                   <span>({category.products_count})</span>
                 </span>
               </label>
@@ -557,8 +598,8 @@ useEffect(() => {
       <Navigation />
       <Hero />
 
-      <div className="container mx-auto max-w-8xl px-4 py-8">
-        <div className="flex gap-8 lg:min-h-[calc(100vh-12rem)]">
+      <div  className="container mx-auto max-w-8xl px-4 py-8" >
+        <div className="flex gap-8 lg:min-h-[calc(100vh-12rem)]"  >
           {/* Desktop Sidebar */}
           <div className="hidden lg:block lg:w-1/4 lg:sticky lg:top-19 h-fit">
             <div className="bg-white border lg:rounded-md lg:p-4 lg:max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
@@ -570,7 +611,7 @@ useEffect(() => {
           <div className="w-full lg:w-3/4">
             {/* Search + Sort + Mobile Filter */}
             <div className="flex justify-between flex-wrap items-center gap-4 mb-8">
-              <div className="relative min-w-1/2 grow">
+              <div className="relative min-w-1/2 grow scroll-mt-7 lg:scroll-mt-20" ref={sectionRef}>
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-500" />
                 <Input
                   placeholder="Search products..."
@@ -588,7 +629,10 @@ useEffect(() => {
                         <Filter className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="top" className="h-screen flex flex-col gap-0">
+                    <SheetContent
+                      side="top"
+                      className="h-screen flex flex-col gap-0"
+                    >
                       <SheetHeader className="gap-0 border-b p-4">
                         <SheetTitle>Filter Products</SheetTitle>
                       </SheetHeader>
@@ -606,9 +650,15 @@ useEffect(() => {
                   <SelectContent>
                     <SelectItem value="title-asc">Name (A-Z)</SelectItem>
                     <SelectItem value="title-desc">Name (Z-A)</SelectItem>
-                    <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-                    <SelectItem value="price-desc">Price (High to Low)</SelectItem>
-                    <SelectItem value="created_at-desc">Newest First</SelectItem>
+                    <SelectItem value="price-asc">
+                      Price (Low to High)
+                    </SelectItem>
+                    <SelectItem value="price-desc">
+                      Price (High to Low)
+                    </SelectItem>
+                    <SelectItem value="created_at-desc">
+                      Newest First
+                    </SelectItem>
                     <SelectItem value="created_at-asc">Oldest First</SelectItem>
                   </SelectContent>
                 </Select>
@@ -645,11 +695,13 @@ useEffect(() => {
                 {paginatedProducts.map((product, index) => {
                   const handleAddToCart = () => {
                     addToCart(product);
-                    toast.success(`${product.title} has been added to your cart.`);
+                    toast.success(
+                      `${product.title} has been added to your cart.`,
+                    );
                   };
 
                   const isProductInCart = cartItems.some(
-                    (item) => item.product.id === product.id
+                    (item) => item.product.id === product.id,
                   );
 
                   return (
@@ -713,22 +765,31 @@ useEffect(() => {
 
                           {product.features && product.features.length > 0 && (
                             <div className="mb-4">
-                              <h4 className="font-semibold text-sm mb-2">Features:</h4>
+                              <h4 className="font-semibold text-sm mb-2">
+                                Features:
+                              </h4>
                               <ul className="pl-0 space-y-1 text-sm text-neutral-600">
-                                {product.features.slice(0, 3).map((feature, i) => (
-                                  <li key={i} className="flex items-start gap-2">
-                                    <svg
-                                      className="shrink-0 text-neutral-500 mt-1"
-                                      width="4"
-                                      height="4"
-                                      viewBox="0 0 4 4"
-                                      fill="currentColor"
+                                {product.features
+                                  .slice(0, 3)
+                                  .map((feature, i) => (
+                                    <li
+                                      key={i}
+                                      className="flex items-start gap-2"
                                     >
-                                      <circle cx="4" cy="4" r="4" />
-                                    </svg>
-                                    <span className="line-clamp-1">{feature}</span>
-                                  </li>
-                                ))}
+                                      <svg
+                                        className="shrink-0 text-neutral-500 mt-1"
+                                        width="4"
+                                        height="4"
+                                        viewBox="0 0 4 4"
+                                        fill="currentColor"
+                                      >
+                                        <circle cx="4" cy="4" r="4" />
+                                      </svg>
+                                      <span className="line-clamp-1">
+                                        {feature}
+                                      </span>
+                                    </li>
+                                  ))}
                               </ul>
                             </div>
                           )}
@@ -768,7 +829,10 @@ useEffect(() => {
                                 <Link href="/cart">GO TO CART</Link>
                               </Button>
                             ) : (
-                              <Button variant="outline" onClick={handleAddToCart}>
+                              <Button
+                                variant="outline"
+                                onClick={handleAddToCart}
+                              >
                                 Add to Cart
                               </Button>
                             )}
@@ -799,7 +863,9 @@ useEffect(() => {
                 <Button
                   variant="outline"
                   disabled={currentPage >= totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
                 >
                   Next
                 </Button>
@@ -815,5 +881,9 @@ useEffect(() => {
 }
 
 export default function Page() {
-  return <PageContent />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageContent />
+    </Suspense>
+  );
 }
