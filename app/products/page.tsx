@@ -77,7 +77,7 @@ const [isHydrated, setIsHydrated] = useState(false);
         const categoriesData = await getNavbarHierarchy();
         if (!isCancelled) setCategories(categoriesData);
 
-        const productsData = await getProducts({});
+        const productsData = await getProducts({ per_page: 9000000000 });
         console.log("Fetched products length:", productsData.length);
         if (!isCancelled) {
           setAllProducts(productsData);

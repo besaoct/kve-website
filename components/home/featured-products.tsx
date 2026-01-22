@@ -103,10 +103,7 @@ export default function FeaturedProducts() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {products.map((product, index) => {
-            // const badgeConfig = getBadgeConfig(index)
-            // const rating = getMockRating(product.id)
-            // const reviewCount = getMockReviewCount(product.id)
-            
+  
        
             return (
               <motion.div
@@ -119,7 +116,7 @@ export default function FeaturedProducts() {
                <Card className="h-full overflow-hidden hover:shadow-none transition-all duration-300 border hover:border-amber-300/20 py-0 shadow-none bg-muted">
                 <div className="relative overflow-hidden">
                   {/* Product Image */}
-                  <div className="relative h-48 bg-gray-100">
+                 <Link href={`/products/${product.slug}`}className="relative block h-48 bg-gray-100">
                     <img
                       src={product.primary_image_url || "/placeholder.svg"}
                       alt={product.title}
@@ -134,18 +131,11 @@ export default function FeaturedProducts() {
              
 
                     {/* Quick Actions */}
-                    {/* <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Button size="sm" variant="secondary" className="h-8 w-8 p-0 rounded-full">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="secondary" className="h-8 w-8 p-0 rounded-full">
-                        <ShoppingCart className="h-4 w-4" />
-                      </Button>
-                    </div> */}
+             
 
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
-                  </div>
+                  </Link>
                 </div>
 
                   <CardContent className="p-4 flex flex-col h-64">

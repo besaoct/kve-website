@@ -1,65 +1,99 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Zap, Shield, Cog, Wrench, Factory, Truck } from "lucide-react"
+import {
+  ArrowRight,
+  Zap,
+  Factory,
+  Wind,
+  HardHat,
+  Cpu,
+  IndianRupee,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-
+import Link from "next/link"
 
 const productSegments = [
   {
     id: 1,
     title: "Welding, Cutting & Air Cleaning Equipment",
-    description: "Advanced welding machines and systems for precision industrial applications",
+    description:
+      "Advanced welding machines and systems for precision industrial applications",
     icon: Zap,
     image: "https://images.pexels.com/photos/5845902/pexels-photo-5845902.jpeg",
-    features: ["Welding Equipment", "Cutting & Gouging systems", "GAS manifold & Distribution systems"],
+    features: [
+      "Welding Equipment",
+      "Extraction systems",
+      "Cutting & Gouging systems",
+      "Gas Manifold & Distribution Systems",
+    ],
     color: "from-primary to-primary/80",
   },
   {
-    id: 2,
+    id: 7,
     title: "Construction Chemicals",
-    description: "Comprehensive range of electrodes, wires, and rods for superior weld quality",
+    description:
+      "Comprehensive range of chemicals for building and construction applications",
     icon: Factory,
-    image: "https://condura.co.in/wp-content/uploads/2020/08/Engineering-Construction-01.jpg",
-    features: ["Floor coatings Systems", "Liquid Membranes/ HDPE/ PU/ Hybrid PU / APP/ Bitumen Waterproofing Solutions", "Refurbishment & Structural Restoration"],
+    image:
+      "https://condura.co.in/wp-content/uploads/2020/08/Engineering-Construction-01.jpg",
+    features: [
+      "Floor coatings Systems",
+      "Decoratice Floor Coating",
+      "Liquid Membranes/ HDPE/ PU/ Hybrid PU / APP/ Bitumen Waterproofing Solutions",
+      "Refurbishment & Structural Restoration",
+    ],
     color: "from-secondary to-secondary/80",
   },
   {
-    id: 3,
-    title: "Automation Solutions",
-    description: "Smart robotic systems and automated welding solutions for enhanced productivity",
-    icon: Cog,
-    image: "https://images.pexels.com/photos/29988981/pexels-photo-29988981.jpeg",
-    features: ["Robotic Welding", "Control Systems", "Integration Services"],
-    color: "from-primary to-secondary",
+    id: 8,
+    title: "Green Environment Solutions",
+    description: "Eco-friendly solutions for a sustainable future.",
+    icon: Wind,
+    image: "https://www.annahar.com/Assets/ContentPhotos/Photos/241001Image1.jpg?width=1416&height=805&mode=crop&scale=both",
+    features: [
+      "Daylight Systems",
+      "Street Cleaning Equipment",
+      "Energy Efficiency in Ventilation/HVAC Projects",
+      "Industrial Air Purifiers",
+    ],
+    color: "from-green-500 to-green-400",
   },
   {
-    id: 4,
-    title: "Safety & PPE",
-    description: "Complete personal protective equipment and safety solutions for industrial environments",
-    icon: Shield,
-    image: "https://images.pexels.com/photos/13930446/pexels-photo-13930446.jpeg",
-    features: ["Protective Gear", "Safety Training", "Compliance Solutions"],
-    color: "from-gray-600 to-gray-800",
+    id: 9,
+    title: "Material Handling & Storage Solutions",
+    description:
+      "Efficiently move, store, and manage materials with our solutions.",
+    icon: HardHat,
+    image: "https://mecaluxcom.cdnwm.com/documents/20128/474714/M2P10-Blogp-material-handling-systems-mistakes+-+ImageHeader.jpg/6f1181a4-5c09-f634-246f-89f5c6174876?t=1644957945000&e=jpg",
+    features: [
+      "Dock Equipment",
+      "Loading Dock & Automation Solutions",
+      "IT, software and connected solutions (Material Handling & Storage Solutions)",
+      "Consultancy services (Material Handling & Storage Solutions)",
+    ],
+    color: "from-blue-500 to-blue-400",
   },
   {
-    id: 5,
-    title: "Cutting Equipment",
-    description: "Precision cutting tools and plasma systems for metal fabrication",
-    icon: Wrench,
-    image: "https://images.pexels.com/photos/9665381/pexels-photo-9665381.jpeg",
-    features: ["Plasma Cutters", "Oxy-Fuel Systems", "Cutting Accessories"],
-    color: "from-secondary to-primary",
+    id: 10,
+    title: "Financial solutions",
+    description:
+      "Flexible financing options to acquire the equipment you need.",
+    icon: IndianRupee,
+    image: "https://www.accord-consulting.com/ugc-1/1/10/0/what_are_tailored_financial_solution.jpg",
+    features: [],
+    color: "from-yellow-500 to-yellow-400",
   },
   {
-    id: 6,
-    title: "Accessories & Tools",
-    description: "Essential tools, software, and accessories to support your welding operations",
-    icon: Truck,
-    image: "https://images.pexels.com/photos/5845907/pexels-photo-5845907.jpeg",
-    features: ["Welding Tools", "Software Solutions", "Maintenance Kits"],
-    color: "from-gray-700 to-primary/80",
+    id: 11,
+    title: "IT software AI",
+    description:
+      "Leverage the power of IT, software and AI for your business.",
+    icon: Cpu,
+    image: "https://i0.wp.com/swisscognitive.ch/wp-content/uploads/2024/06/Top-20-AI-Software-Of-2024-Best-Picks-For-Business-Users.jpeg",
+    features: [],
+    color: "from-purple-500 to-purple-400",
   },
 ]
 
@@ -91,7 +125,8 @@ export default function ProductSegments() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden hover:shadow-sm transition-all duration-300 border hover:border-primary/20 py-0 shadow-none bg-muted">
+           <Link href={`/products?categories=${segment.id}`}>
+                      <Card className="h-full overflow-hidden hover:shadow-sm transition-all duration-300 border hover:border-primary/20 py-0 shadow-none bg-muted">
                 <div className="relative overflow-hidden">
                   {/* Background Image */}
                   <div className="relative h-64 overflow-hidden">
@@ -100,7 +135,7 @@ export default function ProductSegments() {
                       alt={segment.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-br ${segment.color} opacity-10`} />
+                    <div className={`absolute inset-0 bg-linear-to-br ${segment.color} opacity-10`} />
                   </div>
 
                   {/* Icon */}
@@ -130,14 +165,13 @@ export default function ProductSegments() {
                       <div key={featureIndex} className="flex items-center text-sm text-muted-foreground ">
                         <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 " />
                         <span className="line-clamp-1">
-
-                        {feature}
+                          {feature}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* CTA */}
+                  {/* CTA (commented as in your original) */}
                   {/* <div className="mt-6 pt-4 border-t border-border">
                     <button className="text-[#D2A564] hover:text-[#D2A564]/80 font-medium text-sm flex items-center group/btn">
                       Learn More
@@ -146,6 +180,7 @@ export default function ProductSegments() {
                   </div> */}
                 </CardContent>
               </Card>
+           </Link>
             </motion.div>
           ))}
         </div>

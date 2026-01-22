@@ -52,12 +52,12 @@ export const CategoryHero = [
   },
   {
     name: "Financial solutions",
-    image: "/placeholder.svg",
+    image: "https://www.accord-consulting.com/ugc-1/1/10/0/what_are_tailored_financial_solution.jpg",
     subcategories: [],
   },
   {
     name: "IT software AI",
-    image: "/placeholder.svg",
+    image: "https://i0.wp.com/swisscognitive.ch/wp-content/uploads/2024/06/Top-20-AI-Software-Of-2024-Best-Picks-For-Business-Users.jpeg",
     subcategories: [],
   },
 ];
