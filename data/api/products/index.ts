@@ -24,7 +24,7 @@ export const getProducts = async (params: GetProductsParams): Promise<Product[]>
   });
 
   const response = await fetch(
-    `${API_BASE_URL}/products?${query}`,
+    `${API_BASE_URL}/products?per_page=1000000000`,
     requestOptions
   );
   const result = await response.json();

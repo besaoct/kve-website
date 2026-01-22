@@ -4,7 +4,7 @@ import Hero from "@/components/products/hero";
 import Navigation from "@/components/common/navigation";
 import Footer from "@/components/common/footer";
 
-import { useState, useEffect, useMemo, Suspense } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -33,260 +33,398 @@ import type { Product } from "@/data/api/products/types";
 import { useCart } from "@/context/cart-context";
 import { toast } from "sonner";
 
-const PRODUCTS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 12;
 
 function PageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // State for filters and search
+  // Filter & UI state
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("created_at-desc");
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>(
-    []
-  );
-  const [selectedSegments, setSelectedSegments] = useState<number[]>([]);
-  const [selectedSubSegments, setSelectedSubSegments] = useState<number[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<(number | string)[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<(number | string)[]>([]);
+  const [selectedSegments, setSelectedSegments] = useState<(number | string)[]>([]);
+  const [selectedSubSegments, setSelectedSubSegments] = useState<(number | string)[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+// Add this new state near your other states
+const [isHydrated, setIsHydrated] = useState(false);
+
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
 
-  // State for API data
-  const [products, setProducts] = useState<Product[]>([]);
+  // Data state
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Nav[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalProducts, setTotalProducts] = useState(0);
 
   const { cartItems, addToCart } = useCart();
 
-
-// Scroll to top when filters change
-useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}, [
-  searchTerm,
-  sortOption,
-  selectedCategories,
-  selectedSubCategories,
-  selectedSegments,
-  selectedSubSegments,
-]);
-useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "instant" }); // or "smooth"
-}, [currentPage]);
-
-  // Fetch all data on mount
+  // Scroll to top when filters or page change
   useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        const categoriesData = await getNavbarHierarchy();
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchAllData();
-  }, []);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments]);
 
-  // Update state from URL search params
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    setSearchTerm(params.get("search") || "");
-    setSortOption(params.get("sort") || "created_at-desc");
-    setSelectedCategories(
-      params.get("categories")?.split(",").map(Number).filter(Boolean) || []
-    );
-    setSelectedSubCategories(
-      params.get("sub_categories")?.split(",").map(Number).filter(Boolean) || []
-    );
-    setSelectedSegments(
-      params.get("segments")?.split(",").map(Number).filter(Boolean) || []
-    );
-    setSelectedSubSegments(
-      params.get("sub_segments")?.split(",").map(Number).filter(Boolean) || []
-    );
-    setCurrentPage(Number(params.get("page")) || 1);
-  }, [searchParams]);
-
-  // Fetch products with filters
-  // FETCH PRODUCTS — This version works perfectly on hard refresh
+  // Load hierarchy + all products once
   useEffect(() => {
     let isCancelled = false;
 
-    const fetchProducts = async () => {
-      if (!categories.length) return; // wait for categories to be loaded
-
+    const fetchAllData = async () => {
       try {
         setIsLoading(true);
 
-        const [sortBy, sortOrder] = sortOption.split("-") as [string, "asc" | "desc"];
+        const categoriesData = await getNavbarHierarchy();
+        if (!isCancelled) setCategories(categoriesData);
 
-        const params: Record<string, string> = {
-          per_page: PRODUCTS_PER_PAGE.toString(),
-          page: currentPage.toString(),
-          sort_by: sortBy,
-          sort_order: sortOrder,
-        };
-
-        if (searchTerm) params.search = searchTerm;
-        if (selectedCategories.length > 0)
-          params.category_id = selectedCategories.join(",");
-        if (selectedSubCategories.length > 0)
-          params.sub_category_id = selectedSubCategories.join(",");
-        if (selectedSegments.length > 0)
-          params.segment_id = selectedSegments.join(",");
-        if (selectedSubSegments.length > 0)
-          params.sub_segment_id = selectedSubSegments.join(",");
-
-        const response = await getProducts(params);
-
-        // Important: your API must return { data: Product[], total: number }
-        // If it doesn't → adjust accordingly
+        const productsData = await getProducts({});
+        console.log("Fetched products length:", productsData.length);
         if (!isCancelled) {
-          setProducts(response);        // fallback for old format
-          setTotalProducts( response.length);
+          setAllProducts(productsData);
+          setFilteredProducts(productsData);
         }
       } catch (error) {
-        if (!isCancelled) {
-          console.error("Error fetching products:", error);
-          setProducts([]);
-          setTotalProducts(0);
-        }
+        console.error("Error fetching initial data:", error);
       } finally {
-        if (!isCancelled) {
-          setIsLoading(false);
-        }
+        if (!isCancelled) setIsLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchAllData();
 
     return () => {
       isCancelled = true;
     };
+  }, []);
+
+
+// ── Sync filters from URL ── only when hierarchy is loaded ──────────────────
+useEffect(() => {
+  // Prevent running before we have real category data
+  if (categories.length === 0) return;
+
+  const params = new URLSearchParams(searchParams.toString());
+
+  const parseParam = (key: string): (number | string)[] => {
+    const val = params.get(key);
+    if (!val) return [];
+    return val.split(",").map(item => {
+      const trimmed = item.trim();
+      return /^\d+$/.test(trimmed) ? Number(trimmed) : trimmed;
+    });
+  };
+
+  const catParams    = parseParam("categories");
+  const subCatParams = parseParam("sub_categories");
+  const segParams    = parseParam("segments");
+  const subSegParams = parseParam("sub_segments");
+
+// Apply values from URL (this is the important initial hydration)
+  setSearchTerm(params.get("search") || "");
+  setSortOption(params.get("sort") || "created_at-desc");
+  setCurrentPage(Number(params.get("page")) || 1);
+
+  setSelectedCategories(catParams);
+  setSelectedSubCategories(subCatParams);
+  setSelectedSegments(segParams);
+  setSelectedSubSegments(subSegParams);
+
+  // Now we're done hydrating → allow URL updates
+  setIsHydrated(true);
+
+}, [categories]);   // ← categories is important dependency
+
+
+  // Client-side filtering + sorting
+  const updateFilteredProducts = useCallback(() => {
+    if (allProducts.length === 0) return;
+
+    let result = [...allProducts];
+
+    // Helper: normalize strings for comparison
+    const normalize = (str: string | undefined) =>
+      (str || "").toLowerCase().trim().replace(/\s+/g, " ");
+
+    // Category filter (ID or name)
+// Category filter — supports both ID and title matching
+if (selectedCategories.length > 0) {
+  result = result.filter((p) => {
+    const catId    = p.category?.id;
+    const catTitle = normalize(p.category?.title);
+
+    return selectedCategories.some((sel) => {
+      if (typeof sel === "number") {
+        return catId === sel;
+      }
+      // string → fuzzy-ish title match
+      const selNorm = normalize(sel.toString());
+      return catTitle === selNorm ||      // exact match (most common case)
+             catTitle.includes(selNorm) || // contains
+             selNorm.includes(catTitle);   // user typed partial
+    });
+  });
+}
+
+    // Sub-category filter (ID or name)
+    if (selectedSubCategories.length > 0) {
+      result = result.filter((p) => {
+        const subId = p.sub_category?.id;
+        const subTitle = normalize(p.sub_category?.title);
+
+        return selectedSubCategories.some((sel) => {
+          if (typeof sel === "number") {
+            return subId === sel;
+          }
+          const selNorm = normalize(sel.toString());
+          return subTitle.includes(selNorm) || selNorm.includes(subTitle);
+        });
+      });
+    }
+
+    // Segment filter (ID or name)
+    if (selectedSegments.length > 0) {
+      result = result.filter((p) => {
+        const segId = p.segment?.id;
+        const segTitle = normalize(p.segment?.title);
+
+        return selectedSegments.some((sel) => {
+          if (typeof sel === "number") {
+            return segId === sel;
+          }
+          const selNorm = normalize(sel.toString());
+          return segTitle.includes(selNorm) || selNorm.includes(segTitle);
+        });
+      });
+    }
+
+    // Sub-segment filter (ID or name)
+    if (selectedSubSegments.length > 0) {
+      result = result.filter((p) => {
+        const subSegId = p.sub_segment?.id;
+        const subSegTitle = normalize(p.sub_segment?.title);
+
+        return selectedSubSegments.some((sel) => {
+          if (typeof sel === "number") {
+            return subSegId === sel;
+          }
+          const selNorm = normalize(sel.toString());
+          return subSegTitle.includes(selNorm) || subSegTitle.includes(selNorm);
+        });
+      });
+    }
+
+    // Search (title, short description + hierarchy titles)
+    if (searchTerm.trim()) {
+      const term = normalize(searchTerm);
+      result = result.filter((p) => {
+        const searchable = [
+          p.title,
+          p.short_description,
+          p.category?.title,
+          p.sub_category?.title,
+          p.segment?.title,
+          p.sub_segment?.title,
+        ]
+          .filter(Boolean)
+          .map(normalize)
+          .join(" ");
+        return searchable.includes(term);
+      });
+    }
+
+    // Sorting
+    const [sortBy, sortDir] = sortOption.split("-") as [string, "asc" | "desc"];
+
+    result.sort((a, b) => {
+      let valA: any, valB: any;
+
+      switch (sortBy) {
+        case "title":
+          valA = normalize(a.title);
+          valB = normalize(b.title);
+          break;
+        case "price":
+          valA = Number(a.price ?? 0);
+          valB = Number(b.price ?? 0);
+          break;
+        case "created_at":
+        default:
+          valA = new Date(a.created_at ?? "1970-01-01").getTime();
+          valB = new Date(b.created_at ?? "1970-01-01").getTime();
+          break;
+      }
+
+      if (valA < valB) return sortDir === "asc" ? -1 : 1;
+      if (valA > valB) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    setFilteredProducts(result);
+    // Reset to first page when filters change (but don't trigger URL update here)
   }, [
+    allProducts,
     searchTerm,
     sortOption,
     selectedCategories,
     selectedSubCategories,
     selectedSegments,
     selectedSubSegments,
-    currentPage,
-    categories.length, // ← ensures we don’t fetch before hierarchy is ready
   ]);
 
-
-  // Update URL search params when filters change
+  // Run filtering when dependencies change
   useEffect(() => {
+    updateFilteredProducts();
+  }, [updateFilteredProducts]);
+
+  // Update URL (save only IDs for cleaner URLs)
+  const updateURL = useCallback(() => {
     const params = new URLSearchParams();
 
     if (searchTerm) params.set("search", searchTerm);
     if (sortOption !== "created_at-desc") params.set("sort", sortOption);
-    if (selectedCategories.length > 0)
-      params.set("categories", selectedCategories.join(","));
-    if (selectedSubCategories.length > 0)
-      params.set("sub_categories", selectedSubCategories.join(","));
-    if (selectedSegments.length > 0)
-      params.set("segments", selectedSegments.join(","));
-    if (selectedSubSegments.length > 0)
-      params.set("sub_segments", selectedSubSegments.join(","));
     if (currentPage > 1) params.set("page", currentPage.toString());
 
-    router.push(`?${params.toString()}`, { scroll: false });
+    // Save only numeric IDs to URL
+    if (selectedCategories.length > 0) {
+      const ids = selectedCategories.filter((v) => typeof v === "number");
+      if (ids.length > 0) params.set("categories", ids.join(","));
+    }
+    if (selectedSubCategories.length > 0) {
+      const ids = selectedSubCategories.filter((v) => typeof v === "number");
+      if (ids.length > 0) params.set("sub_categories", ids.join(","));
+    }
+    if (selectedSegments.length > 0) {
+      const ids = selectedSegments.filter((v) => typeof v === "number");
+      if (ids.length > 0) params.set("segments", ids.join(","));
+    }
+    if (selectedSubSegments.length > 0) {
+      const ids = selectedSubSegments.filter((v) => typeof v === "number");
+      if (ids.length > 0) params.set("sub_segments", ids.join(","));
+    }
+
+    const query = params.toString();
+    router.replace(query ? `?${query}` : window.location.pathname, { scroll: false });
   }, [
     searchTerm,
     sortOption,
+    currentPage,
     selectedCategories,
     selectedSubCategories,
     selectedSegments,
     selectedSubSegments,
-    currentPage,
     router,
   ]);
 
+  // Update URL when any filter or pagination changes
+useEffect(() => {
+  if (!isHydrated) return;   // ← this line prevents clearing on first render
+
+  updateURL();
+}, [updateURL, isHydrated]);   // or keep your previous deps + isHydrated
+
+  // Reset page when filters change (but not when pagination changes)
+  useEffect(() => {
+    if (searchTerm || sortOption !== "created_at-desc" || 
+        selectedCategories.length > 0 || selectedSubCategories.length > 0 ||
+        selectedSegments.length > 0 || selectedSubSegments.length > 0) {
+      setCurrentPage(1);
+    }
+  }, [searchTerm, sortOption, selectedCategories, selectedSubCategories, selectedSegments, selectedSubSegments]);
+
+  // Available dependent options
   const availableSubCategories = useMemo(() => {
     if (selectedCategories.length === 0) return [];
     return categories
-      .filter((cat) => selectedCategories.includes(cat.id))
+      .filter((cat) => {
+        if (typeof selectedCategories[0] === "number") {
+          return selectedCategories.includes(cat.id);
+        }
+        const normTitle = cat.title.toLowerCase().trim();
+        return selectedCategories.some((sel) =>
+          normTitle.includes(sel.toString().toLowerCase().trim())
+        );
+      })
       .flatMap((cat) => cat.sub_categories || []);
   }, [selectedCategories, categories]);
 
   const availableSegments = useMemo(() => {
     if (selectedSubCategories.length === 0) return [];
     return availableSubCategories
-      .filter((sub) => selectedSubCategories.includes(sub.id))
+      .filter((sub) => {
+        if (typeof selectedSubCategories[0] === "number") {
+          return selectedSubCategories.includes(sub.id);
+        }
+        const normTitle = sub.title.toLowerCase().trim();
+        return selectedSubCategories.some((sel) =>
+          normTitle.includes(sel.toString().toLowerCase().trim())
+        );
+      })
       .flatMap((sub) => sub.segments || []);
   }, [selectedSubCategories, availableSubCategories]);
 
   const availableSubSegments = useMemo(() => {
     if (selectedSegments.length === 0) return [];
     return availableSegments
-      .filter((seg) => selectedSegments.includes(seg.id))
+      .filter((seg) => {
+        if (typeof selectedSegments[0] === "number") {
+          return selectedSegments.includes(seg.id);
+        }
+        const normTitle = seg.title.toLowerCase().trim();
+        return selectedSegments.some((sel) =>
+          normTitle.includes(sel.toString().toLowerCase().trim())
+        );
+      })
       .flatMap((seg) => seg.sub_segments || []);
   }, [selectedSegments, availableSegments]);
 
+  // Handlers
   const handleCategoryChange = (categoryId: number) => {
     setSelectedCategories((prev) => {
       const newSelection = prev.includes(categoryId)
         ? prev.filter((c) => c !== categoryId)
-        : [...prev, categoryId];
-
-      // Reset sub-selections
+        : [...prev.filter((c) => typeof c === "number"), categoryId];
       setSelectedSubCategories([]);
       setSelectedSegments([]);
       setSelectedSubSegments([]);
-
       return newSelection;
     });
-    setCurrentPage(1);
   };
 
   const handleSubCategoryChange = (subCategoryId: number) => {
     setSelectedSubCategories((prev) => {
       const newSelection = prev.includes(subCategoryId)
         ? prev.filter((s) => s !== subCategoryId)
-        : [...prev, subCategoryId];
-
-      // Reset sub-selections
+        : [...prev.filter((s) => typeof s === "number"), subCategoryId];
       setSelectedSegments([]);
       setSelectedSubSegments([]);
-
       return newSelection;
     });
-    setCurrentPage(1);
   };
 
   const handleSegmentChange = (segmentId: number) => {
     setSelectedSegments((prev) => {
       const newSelection = prev.includes(segmentId)
         ? prev.filter((s) => s !== segmentId)
-        : [...prev, segmentId];
-
-      // Reset sub-selections
+        : [...prev.filter((s) => typeof s === "number"), segmentId];
       setSelectedSubSegments([]);
-
       return newSelection;
     });
-    setCurrentPage(1);
   };
 
   const handleSubSegmentChange = (subSegmentId: number) => {
     setSelectedSubSegments((prev) =>
       prev.includes(subSegmentId)
         ? prev.filter((s) => s !== subSegmentId)
-        : [...prev, subSegmentId]
+        : [...prev.filter((s) => typeof s === "number"), subSegmentId]
     );
-    setCurrentPage(1);
   };
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-    setCurrentPage(1);
   };
 
   const handleSortChange = (value: string) => {
     setSortOption(value);
-    setCurrentPage(1);
   };
 
   const clearFilters = () => {
@@ -298,9 +436,22 @@ useEffect(() => {
     setCurrentPage(1);
   };
 
+  // ── Pagination logic ────────────────────────────────────────────────
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredProducts.length);
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+  // Ensure current page is valid
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  // Sidebar component
   const Sidebar = () => (
     <div className="flex flex-col gap-6 lg:sticky lg:top-24">
-      {/* Clear Filters */}
       {(selectedCategories.length > 0 ||
         selectedSubCategories.length > 0 ||
         selectedSegments.length > 0 ||
@@ -310,7 +461,6 @@ useEffect(() => {
         </Button>
       )}
 
-      {/* Categories */}
       <div>
         <h3 className="text-lg font-semibold mb-4">Categories</h3>
         <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -318,17 +468,14 @@ useEffect(() => {
             <div key={category.id}>
               <label className="flex items-start space-x-2 cursor-pointer">
                 <input
-                  className="accent-red-600 "
+                  className="accent-red-600"
                   type="checkbox"
                   checked={selectedCategories.includes(category.id)}
                   onChange={() => handleCategoryChange(category.id)}
                 />
                 <span className="text-sm -mt-1 w-full gap-2 flex justify-start">
-                  <span className="max-w-75 line-clamp-1">
-                    {" "}
-                    {category.title}{" "}
-                  </span>
-                  <span className="">({category.products_count})</span>
+                  <span className="max-w-75 line-clamp-1">{category.title}</span>
+                  <span>({category.products_count})</span>
                 </span>
               </label>
             </div>
@@ -336,7 +483,6 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* Sub-Categories */}
       {availableSubCategories.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-4">Sub-Categories</h3>
@@ -350,7 +496,7 @@ useEffect(() => {
                     checked={selectedSubCategories.includes(sub.id)}
                     onChange={() => handleSubCategoryChange(sub.id)}
                   />
-                  <span className="text-sm -mt-1 ">{sub.title}</span>
+                  <span className="text-sm -mt-1">{sub.title}</span>
                 </label>
               </div>
             ))}
@@ -358,7 +504,6 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Segments */}
       {availableSegments.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-4">Segments</h3>
@@ -382,7 +527,6 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Sub-Segments */}
       {availableSubSegments.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-4">Sub-Segments</h3>
@@ -412,19 +556,19 @@ useEffect(() => {
     <div className="min-h-screen bg-neutral-50">
       <Navigation />
       <Hero />
-<div className="container mx-auto max-w-8xl px-4 py-8">
-  <div className="flex gap-8 lg:min-h-[calc(100vh-12rem)]"> {/* ← adjust 12rem based on your header+hero+padding */}
 
-    {/* Desktop Sidebar – independent scroll */}
-    <div className="hidden lg:block lg:w-1/4 lg:sticky lg:top-19 h-fit">
-      <div className="bg-white border lg:rounded-md lg:p-4 lg:max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin ">
-        <Sidebar />
-      </div>
-    </div>
+      <div className="container mx-auto max-w-8xl px-4 py-8">
+        <div className="flex gap-8 lg:min-h-[calc(100vh-12rem)]">
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block lg:w-1/4 lg:sticky lg:top-19 h-fit">
+            <div className="bg-white border lg:rounded-md lg:p-4 lg:max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
+              <Sidebar />
+            </div>
+          </div>
 
           {/* Main Content */}
           <div className="w-full lg:w-3/4">
-            {/* Search and Sort Bar */}
+            {/* Search + Sort + Mobile Filter */}
             <div className="flex justify-between flex-wrap items-center gap-4 mb-8">
               <div className="relative min-w-1/2 grow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-500" />
@@ -435,8 +579,8 @@ useEffect(() => {
                   className="pl-10"
                 />
               </div>
+
               <div className="flex items-center gap-4">
-                {/* Mobile Filter Button */}
                 <div className="lg:hidden">
                   <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
                     <SheetTrigger asChild>
@@ -444,10 +588,7 @@ useEffect(() => {
                         <Filter className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent
-                      side="top"
-                      className="h-screen flex flex-col gap-0"
-                    >
+                    <SheetContent side="top" className="h-screen flex flex-col gap-0">
                       <SheetHeader className="gap-0 border-b p-4">
                         <SheetTitle>Filter Products</SheetTitle>
                       </SheetHeader>
@@ -458,65 +599,53 @@ useEffect(() => {
                   </Sheet>
                 </div>
 
-                {/* Sort Dropdown */}
-                <Select
-                  onValueChange={handleSortChange}
-                  defaultValue={sortOption}
-                >
+                <Select onValueChange={handleSortChange} value={sortOption}>
                   <SelectTrigger className="w-45 border-border shadow-none">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="title-asc">Name (A-Z)</SelectItem>
                     <SelectItem value="title-desc">Name (Z-A)</SelectItem>
-                    <SelectItem value="price-asc">
-                      Price (Low to High)
-                    </SelectItem>
-                    <SelectItem value="price-desc">
-                      Price (High to Low)
-                    </SelectItem>
-                    <SelectItem value="created_at-desc">
-                      Newest First
-                    </SelectItem>
+                    <SelectItem value="price-asc">Price (Low to High)</SelectItem>
+                    <SelectItem value="price-desc">Price (High to Low)</SelectItem>
+                    <SelectItem value="created_at-desc">Newest First</SelectItem>
                     <SelectItem value="created_at-asc">Oldest First</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
+            {/* Results count + range */}
+            <div className="mb-6 text-lg font-medium text-neutral-700">
+              {isLoading ? (
+                "Loading products..."
+              ) : filteredProducts.length === 0 ? (
+                <div className="text-center py-20">
+                  <p className="text-2xl text-neutral-600 mb-6">
+                    No products found matching your filters.
+                  </p>
+                  <Button onClick={clearFilters} size="lg">
+                    Clear All Filters
+                  </Button>
+                </div>
+              ) : (
+                `Showing ${startIndex + 1}–${endIndex} of ${filteredProducts.length} product${
+                  filteredProducts.length !== 1 ? "s" : ""
+                }`
+              )}
+            </div>
 
-{/* Results Count */}
-<div className="mb-6 text-lg font-medium text-neutral-700">
-  {isLoading ? (
-    "Loading products..."
-  ) : totalProducts === 0 ? (
-    <div className="text-center py-20">
-      <p className="text-2xl text-neutral-600 mb-6">No products found matching your filters.</p>
-      <Button onClick={clearFilters} size="lg">
-        Clear All Filters
-      </Button>
-    </div>
-  ) : (
-    `Showing ${products.length} of ${totalProducts} product${totalProducts !== 1 ? "s" : ""}`
-  )}
-</div>
-
-            {/* Products List */}
+            {/* Product list */}
             {isLoading ? (
               <div className="flex justify-center items-center py-20">
                 <Loader2 className="h-8 w-8 animate-spin text-red-600" />
               </div>
-            ) : products.length === 0 ? (
-              <></>
-
-            ) : (
+            ) : paginatedProducts.length === 0 ? null : (
               <div className="flex flex-col gap-8">
-                {products.map((product, index) => {
+                {paginatedProducts.map((product, index) => {
                   const handleAddToCart = () => {
                     addToCart(product);
-                    toast.success(
-                      `${product.title} has been added to your cart.`
-                    );
+                    toast.success(`${product.title} has been added to your cart.`);
                   };
 
                   const isProductInCart = cartItems.some(
@@ -543,7 +672,6 @@ useEffect(() => {
                         </div>
                       )}
 
-                      {/* Product Image */}
                       <div className="w-full sm:w-1/3">
                         <Link href={`/products/${product.slug}`}>
                           {product.primary_image_url ? (
@@ -556,7 +684,7 @@ useEffect(() => {
                             />
                           ) : (
                             <Image
-                              src={"/placeholder.svg"}
+                              src="/placeholder.svg"
                               alt={product.title}
                               width={500}
                               height={300}
@@ -566,62 +694,45 @@ useEffect(() => {
                         </Link>
                       </div>
 
-                      {/* Product Info */}
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
-                          {/* Category Badge */}
                           <div className="inline-block bg-red-100 text-red-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">
                             {product.category?.title || "PRODUCT"}
                           </div>
 
-                          {/* Product Title */}
                           <Link href={`/products/${product.slug}`}>
                             <h3 className="text-2xl font-bold text-neutral-900 mb-3 hover:text-red-600 transition-colors">
                               {product.title}
                             </h3>
                           </Link>
 
-              
-                          {/* Description */}
                           <p className="text-neutral-600 mb-4 line-clamp-2">
                             {product.short_description ||
                               "High-quality industrial equipment for professional use."}
                           </p>
 
-                          {/* Features */}
                           {product.features && product.features.length > 0 && (
                             <div className="mb-4">
-                              <h4 className="font-semibold text-sm mb-2">
-                                Features:
-                              </h4>
+                              <h4 className="font-semibold text-sm mb-2">Features:</h4>
                               <ul className="pl-0 space-y-1 text-sm text-neutral-600">
-                                {product.features
-                                  .slice(0, 3)
-                                  .map((feature, index) => (
-                                    <li
-                                      key={index}
-                                      className="flex items-start gap-2"
+                                {product.features.slice(0, 3).map((feature, i) => (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <svg
+                                      className="shrink-0 text-neutral-500 mt-1"
+                                      width="4"
+                                      height="4"
+                                      viewBox="0 0 4 4"
+                                      fill="currentColor"
                                     >
-                                      <svg
-                                        className="shrink-0 text-neutral-500 mt-1"
-                                        width="4"
-                                        height="4"
-                                        viewBox="0 0 4 4"
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <circle cx="4" cy="4" r="4" />
-                                      </svg>
-                                      <span className="line-clamp-1">
-                                        {feature}
-                                      </span>
-                                    </li>
-                                  ))}
+                                      <circle cx="4" cy="4" r="4" />
+                                    </svg>
+                                    <span className="line-clamp-1">{feature}</span>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           )}
 
-                          {/* segments and subsegment */}
                           <div className="flex flex-wrap gap-2 mb-4">
                             {product.segment?.title && (
                               <span className="text-xs bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full">
@@ -644,7 +755,7 @@ useEffect(() => {
                               </span>
                             </div>
                           ) : (
-                            <div></div>
+                            <div />
                           )}
                           <div className="flex gap-3">
                             <Button asChild>
@@ -653,14 +764,11 @@ useEffect(() => {
                               </Link>
                             </Button>
                             {isProductInCart ? (
-                              <Button asChild className="">
+                              <Button asChild>
                                 <Link href="/cart">GO TO CART</Link>
                               </Button>
                             ) : (
-                              <Button
-                                variant="outline"
-                                onClick={handleAddToCart}
-                              >
+                              <Button variant="outline" onClick={handleAddToCart}>
                                 Add to Cart
                               </Button>
                             )}
@@ -673,23 +781,25 @@ useEffect(() => {
               </div>
             )}
 
-            {/* Pagination */}
-            {!isLoading && products.length > 0 && (
-              <div className="flex justify-start items-center gap-2 mt-12">
+            {/* Pagination controls */}
+            {!isLoading && filteredProducts.length > 0 && totalPages > 1 && (
+              <div className="flex justify-center sm:justify-start items-center gap-4 mt-12">
                 <Button
                   variant="outline"
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 >
                   Previous
                 </Button>
-                <span className="px-4 py-2 text-sm text-neutral-600">
-                  Page {currentPage}
+
+                <span className="text-sm text-neutral-600 px-4">
+                  Page {currentPage} of {totalPages}
                 </span>
+
                 <Button
                   variant="outline"
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                  disabled={products.length < PRODUCTS_PER_PAGE}
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 >
                   Next
                 </Button>
@@ -698,15 +808,12 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
 }
 
 export default function Page() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <PageContent />
-    </Suspense>
-  );
+  return <PageContent />;
 }

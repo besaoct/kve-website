@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 
 interface Segment {
   id: string;
+  link: string;
   title: string;
   image: string;
   categories: any[];
