@@ -115,8 +115,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Added custom fonts for KVE design */
-  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: '__Montserrat_069ab3', '__Montserrat_Fallback_069ab3';
+  --font-heading: '__Montserrat_069ab3', '__Montserrat_Fallback_069ab3';
 }
 
 @layer base {
@@ -141,7 +141,7 @@
   }
 
   .container {
-    @apply mx-auto !max-w-[90rem] w-full px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-360! w-full px-4 sm:px-6 lg:px-8;
   }
 
 
@@ -173,7 +173,7 @@ table{
 }
 
 .upload-box {
-  @apply border-2 border-dashed border-[#D2A564] bg-gradient-to-br from-white/10 to-white/5 
+  @apply border-2 border-dashed border-[#D2A564] bg-linear-to-br from-white/10 to-white/5 
          rounded-lg shadow-lg hover:shadow-xl  transition-all duration-300 
          flex flex-col items-center justify-center cursor-pointer;
 }
@@ -191,4 +191,69 @@ table{
   @apply px-4 py-2 rounded-lg border border-black bg-white text-black 
          hover:border-[#D2A564] hover:bg-[#D2A564] hover:text-white 
          transition-all duration-200 text-sm font-semibold;
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    /* Firefox / modern browsers */
+    scrollbar-width: thin;
+    scrollbar-color: #d4d4d4 transparent; /* neutral-300 → track transparent */
+
+    /* WebKit (Chrome, Edge, Safari) */
+    &::-webkit-scrollbar {
+      width: 8px;          /* thin size – feel free to use 6px or 10px */
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #d4d4d4; /* neutral-300 */
+      border-radius: 9999px;     /* fully rounded like many modern UIs */
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.15s ease;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #a3a3a3; /* neutral-500 */
+    }
+
+    /* Optional: slightly darker when clicked/dragged */
+    &::-webkit-scrollbar-thumb:active {
+      background-color: #737373; /* neutral-600 */
+    }
+  }
+  
+  .scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: #d4d4d4 transparent;
+  }
+
+  .scrollable::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollable::-webkit-scrollbar-thumb {
+    background-color: #d4d4d4;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background-color 0.12s ease;
+  }
+
+  .scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: #a3a3a3;
+  }
+
+  .scrollable::-webkit-scrollbar-thumb:active {
+    background-color: #737373;
+  }
 }

@@ -18,7 +18,7 @@ export default function MobileCategories({ categories, segmentId }: MobileCatego
       <h2 className="text-sm font-semibold text-gray-600 mb-4 px-4">Related Categories</h2>
       <div className="flex gap-4 overflow-x-auto pb-4 px-4 snap-x snap-mandatory">
         {categories.map((category) => (
-          <div key={category.id} className="flex-shrink-0 snap-center">
+          <div key={category.id} className="shrink-0 snap-center">
             <Link href={`/products?segment_id=${segmentId}&sub_segment_id=${category.id}`}>
               <div className="flex flex-col items-center gap-3">
                 <div className="w-20 h-20 rounded-full bg-yellow-400 shadow-lg flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer overflow-hidden">

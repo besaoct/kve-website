@@ -1,4 +1,4 @@
-export const dummyCategoryHero = [
+export const CategoryHero = [
   {
     name: "Welding, Cutting & Air Cleaning Equipment",
     image: "/category-hero/popup.png",

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 
 export default function Hero() {
   return (
-    <section className="relative bg-gradient-to-b from-background to-muted/40 pt-32 pb-20 md:pt-40 md:pb-28">
+    <section className="relative bg-linear-to-b from-background to-muted/40 pt-32 pb-20 md:pt-40 md:pb-28">
       {/* Grid background */}
       <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/22863134/pexels-photo-22863134.jpeg')] bg-repeat"></div>
       

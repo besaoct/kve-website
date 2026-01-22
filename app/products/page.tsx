@@ -59,6 +59,22 @@ function PageContent() {
 
   const { cartItems, addToCart } = useCart();
 
+
+// Scroll to top when filters change
+useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, [
+  searchTerm,
+  sortOption,
+  selectedCategories,
+  selectedSubCategories,
+  selectedSegments,
+  selectedSubSegments,
+]);
+useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "instant" }); // or "smooth"
+}, [currentPage]);
+
   // Fetch all data on mount
   useEffect(() => {
     const fetchAllData = async () => {
@@ -308,7 +324,7 @@ function PageContent() {
                   onChange={() => handleCategoryChange(category.id)}
                 />
                 <span className="text-sm -mt-1 w-full gap-2 flex justify-start">
-                  <span className="max-w-[300px] line-clamp-1">
+                  <span className="max-w-75 line-clamp-1">
                     {" "}
                     {category.title}{" "}
                   </span>
@@ -396,18 +412,21 @@ function PageContent() {
     <div className="min-h-screen bg-neutral-50">
       <Navigation />
       <Hero />
-      <div className="container mx-auto max-w-8xl px-4 py-8">
-        <div className="flex gap-8">
-          {/* Desktop Sidebar */}
-          <div className="hidden lg:block w-1/4">
-            <Sidebar />
-          </div>
+<div className="container mx-auto max-w-8xl px-4 py-8">
+  <div className="flex gap-8 lg:min-h-[calc(100vh-12rem)]"> {/* ← adjust 12rem based on your header+hero+padding */}
+
+    {/* Desktop Sidebar – independent scroll */}
+    <div className="hidden lg:block lg:w-1/4 lg:sticky lg:top-19 h-fit">
+      <div className="bg-white border lg:rounded-md lg:p-4 lg:max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin ">
+        <Sidebar />
+      </div>
+    </div>
 
           {/* Main Content */}
           <div className="w-full lg:w-3/4">
             {/* Search and Sort Bar */}
             <div className="flex justify-between flex-wrap items-center gap-4 mb-8">
-              <div className="relative min-w-1/2 flex-grow">
+              <div className="relative min-w-1/2 grow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-500" />
                 <Input
                   placeholder="Search products..."
@@ -432,7 +451,7 @@ function PageContent() {
                       <SheetHeader className="gap-0 border-b p-4">
                         <SheetTitle>Filter Products</SheetTitle>
                       </SheetHeader>
-                      <div className="py-4 px-4 overflow-y-auto flex-grow">
+                      <div className="py-4 px-4 overflow-y-auto grow">
                         <Sidebar />
                       </div>
                     </SheetContent>
@@ -444,7 +463,7 @@ function PageContent() {
                   onValueChange={handleSortChange}
                   defaultValue={sortOption}
                 >
-                  <SelectTrigger className="w-[180px] border-border shadow-none">
+                  <SelectTrigger className="w-45 border-border shadow-none">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -489,14 +508,7 @@ function PageContent() {
               </div>
             ) : products.length === 0 ? (
               <></>
-              // <div className="text-center py-20">
-              //   <p className="text-xl text-neutral-600 mb-4">
-              //     No products found
-              //   </p>
-              //   <Button onClick={clearFilters} variant="outline">
-              //     Clear Filters
-              //   </Button>
-              // </div>
+
             ) : (
               <div className="flex flex-col gap-8">
                 {products.map((product, index) => {
@@ -569,14 +581,7 @@ function PageContent() {
                             </h3>
                           </Link>
 
-                          {/* Hierarchy Breadcrumb */}
-                          {/* {product.hierarchy && (
-                          <p className="text-sm text-neutral-500 mb-3">
-                            {product.hierarchy.category} / {product.hierarchy.sub_category}
-                            {product.hierarchy.segment && ` / ${product.hierarchy.segment}`}
-                          </p>
-                        )} */}
-
+              
                           {/* Description */}
                           <p className="text-neutral-600 mb-4 line-clamp-2">
                             {product.short_description ||
@@ -598,7 +603,7 @@ function PageContent() {
                                       className="flex items-start gap-2"
                                     >
                                       <svg
-                                        className="flex-shrink-0 text-neutral-500 mt-1"
+                                        className="shrink-0 text-neutral-500 mt-1"
                                         width="4"
                                         height="4"
                                         viewBox="0 0 4 4"
